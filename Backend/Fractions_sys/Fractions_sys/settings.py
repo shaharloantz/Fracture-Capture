@@ -84,10 +84,22 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR,'Backend\\Fractions_sys\\db.sqlite3'),
         'USER' : 'Fractions',
-        'PASSWORD': 'Tal080997',
+        'PASSWORD': 'Tal080997!',
         'HOST' : 'localhost'
     }
 }
+
+# Preform SQL QUery:
+# 1) python manage.py shell
+# from django.contrib.auth import get_user_model
+# User = get_user_model()
+# users = User.objects.all()
+# for user in users:
+#     print(user.email, user.name, user.id)
+
+
+
+
 
 
 # Password validation
@@ -152,12 +164,12 @@ DJOSER = {
     'USERNAME_RESET_CONFIRM_URL' : 'email/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL' : 'activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL' : True,
-    'SERIALIZERS':{
-        'user_create': 'accounts.serializers.UserCreateSerializer',
-        'user': 'accounts.serializers.UserCreateSerializer',
-        'user_delete': 'djozer.serializers.UserDeleteSerializer',
+    'SERIALIZERS': {
+    'user_create': 'accounts.serializers.UserCreateSerializer',  # Corrected class name
+    'user': 'accounts.serializers.UserCreateSerializer',
+    'user_delete': 'accounts.serializers.UserDeleteSerializer',  # Corrected import path
+}   
 
-    }
 }
 
 # Default primary key field type
@@ -170,11 +182,11 @@ AUTH_USER_MODEL = 'accounts.userAccount'
 
 # Email details:
 # email account: fractionstests@gmail.com
-# email PW: Tal080997 or Tal080997! 
+# email PW: Tal080997! 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'fractionstests@gmail.com'
-EMAIL_HOST_PASSWORD = 'Tal080997'
+EMAIL_HOST_PASSWORD = '080997'
 EMAIL_USE_TLS = True
