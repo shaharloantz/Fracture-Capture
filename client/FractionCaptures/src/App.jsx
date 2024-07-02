@@ -1,6 +1,6 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar'; // Adjusted path to match usual folder structure
+import Navbar from './component/Navbar'; // Adjusted path to match usual folder structure
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -8,7 +8,7 @@ import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
 
 // Adjust baseURL to point to your backend server
-axios.defaults.baseURL = 'hhttp://localhost:5173'; // Adjust this if needed
+axios.defaults.baseURL = 'http://localhost:5173'; // Adjust this if needed
 axios.defaults.withCredentials = true;
 
 function App() {

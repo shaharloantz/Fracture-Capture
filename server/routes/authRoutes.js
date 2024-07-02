@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const {registerUser } = require('../controllers/authCtrl');
+const { registerUser, loginUser } = require('../controllers/authCtrl');
 
 // Middleware
 router.use(cors({
@@ -10,11 +10,10 @@ router.use(cors({
 }));
 
 router.get('/', (req, res) => {
-    
-    res.send('Welcome to the API server'); // Adjust as per your application's needs
-    
+    res.send('Welcome to the API server');
 });
 
 router.post('/register', registerUser); // Registration route
+router.post('/login', loginUser); // Login route
 
 module.exports = router;
