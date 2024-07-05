@@ -8,7 +8,7 @@ import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
 
 // Adjust baseURL to point to your backend server
-axios.defaults.baseURL = 'http://localhost:5173'; // Adjust this if needed
+axios.defaults.baseURL = 'http://localhost:8000'; // Adjust this if needed
 axios.defaults.withCredentials = true;
 
 function App() {
