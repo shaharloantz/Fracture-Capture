@@ -1,22 +1,27 @@
+const { Int32 } = require('mongodb');
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 // Define the schema for the images collection
-const photsSchema = new Schema({
+const patients = new Schema({
     bodyPart: {
         type: String,
         required: true,
     },
-    imageUrl: {
-        type: String,
-        required: true,
-    },
-    imageID: {
+    imageID: { // Primary key to its related image
         type: String,
         required: true,
     },
     patientName: {
         type: String,
+        required: true,
+    },
+    patientID: {
+        type: String,
+        required: true,
+    },
+    patientAge: {
+        type: Int32,
         required: true,
     },
     description: {
@@ -29,6 +34,6 @@ const photsSchema = new Schema({
 });
 
 // Create a model based on the schema
-const BodyPartImage = mongoose.model('BodyPartImage', photsSchema);
+const BodyPartImage = mongoose.model('BodyPartImage', bodyPartSchema);
 
 module.exports = BodyPartImage;
