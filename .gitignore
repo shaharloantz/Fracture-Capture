@@ -1,0 +1,18 @@
+# Root-level ignores
+node_modules/
+.env
+.DS_Store
+
+# Backend ignores
+/server/node_modules/
+/server/dist/
+/server/.env
+
+# Frontend ignores
+/client/node_modules/
+/client/build/
+
+
+# IDE-specific ignores
+.vscode/
+.idea/
