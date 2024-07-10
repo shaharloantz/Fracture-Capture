@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs'); // For hashing passwords
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken'); // our cookies, only after Login
 
 // Register User
 const registerUser = async (req, res) => {
@@ -55,6 +55,12 @@ const loginUser = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ error: 'Invalid email or password!' });
+        }
+        else{
+            jwt.sign({email:user.email, id:user._id, name:user.name},process.env.JWT_SECRET, {},(err,token) => {
+                if(err) throw err;
+                res.cookie('token',token).json(user)            
+            }) // this the info for the cookie
         }
 
         res.status(200).json({ message: 'Login successful' });
