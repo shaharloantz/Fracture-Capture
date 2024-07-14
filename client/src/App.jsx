@@ -4,6 +4,9 @@ import Navbar from './component/Navbar'; // Adjusted path to match usual folder 
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import QA from './pages/QA';
+import About from './pages/About';
+import Profile from './pages/Profile';
 import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
 
@@ -22,6 +25,9 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/qa' element={<QA />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/profile' element={<Profile />} />
       </Routes>
     </>
   );
