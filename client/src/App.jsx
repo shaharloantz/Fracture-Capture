@@ -3,6 +3,9 @@ import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import QA from './pages/QA';
+import About from './pages/About';
+import Profile from './pages/Profile';
 import './App.css'
 import axios from 'axios';
 import NotFoundPage from './pages/NotFound';
@@ -16,7 +19,11 @@ const router = createBrowserRouter(
      <Route index element={<Home/>} />
      <Route path='/register' element={<Register />} />
      <Route path='/login' element={<Login />} />
-     <Route path='*' element={<NotFoundPage />} />
+     <Route path='/qa' element={<QA />} />
+    <Route path='/about' element={<About />} />
+    <Route path='/profile' element={<Profile />} />
+    <Route path='*' element={<NotFoundPage />} 
+    />
 
 </Route>
   )
