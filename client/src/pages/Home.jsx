@@ -14,9 +14,9 @@ export default function Home() {
             <Sidebar />
             <div className="main-content">
                 <h1>FractureCapture</h1>
-                <img src="public/app-images/fracture-icon.png" alt="Fracture Icon" className="fracture-icon"/>
+                <img src="src/assets/images/fracture-icon.png" alt="Fracture Icon" className="fracture-icon"/>
                 <button onClick={handlePlayClick} className="play-button">
-                    <img src="public/app-images/start-icon.png" alt="Start" className="start-icon"/>
+                    <img src="src/assets/images/start-icon.png" alt="Start" className="start-icon"/>
                 </button>
             </div>
         </div>
