@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import './App.css'
 import axios from 'axios';
+import NotFoundPage from './pages/NotFound';
 // Adjust baseURL to point to your backend server
 axios.defaults.baseURL = 'http://localhost:8000'; // Adjust this if needed
 axios.defaults.withCredentials = true;
@@ -15,6 +16,8 @@ const router = createBrowserRouter(
      <Route index element={<Home/>} />
      <Route path='/register' element={<Register />} />
      <Route path='/login' element={<Login />} />
+     <Route path='*' element={<NotFoundPage />} />
+
 </Route>
   )
 );
