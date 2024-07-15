@@ -3,18 +3,35 @@ import { Link, useLocation } from "react-router-dom";
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
-const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'Register', href: '/register' },
-    { name: 'Login', href: '/login' },
-];
+const getNavigation = (isAuthenticated) => {
+    if (isAuthenticated) {
+        return [
+            { name: 'Home', href: '/' },
+            { name: 'Logout', onClick: 'logout' },
+        ];
+    } else {
+        return [
+            { name: 'Home', href: '/' },
+            { name: 'Register', href: '/register' },
+            { name: 'Login', href: '/login' },
+        ];
+    }
+};
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
 }
 
-export default function Navbar() {
+export default function Navbar({ isAuthenticated, handleLogout }) {
     const location = useLocation();
+    const navigation = getNavigation(isAuthenticated);
+
+    const handleNavigationClick = (event, item) => {
+        if (item.onClick === 'logout') {
+            event.preventDefault();
+            handleLogout();
+        }
+    };
 
     return (
         <Disclosure as="nav" className="bg-gray-800">
@@ -36,6 +53,7 @@ export default function Navbar() {
                                     <Link
                                         key={item.name}
                                         to={item.href}
+                                        onClick={(event) => handleNavigationClick(event, item)}
                                         className={classNames(
                                             location.pathname === item.href ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                                             'rounded-md px-3 py-2 text-sm font-medium',
@@ -57,6 +75,7 @@ export default function Navbar() {
                             key={item.name}
                             as="a"
                             href={item.href}
+                            onClick={(event) => handleNavigationClick(event, item)}
                             className={classNames(
                                 location.pathname === item.href ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                                 'block rounded-md px-3 py-2 text-base font-medium',

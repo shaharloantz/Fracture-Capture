@@ -15,5 +15,9 @@ router.get('/', (req, res) => {
 
 router.post('/register', registerUser); // Registration route
 router.post('/login', loginUser); // Login route
-
+router.post('/logout', (req, res) => {
+    res.clearCookie('token');
+    res.json({ message: 'Logged out successfully' });
+  });
+  
 module.exports = router;
