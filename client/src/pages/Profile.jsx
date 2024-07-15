@@ -11,6 +11,7 @@ export default function Profile() {
         axios.get('/user/profile', { withCredentials: true })
             .then(response => {
                 setProfile(response.data);
+                toast.success('Profile loaded successfully!');
             })
             .catch(error => {
                 console.error('Error fetching profile:', error.response ? error.response.data : error.message);
@@ -25,10 +26,9 @@ export default function Profile() {
 
     return (
         <div className="profile-container">
-            <h2>Profile</h2>
+            <p><strong>{profile.message}</strong> </p>
             <p><strong>Name:</strong> {profile.name}</p>
             <p><strong>Email:</strong> {profile.email}</p>
-            <p><strong>Welcome Message:</strong> {profile.message}</p>
         </div>
     );
 }
