@@ -11,6 +11,7 @@ import './App.css';
 import axios from 'axios';
 import NotFoundPage from './pages/NotFound';
 import { Toaster } from 'react-hot-toast';
+import Dashboard from './pages/Dashboard';
 
 axios.defaults.baseURL = 'http://localhost:8000'; // Adjust this if needed
 axios.defaults.withCredentials = true;
@@ -47,6 +48,7 @@ const App = () => {
         <Route path='/qa' element={<QA />} />
         <Route path='/about' element={<About />} />
         <Route path='/profile' element={<Profile />} />
+        <Route path='/dashboard' element={<Dashboard />} />
         <Route path='*' element={<NotFoundPage />} />
       </Route>
     )
