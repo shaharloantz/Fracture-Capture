@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function Login({ setIsAuthenticated }) {
     const navigate = useNavigate();
     const [data, setData] = useState({
         email: '',
@@ -19,6 +19,7 @@ export default function Login() {
             setLoading(false);
             console.log('Login successful:', response.data);
             toast.success('Login successful!');
+            setIsAuthenticated(true);  // Update the authentication state
             // Redirect to the home page or dashboard
             navigate('/');
         } catch (error) {

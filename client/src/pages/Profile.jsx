@@ -1,15 +1,34 @@
-import React from 'react';
-import Sidebar from "../component/Sidebar";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
-const Profile = () => {
+export default function Profile() {
+    const [profile, setProfile] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        axios.get('/user/profile', { withCredentials: true })
+            .then(response => {
+                setProfile(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching profile:', error.response ? error.response.data : error.message);
+                toast.error('Error fetching profile. Please log in.');
+                navigate('/login');
+            });
+    }, [navigate]);
+
+    if (!profile) {
+        return <div>Loading...</div>;
+    }
+
     return (
-        <div>
-          <Sidebar/>
-          <h1>My Profile</h1>
-          <h2>Hello X,</h2>
-          
+        <div className="profile-container">
+            <h2>Profile</h2>
+            <p><strong>Name:</strong> {profile.name}</p>
+            <p><strong>Email:</strong> {profile.email}</p>
+            <p><strong>Welcome Message:</strong> {profile.message}</p>
         </div>
-      );
-  };
-  
-  export default Profile;
+    );
+}
