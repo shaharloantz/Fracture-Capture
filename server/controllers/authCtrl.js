@@ -56,14 +56,12 @@ const loginUser = async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ error: 'Invalid email or password!' });
         }
-        else{
-            jwt.sign({email:user.email, id:user._id, name:user.name},process.env.JWT_SECRET, {},(err,token) => {
-                if(err) throw err;
-                res.cookie('token',token).json(user)            
-            }) // this the info for the cookie
-        }
 
-        res.status(200).json({ message: 'Login successful' });
+        // Sign JWT and set cookie
+        jwt.sign({ email: user.email, id: user._id, name: user.name }, process.env.JWT_SECRET, {}, (err, token) => {
+            if (err) throw err;
+            res.cookie('token', token).json(user);
+        });
     } catch (error) {
         console.log('Error when logging in user:', error);
         res.status(500).json({ error: 'Internal server error' });
