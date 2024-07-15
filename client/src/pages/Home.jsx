@@ -13,7 +13,7 @@ export default function Home() {
         <div className="home-container">
             <Sidebar />
             <div className="main-content">
-                <h1>FractureCapture</h1>
+                <h1 >FractureCapture</h1>
                 <img src="src/assets/images/fracture-icon.png" alt="Fracture Icon" className="fracture-icon"/>
                 <button onClick={handlePlayClick} className="play-button">
                     <img src="src/assets/images/start-icon.png" alt="Start" className="start-icon"/>
