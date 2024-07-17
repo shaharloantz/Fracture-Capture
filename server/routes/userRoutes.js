@@ -13,6 +13,7 @@ router.get('/profile', requireAuth, async (req, res) => {
         res.json({
             name: user.name,
             email: user.email,
+            numberOfPatients: user.numberOfPatients, // Ensure this field is returned
             message: `Welcome, ${user.name}!`
         });
     } catch (error) {

@@ -27,3 +27,45 @@
     background-color: darkkhaki;
     transform: translateY(-5px); /* Slight lift effect on hover */
 }
+
+.patient-form {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.patient-form h2 {
+    margin-bottom: 20px;
+}
+
+.patient-form label {
+    margin-bottom: 10px;
+}
+
+.patient-form input,
+.patient-form select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.patient-form button {
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: yellow;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.patient-form button:hover {
+    background-color: darkkhaki;
+}
