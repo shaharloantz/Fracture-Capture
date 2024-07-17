@@ -5,20 +5,29 @@
   box-sizing: border-box;
 }
 
-body, html {
+html {
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100%;
+  overflow-y: auto; /* Allow vertical scrolling */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
   background: #002855;
   direction: ltr; /* Ensure left-to-right direction */
   font-family: 'Calibri', sans-serif; /* Change font to Calibri */
+  overflow-y: auto; /* Ensure body can scroll */
 }
 
 .qa-container {
+  min-height: 100vh; /* Ensure it takes at least the full viewport height */
   background-color: #002855;
   color: white;
   margin: 0;
-  padding: 0;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
