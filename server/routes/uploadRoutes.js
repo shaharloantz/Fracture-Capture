@@ -10,6 +10,7 @@ const upload = multer({ dest: 'uploads/' }); // Temporary storage for uploaded i
 // Endpoint to create a new upload
 router.post('/', requireAuth, upload.single('image'), async (req, res) => {
     const { patientId, description, bodyPart } = req.body;
+    const imgUrl = `/uploads/${req.file.filename}`;
 
     try {
         const patient = await Patient.findById(patientId);
@@ -19,12 +20,14 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
 
         const newUpload = new Upload({
             patient: patientId,
+            patientName: patient.name,
             description,
             bodyPart,
             imgId: req.file.filename,
-            createdByUser: req.user.id,
+            imgUrl: imgUrl,
             dateUploaded: new Date(),
-            prediction: null // Placeholder, assuming prediction will be added later
+            prediction: null, // Assuming prediction will be added later
+            createdByUser: req.user.id
         });
 
         await newUpload.save();
