@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
+import '../cssFiles/toasterCSS.css';
+import './Login.css'; // If you have specific styles for login page
 
 export default function Login({ setIsAuthenticated }) {
     const navigate = useNavigate();
@@ -20,7 +22,6 @@ export default function Login({ setIsAuthenticated }) {
             console.log('Login successful:', response.data);
             toast.success('Login successful!');
             setIsAuthenticated(true);  // Update the authentication state
-            // Redirect to the home page or dashboard
             navigate('/');
         } catch (error) {
             setLoading(false);
@@ -37,35 +38,40 @@ export default function Login({ setIsAuthenticated }) {
     };
 
     return (
-        <div className="login-container">
-            <form onSubmit={loginUser} className="login-form">
-                <h2>Login</h2>
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input 
-                        type="email" 
-                        name="email"
-                        placeholder="Enter Email.." 
-                        value={data.email} 
-                        onChange={handleChange} 
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input 
-                        type="password" 
-                        name="password"
-                        placeholder="Enter Password.." 
-                        value={data.password} 
-                        onChange={handleChange} 
-                        required
-                    />
-                </div>
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Logging in...' : 'Login'}
-                </button>
-            </form>
+        <div className="flex items-center justify-center min-h-screen ">
+            <div className="flex flex-col items-center">
+                <img src="src/assets/images/user.png" alt="Above" className="mb-4 w-32 h-32 mt-[-15rem]" /> {/* Adjust the path and size as needed */}
+                <form onSubmit={loginUser} className="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md space-y-6">
+                    <h2 className="text-2xl font-bold mb-6 text-white text-center">Login</h2>
+                    <div>
+                        <label htmlFor="email" className="block text-gray-300">Email</label>
+                        <input 
+                            type="email" 
+                            name="email"
+                            placeholder="Enter Email.." 
+                            value={data.email} 
+                            onChange={handleChange} 
+                            className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-gray-300"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="password" className="block text-gray-300">Password</label>
+                        <input 
+                            type="password" 
+                            name="password"
+                            placeholder="Enter Password.." 
+                            value={data.password} 
+                            onChange={handleChange} 
+                            className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-gray-300"
+                            required
+                        />
+                    </div>
+                    <button type="submit" disabled={loading} className="flex items-center justify-center w-full bg-blue-500 p-2 rounded-md hover:bg-blue-600 transition duration-200">
+                        <img src="src/assets/images/login-icon.png" alt="Login" className="h-6" /> {/* Adjust the path and size as needed */}
+                    </button> 
+                </form>
+            </div>
         </div>
     );
 }
