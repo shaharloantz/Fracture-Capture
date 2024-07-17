@@ -1,13 +1,18 @@
-import { Outlet } from "react-router-dom";
-import Navbar from "../component/Navbar";
-import Sidebar from "../component/Sidebar";
+import { Outlet } from 'react-router-dom';
+import Navbar from '../component/Navbar';
+import Sidebar from '../component/Sidebar';
+import './MainLayout.css';
 
 const MainLayout = ({ isAuthenticated, handleLogout }) => {
   return (
     <>
       <Navbar isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
-      <Sidebar />
-      <Outlet />
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-grow p-4">
+          <Outlet />
+        </div>
+      </div>
     </>
   );
 }

@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { toast } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import '../cssFiles/toasterCSS.css'; 
+import '../cssFiles/toasterCSS.css';
+import './Register.css';
+
 
 export default function Register() {
     const navigate = useNavigate();
@@ -46,44 +48,61 @@ export default function Register() {
         }
     };
 
+    const handleChange = (e) => {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value
+        });
+    };
+
     return (
-        <div className="register-container">
-            <form onSubmit={registerUser} className="register-form">
-                <h2>Register</h2>
-                <div className="form-group">
-                    <label htmlFor="name">Name</label>
-                    <input 
-                        type="text" 
-                        id="name" 
-                        placeholder="Enter Name.." 
-                        value={data.name} 
-                        onChange={(e) => setData({ ...data, name: e.target.value })} 
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        placeholder="Enter Email.." 
-                        value={data.email} 
-                        onChange={(e) => setData({ ...data, email: e.target.value })} 
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        placeholder="Enter Password.." 
-                        value={data.password} 
-                        onChange={(e) => setData({ ...data, password: e.target.value })} 
-                    />
-                </div>
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Registering...' : 'Submit'}
-                </button>
-            </form>
+        <div className="flex items-center justify-center min-h-screen">
+            <div className="flex flex-col items-center">
+            <img src="src/assets/images/user.png" alt="Above" className="mb-4 w-32 h-32 mt-[-10rem]" /> 
+                {/* Adjust the path and size as needed */}
+                <form onSubmit={registerUser} className="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md mt-[-0rem]"> {/* Adjusted margin-top */}
+                    <h2 className="text-2xl font-bold mb-6 text-white text-center">Register</h2>
+                    <div className="mb-4">
+                        <label htmlFor="name" className="block text-gray-300">Name</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name"
+                            placeholder="Enter Name.." 
+                            value={data.name} 
+                            onChange={handleChange} 
+                            className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-gray-300"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="email" className="block text-gray-300">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email"
+                            placeholder="Enter Email.." 
+                            value={data.email} 
+                            onChange={handleChange} 
+                            className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-gray-300"
+                        />
+                    </div>
+                    <div className="mb-6">
+                        <label htmlFor="password" className="block text-gray-300">Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password"
+                            placeholder="Enter Password.." 
+                            value={data.password} 
+                            onChange={handleChange} 
+                            className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-gray-300"
+                        />
+                    </div>
+                    <button type="submit" disabled={loading} className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-200">
+                        {loading ? 'Registering...' : 'Submit'}
+                    </button>
+                </form>         
+            </div>
         </div>
     );
 }
