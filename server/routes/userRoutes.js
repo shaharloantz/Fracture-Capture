@@ -1,6 +1,6 @@
 const express = require('express');
 const requireAuth = require('../middleware/authMiddleware');
-const User = require('../models/user');
+const User = require('../models/User');
 
 const router = express.Router();
 
@@ -13,6 +13,7 @@ router.get('/profile', requireAuth, async (req, res) => {
         res.json({
             name: user.name,
             email: user.email,
+            numberOfPatients: user.numberOfPatients, // Ensure this field is returned
             message: `Welcome, ${user.name}!`
         });
     } catch (error) {
