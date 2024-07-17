@@ -11,7 +11,7 @@ const patientSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Adding a unique index on user and idNumber combination
-patientSchema.index({ user: 1, idNumber: 1 }, { unique: true });
+patientSchema.index({ createdByUser: 1, idNumber: 1 }, { unique: true });
 
 const Patient = mongoose.model('Patient', patientSchema);
 
