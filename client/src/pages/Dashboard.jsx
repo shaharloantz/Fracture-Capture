@@ -9,10 +9,12 @@ const Dashboard = () => {
   const initialUploadState = { patientId: '', description: '', bodyPart: '', image: null };
   const [profile, setProfile] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [showBodyParts, setShowBodyParts] = useState(false);
   const [newPatient, setNewPatient] = useState(initialPatientState);
   const [uploadData, setUploadData] = useState(initialUploadState);
   const [patients, setPatients] = useState([]);
   const [isAddingToExisting, setIsAddingToExisting] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,22 +29,18 @@ const Dashboard = () => {
   }, [navigate]);
 
   const handleItemClick = (item) => {
-    if (!profile) {
-      toast.error('You must login / register');
-      return;
+    if (item.title === 'Results') {
+      navigate(`/results/${selectedPatient}`);
+    } else {
+      navigate(`/upload/${item.title.toLowerCase()}`);
     }
-    navigate(`/upload/${item.title.toLowerCase()}`);
   };
 
   const handleAddPatientClick = () => {
-    if (profile && profile.numberOfPatients === 0) {
-      toast.error("You don't have any patients yet!");
-    } else {
-      setIsAddingToExisting(true);
-      fetchPatients();
-      setUploadData(initialUploadState); // Reset form state
-      setShowForm(true);
-    }
+    setIsAddingToExisting(true);
+    fetchPatients();
+    setUploadData(initialUploadState); // Reset form state
+    setShowForm(true);
   };
 
   const fetchPatients = () => {
@@ -88,18 +86,33 @@ const Dashboard = () => {
       axios.post('/uploads', formData, { withCredentials: true })
         .then(response => {
           toast.success("Upload successful!");
+          setSelectedPatient(uploadData.patientId);
           setShowForm(false);
+          setShowBodyParts(true);
         })
         .catch(error => {
           console.error('Error uploading:', error.response ? error.response.data : error.message);
           toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
         });
     } else {
-      axios.post('/patients', newPatient, { withCredentials: true })
+      // Age validation
+      if (newPatient.age < 0) {
+        toast.error("Age must be 0 or greater.");
+        return;
+      }
+
+      const patientData = {
+        ...newPatient,
+        createdByUser: profile._id, // Assuming profile contains the logged-in user's data
+      };
+
+      axios.post('/patients', patientData, { withCredentials: true })
         .then(response => {
           toast.success("Patient created successfully!");
           setProfile({ ...profile, numberOfPatients: profile.numberOfPatients + 1 });
+          setSelectedPatient(response.data._id);
           setShowForm(false);
+          setShowBodyParts(true);
         })
         .catch(error => {
           console.error('Error creating patient:', error.response ? error.response.data : error.message);
@@ -107,6 +120,7 @@ const Dashboard = () => {
         });
     }
   };
+  
 
   if (!profile) {
     return <div>Loading...</div>;
@@ -138,24 +152,12 @@ const Dashboard = () => {
           <li>3) Receive a prediction of fractures</li>
         </ol>
       </div>
-      <div className="items-grid">
-        {items.map((item) => (
-          <div 
-            key={item.title} 
-            className={`item ${!profile ? 'item-disabled' : ''}`} 
-            onClick={() => handleItemClick(item)}
-          >
-            <img src={item.image} alt={item.title} />
-            <p>{item.title}</p>
-          </div>
-        ))}
-      </div>
-      {!showForm ? (
+      {!showForm && !showBodyParts ? (
         <>
           <div className="box" onClick={handleCreatePatientClick}>Create a new Patient</div>
           <div className="box" onClick={handleAddPatientClick}>Add to an existing Patient</div>
         </>
-      ) : (
+      ) : showForm ? (
         <form onSubmit={handleSubmit} className="patient-form">
           {isAddingToExisting ? (
             <>
@@ -193,7 +195,7 @@ const Dashboard = () => {
               </label>
               <label>
                 Age:
-                <input type="number" name="age" value={newPatient.age} onChange={handleInputChange} required />
+                <input type="number" name="age" value={newPatient.age} onChange={handleInputChange} min="0" required />
               </label>
               <label>
                 Gender:
@@ -212,6 +214,19 @@ const Dashboard = () => {
           <button type="submit">Submit</button>
           <button type="button" onClick={() => setShowForm(false)}>Cancel</button>
         </form>
+      ) : (
+        <div className="items-grid">
+          {items.map((item) => (
+            <div 
+              key={item.title} 
+              className={`item ${!profile ? 'item-disabled' : ''}`} 
+              onClick={() => handleItemClick(item)}
+            >
+              <img src={item.image} alt={item.title} />
+              <p>{item.title}</p>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

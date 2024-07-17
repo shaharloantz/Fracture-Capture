@@ -1,21 +1,14 @@
-html {
-    margin: 0;
-    padding: 0;
-    min-height: 100%;
-    overflow-y: auto; /* Allow vertical scrolling */
-  }
-  
-  body {
+body, html {
     margin: 0;
     padding: 0;
     min-height: 100%;
     background: #002855;
     font-family: 'Calibri', sans-serif;
-    overflow-y: auto; /* Ensure body can scroll */
+    overflow-x: hidden;
   }
   
   .dashboard-container {
-    min-height: 100vh; /* Ensure it takes at least the full viewport height */
+    min-height: 100vh;
     background-color: #002855;
     color: white;
     margin: 0;
@@ -128,6 +121,10 @@ html {
     border-radius: 5px;
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
+  }
+  
+  .patient-form select option {
+    color: black;
   }
   
   .patient-form button {
