@@ -1,0 +1,120 @@
+/* Apply box-sizing to all elements */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #002855;
+  direction: ltr; /* Ensure left-to-right direction */
+  font-family: 'Calibri', sans-serif; /* Change font to Calibri */
+}
+
+.qa-container {
+  background-color: #002855;
+  color: white;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qa-header {
+  width: 100%;
+  background-color: #002855;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px solid #fff;
+}
+
+.logo {
+  width: 70px;
+  height: 70px;
+  background: url('/src/assets/images/fracture-icon.png') no-repeat center center;
+  background-size: contain;
+  margin-right: 10px;
+}
+
+.qa-content {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  text-align: left; /* Ensure text is left-aligned */
+}
+
+.qa-content h2 {
+  border-bottom: 2px solid #fff;
+  display: inline-block;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 1.2em;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 5px;
+  margin: 20px 0;
+  text-align: left; /* Ensure subtitles are left-aligned */
+}
+
+.qa-item {
+  margin: 20px 0;
+  text-align: left; /* Ensure items are left-aligned */
+}
+
+.question {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  background-color: rgba(0, 40, 85, 0.7);
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start; /* Align content to the start */
+  align-items: center;
+  width: 100%; /* Ensure full width */
+  text-align: left; /* Ensure text is left-aligned */
+}
+
+.answer {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  background-color: rgba(0, 40, 85, 0.5);
+  margin-top: 10px;
+  width: 100%; /* Ensure full width */
+  text-align: left; /* Ensure text is left-aligned */
+}
+
+.toggle-icon {
+  margin-right: 10px;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .qa-header {
+    flex-direction: column;
+  }
+
+  .logo {
+    margin-bottom: 10px;
+  }
+
+  .qa-content {
+    padding: 10px;
+  }
+
+  .question, .answer {
+    padding: 8px;
+  }
+}
