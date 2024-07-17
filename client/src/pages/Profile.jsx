@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import '../cssFiles/Profile.css'; // Import the CSS file
 
 export default function Profile() {
     const [profile, setProfile] = useState(null);
@@ -11,11 +11,9 @@ export default function Profile() {
         axios.get('/user/profile', { withCredentials: true })
             .then(response => {
                 setProfile(response.data);
-              //  toast.success('Profile loaded successfully!');
             })
             .catch(error => {
                 console.error('Error fetching profile:', error.response ? error.response.data : error.message);
-                //toast.error('Error fetching profile. Please log in.');
                 navigate('/login');
             });
     }, [navigate]);
@@ -26,9 +24,25 @@ export default function Profile() {
 
     return (
         <div className="profile-container">
-            <p><strong>{profile.message}</strong> </p>
-            <p><strong>Name:</strong> {profile.name}</p>
-            <p><strong>Email:</strong> {profile.email}</p>
+            <div className="user-details">
+                <h1><strong>Hi, {profile.name}</strong></h1>
+                <p><strong>Email:</strong> {profile.email}</p>
+            </div>
+            <div className="patient-history">
+                <h2>History</h2>
+                <div className="patient-folders">
+                    {profile.patients && profile.patients.length > 0 ? (
+                        profile.patients.map(patient => (
+                            <div key={patient.idNumber} className="patient-folder">
+                                <p><strong>Patient:</strong> {patient.name}</p>
+                                <p><strong>ID:</strong> {patient.idNumber}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No patients found.</p>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }
