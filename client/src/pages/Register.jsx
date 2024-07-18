@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import '../cssFiles/toasterCSS.css';
-import './Register.css';
+import '../cssFiles/Register.css';
 
 
 export default function Register() {

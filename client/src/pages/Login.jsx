@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import '../cssFiles/toasterCSS.css';
-import './Login.css'; // If you have specific styles for login page
+import '../cssFiles/Login.css'; // If you have specific styles for login page
 
 export default function Login({ setIsAuthenticated }) {
     const navigate = useNavigate();
