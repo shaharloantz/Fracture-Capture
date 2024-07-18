@@ -75,7 +75,7 @@ export default function Profile() {
                     <p><strong>Body Part:</strong> {selectedUpload.bodyPart}</p>
                     <p><strong>Date Uploaded:</strong> {new Date(selectedUpload.dateUploaded).toLocaleString()}</p>
                     <p><strong>Prediction:</strong> {selectedUpload.prediction ? `${selectedUpload.prediction}%` : 'N/A'}</p>
-                    <img src={selectedUpload.imgUrl} alt="Upload" />
+                    <img src={`http://localhost:8000${selectedUpload.imgUrl}`} alt="Upload" />
                 </div>
             ) : selectedPatient ? (
                 <div className="patient-uploads">
