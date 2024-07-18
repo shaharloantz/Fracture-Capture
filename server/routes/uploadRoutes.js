@@ -38,7 +38,7 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
             imgId: req.file.filename,
             imgUrl: imgUrl,
             dateUploaded: new Date(),
-            prediction: null, // Assuming prediction will be added later
+            prediction: null, // Set to null or any default value if prediction is not available
             createdByUser: req.user.id
         });
 
