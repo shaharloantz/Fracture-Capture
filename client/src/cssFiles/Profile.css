@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
-    color: white;
+    color: rgb(237, 237, 237);
 }
 
 .user-details {
@@ -28,7 +28,7 @@
 .patient-folder, .upload-folder {
     width: 150px;
     height: 150px;
-    background-color: #f0f0f0;
+    background-color: #8d63ff;
     border: 1px solid #ccc;
     border-radius: 5px;
     display: flex;
