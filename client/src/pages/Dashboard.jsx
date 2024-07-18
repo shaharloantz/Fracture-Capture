@@ -103,7 +103,7 @@ const Dashboard = () => {
 
       const patientData = {
         ...newPatient,
-        createdByUser: profile._id, // Assuming profile contains the logged-in user's data
+        createdByUser: profile._id, // Ensure profile contains the logged-in user's data
       };
 
       axios.post('/patients', patientData, { withCredentials: true })
@@ -120,7 +120,6 @@ const Dashboard = () => {
         });
     }
   };
-  
 
   if (!profile) {
     return <div>Loading...</div>;
