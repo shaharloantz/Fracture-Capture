@@ -32,20 +32,24 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
     };
 
     return (
-        <nav className="absolute top-0 right-0 mt-4 mr-4">
+        <nav className="absolute top- right-0 mt-4 mr-8">
             <div className="flex space-x-4">
-                {navigation.map((item) => (
-                    <Link
-                        key={item.name}
-                        to={item.href}
-                        onClick={(event) => handleNavigationClick(event, item)}
-                        className={classNames(
-                            location.pathname === item.href ? 'text-white' : 'text-gray-300 hover:text-white',
-                            'text-sm font-medium'
+                {navigation.map((item, index) => (
+                    <React.Fragment key={item.name}>
+                        <Link
+                            to={item.href}
+                            onClick={(event) => handleNavigationClick(event, item)}
+                            className={classNames(
+                                location.pathname === item.href ? 'text-white' : 'text-gray-300 hover:text-gray',
+                                'text- font-medium'
+                            )}
+                        >
+                            {item.name}
+                        </Link>
+                        {index < navigation.length - 1 && (
+                            <span className="text-gray-300">|</span>
                         )}
-                    >
-                        {item.name}
-                    </Link>
+                    </React.Fragment>
                 ))}
             </div>
         </nav>
