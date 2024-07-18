@@ -1,15 +1,28 @@
 const express = require('express');
 const multer = require('multer');
+const path = require('path');
 const Patient = require('../models/Patient');
 const Upload = require('../models/Upload');
 const requireAuth = require('../middleware/authMiddleware');
 
 const router = express.Router();
-const upload = multer({ dest: 'uploads/' }); // Temporary storage for uploaded images
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        const ext = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + Date.now() + ext);
+    }
+});
+
+const upload = multer({ storage: storage }); // Use the new storage configuration
 
 // Endpoint to create a new upload
 router.post('/', requireAuth, upload.single('image'), async (req, res) => {
     const { patientId, description, bodyPart } = req.body;
+    const imgUrl = `/uploads/${req.file.filename}`;
 
     try {
         const patient = await Patient.findById(patientId);
@@ -19,12 +32,14 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
 
         const newUpload = new Upload({
             patient: patientId,
+            patientName: patient.name,
             description,
             bodyPart,
             imgId: req.file.filename,
-            createdByUser: req.user.id,
+            imgUrl: imgUrl,
             dateUploaded: new Date(),
-            prediction: null // Placeholder, assuming prediction will be added later
+            prediction: null, // Set to null or any default value if prediction is not available
+            createdByUser: req.user.id
         });
 
         await newUpload.save();
@@ -32,6 +47,17 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
         res.status(201).json(newUpload);
     } catch (error) {
         console.error('Error creating upload:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint to fetch uploads for a specific patient
+router.get('/:patientId', requireAuth, async (req, res) => {
+    try {
+        const uploads = await Upload.find({ patient: req.params.patientId });
+        res.json(uploads);
+    } catch (error) {
+        console.error('Error fetching uploads:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
