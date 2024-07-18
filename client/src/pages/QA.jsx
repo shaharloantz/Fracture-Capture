@@ -3,7 +3,6 @@ import Sidebar from "../component/Sidebar";
 import { toast } from 'react-hot-toast';
 import '../cssFiles/QA.css';
 
-
 const QA = () => {
   const questionsAndAnswers = [
     { q: 'Q - How does the web application analyze X-ray images to detect fractures?', a: 'A - Our web application employs advanced image processing techniques coupled with deep learning algorithms. It analyzes X-ray images pixel by pixel, identifying patterns indicative of fractures across various bone types and anatomical regions.' },
@@ -15,7 +14,6 @@ const QA = () => {
     { q: 'Q - How accurate is the application in detecting fractures compared to traditional methods?', a: 'A - Our system demonstrates high accuracy in fracture detection, validated through extensive testing and comparison with expert radiologists` assessments. It minimizes false positives and negatives, enhancing diagnostic reliability.' },
     { q: 'Q - What is the average processing time for analyzing an X-ray image using the application?', a: 'A - The processing time varies depending on image resolution and complexity. On average, the application processes and analyzes X-ray images within seconds, providing rapid feedback to healthcare professionals.' },
     { q: 'Q - Can I access previous diagnostic results and patient histories within the application?', a: 'A - Absolutely. Each patient profile includes a dedicated folder that stores all previous diagnostic results. Results are organized chronologically by date, allowing doctors to track patient progress and review past assessments efficiently.' },
-    /**/
     { q: 'Q - How are patient folders managed within the application?', a: 'A - Patient folders are securely stored within the application`s database. Each folder is accessible only to authorized healthcare professionals, ensuring patient confidentiality and compliance with privacy regulations.' },
     { q: 'Q - What are the future plans for enhancing the application`s capabilities?', a: 'A - We are committed to continuous improvement and innovation. Future updates will focus on expanding the application`s dataset to include more fracture types and anatomical regions. Additionally, we plan to integrate AI-driven features for automated reporting and real-time collaboration among healthcare teams.' },
     { q: 'Q - How will user feedback be incorporated into the development of the application?', a: 'A - User feedback is invaluable to us. We regularly gather input from medical professionals to refine our algorithms, enhance usability, and prioritize feature development based on clinical needs and usability studies.' },
@@ -31,10 +29,12 @@ const QA = () => {
 
   return (
     <div className="qa-container">
-      <Sidebar/>
+      <Sidebar />
       <header className="qa-header">
-        <div className="logo"></div>
-        <h1>Fracture Capture</h1>
+        <div className="title-container">
+          <h1>Fracture Capture</h1>
+          <div className="logo"></div>
+        </div>
       </header>
       <div className="qa-content">
         <h2>Q&A</h2>
@@ -56,4 +56,3 @@ const QA = () => {
 };
 
 export default QA;
-
