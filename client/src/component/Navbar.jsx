@@ -40,8 +40,8 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
                         to={item.href}
                         onClick={(event) => handleNavigationClick(event, item)}
                         className={classNames(
-                            location.pathname === item.href ? 'text-white' : 'text-gray-300 hover:text-white',
-                            'text-sm font-medium'
+                            location.pathname === item.href ? 'text-white' : 'text-gray-300 hover:text-gray',
+                            'text-m font-medium'
                         )}
                     >
                         {item.name}
