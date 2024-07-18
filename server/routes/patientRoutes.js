@@ -12,7 +12,7 @@ router.post('/', requireAuth, async (req, res) => {
     try {
         const patient = new Patient({
             patientId: req.user.id,
-            user: req.user.id,
+            createdByUser: req.user.id,
             idNumber,
             gender,
             name,
