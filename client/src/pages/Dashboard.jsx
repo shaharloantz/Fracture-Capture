@@ -15,6 +15,7 @@ const Dashboard = () => {
   const [patients, setPatients] = useState([]);
   const [isAddingToExisting, setIsAddingToExisting] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const [selectedBodyPart, setSelectedBodyPart] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,18 +30,16 @@ const Dashboard = () => {
   }, [navigate]);
 
   const handleItemClick = (item) => {
-    if (item.title === 'Results') {
-      navigate(`/results/${selectedPatient}`);
-    } else {
-      navigate(`/upload/${item.title.toLowerCase()}`);
-    }
+    setSelectedBodyPart(item.title); // Set the selected body part
+    setShowForm(true); // Show the form
+    setShowBodyParts(false); // Hide the body parts selection
   };
 
   const handleAddPatientClick = () => {
     setIsAddingToExisting(true);
     fetchPatients();
     setUploadData(initialUploadState); // Reset form state
-    setShowForm(true);
+    setShowBodyParts(true); // Show the body parts selection
   };
 
   const fetchPatients = () => {
@@ -57,7 +56,8 @@ const Dashboard = () => {
   const handleCreatePatientClick = () => {
     setNewPatient(initialPatientState); // Reset form state
     setIsAddingToExisting(false);
-    setShowForm(true);
+    setShowForm(true); // Show the form
+    setShowBodyParts(false); // Hide the body parts selection
   };
 
   const handleInputChange = (e) => {
@@ -74,13 +74,18 @@ const Dashboard = () => {
     setUploadData({ ...uploadData, image: file });
   };
 
+  const handleBackClick = () => {
+    setShowForm(false);
+    setShowBodyParts(false);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isAddingToExisting) {
       const formData = new FormData();
       formData.append('patientId', uploadData.patientId);
       formData.append('description', uploadData.description);
-      formData.append('bodyPart', uploadData.bodyPart);
+      formData.append('bodyPart', selectedBodyPart); // Use the selected body part
       formData.append('image', uploadData.image);
 
       axios.post('/uploads', formData, { withCredentials: true })
@@ -111,8 +116,10 @@ const Dashboard = () => {
           toast.success("Patient created successfully!");
           setProfile({ ...profile, numberOfPatients: profile.numberOfPatients + 1 });
           setSelectedPatient(response.data._id);
-          setShowForm(false);
-          setShowBodyParts(true);
+          setIsAddingToExisting(true); // Set to adding to existing patient
+          setShowBodyParts(true); // Show body parts selection
+          setShowForm(false); // Hide form
+          fetchPatients(); // Fetch updated list of patients
         })
         .catch(error => {
           console.error('Error creating patient:', error.response ? error.response.data : error.message);
@@ -156,77 +163,83 @@ const Dashboard = () => {
           <div className="box" onClick={handleCreatePatientClick}>Create a new Patient</div>
           <div className="box" onClick={handleAddPatientClick}>Add to an existing Patient</div>
         </>
+      ) : showBodyParts ? (
+        <>
+          <button className="back-button" onClick={handleBackClick}>Back</button>
+          <div className="items-grid">
+            {items.map((item) => (
+              <div
+                key={item.title}
+                className={`item ${!profile ? 'item-disabled' : ''}`}
+                onClick={() => handleItemClick(item)}
+              >
+                <img src={item.image} alt={item.title} />
+                <p>{item.title}</p>
+              </div>
+            ))}
+          </div>
+        </>
       ) : showForm ? (
-        <form onSubmit={handleSubmit} className="patient-form">
-          {isAddingToExisting ? (
-            <>
-              <h2>Add to an Existing Patient</h2>
-              <label>
-                Patient:
-                <select name="patientId" value={uploadData.patientId} onChange={handleInputChange} required>
-                  <option value="">Select a patient</option>
-                  {patients.map(patient => (
-                    <option key={patient._id} value={patient._id}>
-                      {patient.name} - {patient.idNumber}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                Description:
-                <textarea name="description" value={uploadData.description} onChange={handleInputChange} required />
-              </label>
-              <label>
-                Body Part:
-                <input type="text" name="bodyPart" value={uploadData.bodyPart} onChange={handleInputChange} required />
-              </label>
-              <label>
-                Upload Image:
-                <input type="file" name="image" onChange={handleFileChange} required />
-              </label>
-            </>
-          ) : (
-            <>
-              <h2>Create a New Patient</h2>
-              <label>
-                Name:
-                <input type="text" name="name" value={newPatient.name} onChange={handleInputChange} required />
-              </label>
-              <label>
-                Age:
-                <input type="number" name="age" value={newPatient.age} onChange={handleInputChange} min="0" required />
-              </label>
-              <label>
-                Gender:
-                <select name="gender" value={newPatient.gender} onChange={handleInputChange} required>
-                  <option value="">Select</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                </select>
-              </label>
-              <label>
-                ID Number:
-                <input type="text" name="idNumber" value={newPatient.idNumber} onChange={handleInputChange} required />
-              </label>
-            </>
-          )}
-          <button type="submit">Submit</button>
-          <button type="button" onClick={() => setShowForm(false)}>Cancel</button>
-        </form>
-      ) : (
-        <div className="items-grid">
-          {items.map((item) => (
-            <div 
-              key={item.title} 
-              className={`item ${!profile ? 'item-disabled' : ''}`} 
-              onClick={() => handleItemClick(item)}
-            >
-              <img src={item.image} alt={item.title} />
-              <p>{item.title}</p>
-            </div>
-          ))}
-        </div>
-      )}
+        <>
+          <button className="back-button" onClick={handleBackClick}>Back</button>
+          <form onSubmit={handleSubmit} className="patient-form">
+            {isAddingToExisting ? (
+              <>
+                <h2>Add to an Existing Patient</h2>
+                <label>
+                  Patient:
+                  <select name="patientId" value={uploadData.patientId} onChange={handleInputChange} required>
+                    <option value="">Select a patient</option>
+                    {patients.map(patient => (
+                      <option key={patient._id} value={patient._id}>
+                        {patient.name} - {patient.idNumber}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Description:
+                  <textarea name="description" value={uploadData.description} onChange={handleInputChange} required />
+                </label>
+                <label>
+                  Body Part:
+                  <input type="text" name="bodyPart" value={selectedBodyPart} readOnly required />
+                </label>
+                <label>
+                  Upload Image:
+                  <input type="file" name="image" onChange={handleFileChange} required />
+                </label>
+              </>
+            ) : (
+              <>
+                <h2>Create a New Patient</h2>
+                <label>
+                  Name:
+                  <input type="text" name="name" value={newPatient.name} onChange={handleInputChange} required />
+                </label>
+                <label>
+                  Age:
+                  <input type="number" name="age" value={newPatient.age} onChange={handleInputChange} min="0" required />
+                </label>
+                <label>
+                  Gender:
+                  <select name="gender" value={newPatient.gender} onChange={handleInputChange} required>
+                    <option value="">Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </label>
+                <label>
+                  ID Number:
+                  <input type="text" name="idNumber" value={newPatient.idNumber} onChange={handleInputChange} required />
+                </label>
+              </>
+            )}
+            <button type="submit">Submit</button>
+            <button type="button" onClick={handleBackClick}>Cancel</button>
+          </form>
+        </>
+      ) : null}
     </div>
   );
 };
