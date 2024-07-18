@@ -148,4 +148,17 @@ body, html {
   .patient-form button[type="button"]:hover {
     background-color: #cc4444;
   }
+  .back-button {
+    padding: 10px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0044cc;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .back-button:hover {
+    background-color: #003399;
+  }
   

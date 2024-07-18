@@ -6,7 +6,7 @@ export default function Home() {
     const navigate = useNavigate();
 
     const handlePlayClick = () => {
-        navigate('/upload'); // Navigate to upload page
+        navigate('/dashboard'); // Navigate to upload page
     };
 
     return (
