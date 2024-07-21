@@ -54,6 +54,41 @@ export default function Profile() {
         }
     };
 
+    const handleDeleteUploadClick = (uploadId, e) => {
+        e.stopPropagation(); // Prevent the click event from propagating
+        const confirmed = window.confirm("Are you sure you want to delete this upload?");
+        if (confirmed) {
+            axios.delete(`/uploads/${uploadId}`, { withCredentials: true })
+                .then(response => {
+                    setPatientUploads(uploads => uploads.filter(upload => upload._id !== uploadId));
+                })
+                .catch(error => {
+                    console.error('Error deleting upload:', error.response ? error.response.data : error.message);
+                });
+        }
+    };
+
+    const handleDeletePatientClick = (patientId, e) => {
+        e.stopPropagation(); // Prevent the click event from propagating
+        const confirmed = window.confirm("Are you sure you want to delete this patient and all of its uploads?");
+        if (confirmed) {
+            axios.delete(`/patients/${patientId}`, { withCredentials: true })
+                .then(response => {
+                    setProfile(profile => ({
+                        ...profile,
+                        patients: profile.patients.filter(patient => patient._id !== patientId)
+                    }));
+                    if (selectedPatient === patientId) {
+                        setSelectedPatient(null);
+                        setPatientUploads([]);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting patient:', error.response ? error.response.data : error.message);
+                });
+        }
+    };
+
     if (!profile) {
         return <div>Loading...</div>;
     }
@@ -83,9 +118,17 @@ export default function Profile() {
                     <div className="upload-folders">
                         {patientUploads.length > 0 ? (
                             patientUploads.map(upload => (
-                                <div key={upload._id} className="upload-folder" onClick={() => handleUploadClick(upload)}>
-                                    <p><strong>Date Uploaded:</strong> {formatDate(upload.dateUploaded)}</p>
-                                    <p><strong>Body Part:</strong> {upload.bodyPart}</p>
+                                <div key={upload._id} className="upload-folder">
+                                    <div onClick={() => handleUploadClick(upload)}>
+                                        <p><strong>Date Uploaded:</strong> {formatDate(upload.dateUploaded)}</p>
+                                        <p><strong>Body Part:</strong> {upload.bodyPart}</p>
+                                    </div>
+                                    <img 
+                                        src="src/assets/images/bin.png" 
+                                        alt="Delete" 
+                                        className="delete-icon" 
+                                        onClick={(e) => handleDeleteUploadClick(upload._id, e)}
+                                    />
                                 </div>
                             ))
                         ) : (
@@ -99,9 +142,17 @@ export default function Profile() {
                     <div className="patient-folders">
                         {profile.patients && profile.patients.length > 0 ? (
                             profile.patients.map(patient => (
-                                <div key={patient._id} className="patient-folder" onClick={() => fetchPatientUploads(patient._id)}>
-                                    <p><strong>Patient Name:</strong> {patient.name}</p>
-                                    <p><strong>ID:</strong> {patient.idNumber}</p>
+                                <div key={patient._id} className="patient-folder">
+                                    <div onClick={() => fetchPatientUploads(patient._id)}>
+                                        <p><strong>Patient Name:</strong> {patient.name}</p>
+                                        <p><strong>ID:</strong> {patient.idNumber}</p>
+                                    </div>
+                                    <img 
+                                        src="src/assets/images/bin.png" 
+                                        alt="Delete" 
+                                        className="delete-icon" 
+                                        onClick={(e) => handleDeletePatientClick(patient._id, e)}
+                                    />
                                 </div>
                             ))
                         ) : (

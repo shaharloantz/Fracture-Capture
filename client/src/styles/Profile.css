@@ -26,6 +26,7 @@
 }
 
 .patient-folder, .upload-folder {
+    position: relative;
     width: 150px;
     height: 150px;
     background-color: #9720ff;
@@ -54,4 +55,13 @@
 
 .upload-details p {
     margin: 10px 0;
+}
+
+.delete-icon {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    cursor: pointer;
 }
