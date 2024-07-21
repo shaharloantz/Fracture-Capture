@@ -78,4 +78,28 @@ router.delete('/:patientId', requireAuth, async (req, res) => {
     }
 });
 
+// Endpoint to update a patient's details
+router.put('/:patientId', requireAuth, async (req, res) => {
+    const { name, gender, age, idNumber } = req.body;
+
+    try {
+        const patient = await Patient.findById(req.params.patientId);
+        if (!patient) {
+            return res.status(404).json({ error: 'Patient not found' });
+        }
+
+        patient.name = name;
+        patient.gender = gender;
+        patient.age = age;
+        patient.idNumber = idNumber;
+
+        await patient.save();
+
+        res.json(patient);
+    } catch (error) {
+        console.error('Error updating patient:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 module.exports = router;

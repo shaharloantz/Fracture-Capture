@@ -57,11 +57,89 @@
     margin: 10px 0;
 }
 
-.delete-icon {
+.delete-icon, .edit-icon {
     width: 20px;
     height: 20px;
     position: absolute;
+    cursor: pointer;
+}
+
+.delete-icon {
     bottom: 10px;
     left: 10px;
+}
+
+.edit-icon {
+    top: 10px;
+    right: 10px;
+}
+
+.patient-form {
+    background-color: rgba(0, 40, 85, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    width: 300px;
+}
+
+.patient-form h2 {
+    text-align: center;
+}
+
+.patient-form label {
+    display: block;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.patient-form input,
+.patient-form select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 10px 0;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.patient-form select option {
+    color: black;
+}
+
+.patient-form button {
+    padding: 10px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0044cc;
+    color: white;
     cursor: pointer;
+}
+
+.patient-form button[type="button"] {
+    background-color: #ff5555;
+}
+
+.patient-form button:hover {
+    background-color: #003399;
+}
+
+.patient-form button[type="button"]:hover {
+    background-color: #cc4444;
+}
+
+.back-button {
+    padding: 10px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0044cc;
+    color: white;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    background-color: #003399;
 }

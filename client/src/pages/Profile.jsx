@@ -8,6 +8,7 @@ export default function Profile() {
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [patientUploads, setPatientUploads] = useState([]);
     const [selectedUpload, setSelectedUpload] = useState(null);
+    const [editingPatient, setEditingPatient] = useState(null); // New state for editing patient
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -89,6 +90,33 @@ export default function Profile() {
         }
     };
 
+    const handleEditPatientClick = (patient, e) => {
+        e.stopPropagation(); // Prevent the click event from propagating
+        setEditingPatient(patient);
+    };
+
+    const handleEditPatientChange = (e) => {
+        const { name, value } = e.target;
+        setEditingPatient({ ...editingPatient, [name]: value });
+    };
+
+    const handleEditPatientSubmit = (e) => {
+        e.preventDefault();
+        axios.put(`/patients/${editingPatient._id}`, editingPatient, { withCredentials: true })
+            .then(response => {
+                setProfile(profile => ({
+                    ...profile,
+                    patients: profile.patients.map(patient => 
+                        patient._id === editingPatient._id ? editingPatient : patient
+                    )
+                }));
+                setEditingPatient(null);
+            })
+            .catch(error => {
+                console.error('Error updating patient:', error.response ? error.response.data : error.message);
+            });
+    };
+
     if (!profile) {
         return <div>Loading...</div>;
     }
@@ -100,7 +128,57 @@ export default function Profile() {
                 <p><strong>Name:</strong> {profile.name}</p>
                 <p><strong>Email:</strong> {profile.email}</p>
             </div>
-            {selectedUpload ? (
+            {editingPatient ? (
+                <form className="patient-form" onSubmit={handleEditPatientSubmit}>
+                    <h2>Edit Patient</h2>
+                    <label>
+                        Name:
+                        <input
+                            type="text"
+                            name="name"
+                            value={editingPatient.name}
+                            onChange={handleEditPatientChange}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Age:
+                        <input
+                            type="number"
+                            name="age"
+                            value={editingPatient.age}
+                            onChange={handleEditPatientChange}
+                            min="0"
+                            required
+                        />
+                    </label>
+                    <label>
+                        Gender:
+                        <select
+                            name="gender"
+                            value={editingPatient.gender}
+                            onChange={handleEditPatientChange}
+                            required
+                        >
+                            <option value="">Select</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </label>
+                    <label>
+                        ID Number:
+                        <input
+                            type="text"
+                            name="idNumber"
+                            value={editingPatient.idNumber}
+                            onChange={handleEditPatientChange}
+                            required
+                        />
+                    </label>
+                    <button type="submit">Save</button>
+                    <button type="button" onClick={() => setEditingPatient(null)}>Cancel</button>
+                </form>
+            ) : selectedUpload ? (
                 <div className="upload-details">
                     <button onClick={handleBackClick}>Back</button>
                     <h2>Upload Details</h2>
@@ -147,6 +225,12 @@ export default function Profile() {
                                         <p><strong>Patient Name:</strong> {patient.name}</p>
                                         <p><strong>ID:</strong> {patient.idNumber}</p>
                                     </div>
+                                    <img 
+                                        src="src/assets/images/edit-text.png" 
+                                        alt="Edit" 
+                                        className="edit-icon" 
+                                        onClick={(e) => handleEditPatientClick(patient, e)}
+                                    />
                                     <img 
                                         src="src/assets/images/bin.png" 
                                         alt="Delete" 
