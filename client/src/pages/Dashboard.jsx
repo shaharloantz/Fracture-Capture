@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast, Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import '../cssFiles/Dashboard.css'; // Import the CSS file
+import '../styles/Dashboard.css'; // Import the CSS file
 
 const Dashboard = () => {
   const initialPatientState = { name: '', age: '', gender: '', idNumber: '' };

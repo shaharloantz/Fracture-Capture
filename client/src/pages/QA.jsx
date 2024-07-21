@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from "../component/Sidebar";
 import { toast } from 'react-hot-toast';
-import '../cssFiles/QA.css';
+import '../styles/QA.css';
 
 const QA = () => {
   const questionsAndAnswers = [

@@ -7,7 +7,7 @@ import Login from './pages/Login';
 import QA from './pages/QA';
 import About from './pages/About';
 import Profile from './pages/Profile';
-import './App.css';
+import './styles/App.css';
 import axios from 'axios';
 import NotFoundPage from './pages/NotFound';
 import { Toaster } from 'react-hot-toast';
