@@ -33,14 +33,7 @@ body {
   align-items: center;
 }
 
-.qa-header {
-  width: 100%;
-  background-color: #002855;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  border-bottom: 2px solid #fff;
-}
+
 
 .menu-logo {
   font-size: 24px;
@@ -57,12 +50,7 @@ body {
   margin-right: 10px;
 }
 
-.logo {
-  width: 70px;
-  height: 70px;
-  background: url('/src/assets/images/fracture-icon.png') no-repeat center center;
-  background-size: contain;
-}
+
 
 .qa-content {
   width: 100%;
@@ -138,9 +126,6 @@ body {
     align-items: flex-start;
   }
 
-  .logo {
-    margin-top: 10px;
-  }
 
   .qa-content {
     padding: 10px;

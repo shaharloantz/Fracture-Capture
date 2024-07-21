@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast, Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Dashboard.css'; // Import the CSS file
+import '../styles/Dashboard.css';
 
 const Dashboard = () => {
   const initialPatientState = { name: '', age: '', gender: '', idNumber: '' };
@@ -145,11 +145,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <Toaster /> {/* Ensure Toaster is included */}
-      <header className="dashboard-header">
-        <div className="logo"></div>
-        <h1>Fracture Capture</h1>
-      </header>
+      <Toaster />
       <div className="welcome-text">
         <h2>Welcome back, {profile.name}!</h2>
         <ol>

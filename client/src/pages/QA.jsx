@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import Sidebar from "../component/Sidebar";
-import { toast } from 'react-hot-toast';
 import '../styles/QA.css';
 
 const QA = () => {
@@ -29,13 +27,6 @@ const QA = () => {
 
   return (
     <div className="qa-container">
-      <Sidebar />
-      <header className="qa-header">
-        <div className="title-container">
-          <h1>Fracture Capture</h1>
-          <div className="logo"></div>
-        </div>
-      </header>
       <div className="qa-content">
         <h2>Q&A</h2>
         {questionsAndAnswers.map((item, index) => (
