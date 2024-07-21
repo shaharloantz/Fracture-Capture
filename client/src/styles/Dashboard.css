@@ -8,7 +8,6 @@ body, html {
   }
   
   .dashboard-container {
-    min-height: 100vh;
     background-color: #002855;
     color: white;
     margin: 0;
@@ -18,17 +17,7 @@ body, html {
     align-items: center;
   }
   
-  .dashboard-header {
-    text-align: center;
-  }
-  
-  .logo {
-    width: 50px;
-    height: 50px;
-    background: url('/src/assets/images/fracture.png') no-repeat center center;
-    background-size: contain;
-    margin: 0 auto;
-  }
+
   
   .welcome-text {
     text-align: center;
