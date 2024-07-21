@@ -32,7 +32,7 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
     };
 
     return (
-        <nav className="absolute top-0 right-0 mt-4 mr-4">
+        <nav className="absolute top-0 right-0 mt-4 mr-8">
             <div className="flex space-x-4">
                 {navigation.map((item) => (
                     <Link

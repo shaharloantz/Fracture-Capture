@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo"></div>
-      <h1>Fracture Capture</h1>
+      <h1>FractureCapture</h1>
     </header>
   );
 };

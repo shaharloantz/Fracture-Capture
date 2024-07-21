@@ -1,0 +1,13 @@
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 75vh; /* Full viewport height */
+  }
+  
+  .main-content {
+    text-align: center;
+  }
+  
