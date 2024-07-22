@@ -9,6 +9,8 @@ export default function Profile() {
     const [patientUploads, setPatientUploads] = useState([]);
     const [selectedUpload, setSelectedUpload] = useState(null);
     const [editingPatient, setEditingPatient] = useState(null); // New state for editing patient
+    const [changingPassword, setChangingPassword] = useState(false);
+    const [passwordData, setPasswordData] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -117,6 +119,29 @@ export default function Profile() {
             });
     };
 
+    const handlePasswordChange = (e) => {
+        const { name, value } = e.target;
+        setPasswordData({ ...passwordData, [name]: value });
+    };
+
+    const handlePasswordSubmit = (e) => {
+        e.preventDefault();
+        if (passwordData.newPassword !== passwordData.confirmPassword) {
+            alert("New password and confirm password do not match");
+            return;
+        }
+        axios.post('/user/change-password', passwordData, { withCredentials: true })
+            .then(response => {
+                alert(response.data.message);
+                setChangingPassword(false);
+                setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+            })
+            .catch(error => {
+                console.error('Error changing password:', error.response ? error.response.data : error.message);
+                alert('Error changing password');
+            });
+    };
+
     if (!profile) {
         return <div>Loading...</div>;
     }
@@ -127,7 +152,45 @@ export default function Profile() {
                 <p><strong>Hi, {profile.name}</strong></p>
                 <p><strong>Name:</strong> {profile.name}</p>
                 <p><strong>Email:</strong> {profile.email}</p>
+                <button onClick={() => setChangingPassword(!changingPassword)}>Change Password</button>
             </div>
+            {changingPassword && (
+                <form className="password-form" onSubmit={handlePasswordSubmit}>
+                    <h2>Change Password</h2>
+                    <label>
+                        Current Password:
+                        <input
+                            type="password"
+                            name="currentPassword"
+                            value={passwordData.currentPassword}
+                            onChange={handlePasswordChange}
+                            required
+                        />
+                    </label>
+                    <label>
+                        New Password:
+                        <input
+                            type="password"
+                            name="newPassword"
+                            value={passwordData.newPassword}
+                            onChange={handlePasswordChange}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Confirm New Password:
+                        <input
+                            type="password"
+                            name="confirmPassword"
+                            value={passwordData.confirmPassword}
+                            onChange={handlePasswordChange}
+                            required
+                        />
+                    </label>
+                    <button type="submit">Submit</button>
+                    <button type="button" onClick={() => setChangingPassword(false)}>Cancel</button>
+                </form>
+            )}
             {editingPatient ? (
                 <form className="patient-form" onSubmit={handleEditPatientSubmit}>
                     <h2>Edit Patient</h2>
@@ -175,7 +238,7 @@ export default function Profile() {
                             required
                         />
                     </label>
-                    <button type="submit">Save</button>
+                    <button type="submit">Submit</button>
                     <button type="button" onClick={() => setEditingPatient(null)}>Cancel</button>
                 </form>
             ) : selectedUpload ? (

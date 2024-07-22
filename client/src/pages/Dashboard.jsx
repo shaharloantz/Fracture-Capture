@@ -19,15 +19,20 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    fetchProfileData();
+  }, []);
+
+  const fetchProfileData = () => {
     axios.get('/user/profile', { withCredentials: true })
       .then(response => {
         setProfile(response.data);
+        setPatients(response.data.patients);
       })
       .catch(error => {
         console.error('Error fetching profile:', error.response ? error.response.data : error.message);
         navigate('/login');
       });
-  }, [navigate]);
+  };
 
   const handleItemClick = (item) => {
     setSelectedBodyPart(item.title); // Set the selected body part

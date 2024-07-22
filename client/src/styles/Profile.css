@@ -12,6 +12,20 @@
     margin-bottom: 20px;
 }
 
+.user-details button {
+    padding: 10px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0044cc;
+    color: white;
+    cursor: pointer;
+}
+
+.user-details button:hover {
+    background-color: #003399;
+}
+
 .patient-history, .patient-uploads, .upload-details {
     width: 100%;
     max-width: 800px;
@@ -74,7 +88,7 @@
     right: 10px;
 }
 
-.patient-form {
+.patient-form, .password-form {
     background-color: rgba(0, 40, 85, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 10px;
@@ -83,18 +97,19 @@
     width: 300px;
 }
 
-.patient-form h2 {
+.patient-form h2, .password-form h2 {
     text-align: center;
 }
 
-.patient-form label {
+.patient-form label, .password-form label {
     display: block;
     margin-bottom: 10px;
     color: white;
 }
 
 .patient-form input,
-.patient-form select {
+.patient-form select,
+.password-form input {
     width: 100%;
     padding: 10px;
     margin: 5px 0 10px 0;
@@ -108,7 +123,7 @@
     color: black;
 }
 
-.patient-form button {
+.patient-form button, .password-form button {
     padding: 10px;
     margin: 10px 5px;
     border: none;
@@ -118,15 +133,15 @@
     cursor: pointer;
 }
 
-.patient-form button[type="button"] {
+.patient-form button[type="button"], .password-form button[type="button"] {
     background-color: #ff5555;
 }
 
-.patient-form button:hover {
+.patient-form button:hover, .password-form button:hover {
     background-color: #003399;
 }
 
-.patient-form button[type="button"]:hover {
+.patient-form button[type="button"]:hover, .password-form button[type="button"]:hover {
     background-color: #cc4444;
 }
 
