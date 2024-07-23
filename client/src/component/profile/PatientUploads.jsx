@@ -2,7 +2,12 @@ import React from 'react';
 
 const PatientUploads = ({ patientUploads, handleUploadClick, handleDeleteUploadClick, formatDate, handleBackClick }) => (
     <>
-        <button className="back-button" onClick={handleBackClick}>Back to Patients</button>
+        <img 
+            src="/src/assets/images/undo.png" 
+            alt="Back to Patients" 
+            className="back-button-icon" 
+            onClick={handleBackClick} 
+        />
         <div className="upload-folders">
             {patientUploads.length > 0 ? patientUploads.map(upload => (
                 <div key={upload._id} className="upload-folder">

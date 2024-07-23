@@ -144,15 +144,8 @@ body, html {
 }
 
 .back-button {
-  padding: 10px;
-  margin: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #0044cc;
-  color: white;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
-}
-
-.back-button:hover {
-  background-color: #003399;
+  margin: 15px 0 0;
 }

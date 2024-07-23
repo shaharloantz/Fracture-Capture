@@ -144,7 +144,6 @@ const Dashboard = () => {
     { title: 'Foot', image: 'src/assets/images/foot-icon.png' },
     { title: 'Ankle', image: 'src/assets/images/ankle-icon.png' },
     { title: 'Leg', image: 'src/assets/images/leg-icon.png' },
-    { title: 'Results', image: 'src/assets/images/results-icon.png' },
     { title: 'Knee', image: 'src/assets/images/knee-icon.png' },
   ];
 
@@ -166,7 +165,12 @@ const Dashboard = () => {
         </div>
       ) : showBodyParts ? (
         <>
-          <button className="back-button" onClick={handleBackClick}>Back</button>
+          <img 
+            src="src/assets/images/undo.png" 
+            alt="Back" 
+            className="back-button" 
+            onClick={handleBackClick} 
+          />
           <div className="items-grid">
             {items.map((item) => (
               <div

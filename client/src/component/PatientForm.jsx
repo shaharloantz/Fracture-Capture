@@ -12,10 +12,14 @@ const PatientForm = ({
     handleBackClick 
 }) => (
     <div className="dashboard-container">
-        <button className="back-button" onClick={handleBackClick}>Back</button>
+        <img 
+            src="src/assets/images/undo.png" 
+            alt="Back" 
+            className="back-button-icon" 
+            onClick={handleBackClick} 
+        />
         <form onSubmit={handleSubmit} className="patient-form">
             {isAddingToExisting ? (
-                
                 <>
                     <label>
                         Patient:
@@ -69,7 +73,7 @@ const PatientForm = ({
             <button type="submit">Submit</button>
             <button type="button" onClick={handleBackClick}>Cancel</button>
         </form>
-        </div>
+    </div>
 );
 
 export default PatientForm;
