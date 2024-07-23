@@ -17,8 +17,6 @@ const PatientForm = ({
             {isAddingToExisting ? (
                 
                 <>
-                    <h2>Add to an Existing Patient</h2>
-                    <div className="box">Create a nesssw Patient</div>
                     <label>
                         Patient:
                         <select name="patientId" value={uploadData.patientId} onChange={handleInputChange} required>
