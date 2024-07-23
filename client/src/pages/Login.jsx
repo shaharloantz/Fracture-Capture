@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import '../styles/toasterCSS.css';
 import '../styles/Login.css'; // If you have specific styles for login page
 
@@ -38,7 +38,7 @@ export default function Login({ setIsAuthenticated }) {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen ">
+        <div className="flex items-center justify-center min-h-screen">
             <div className="flex flex-col items-center">
                 <img src="src/assets/images/user.png" alt="Above" className="mb-4 w-32 h-32 mt-[-15rem]" /> {/* Adjust the path and size as needed */}
                 <form onSubmit={loginUser} className="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md space-y-6">
@@ -69,7 +69,10 @@ export default function Login({ setIsAuthenticated }) {
                     </div>
                     <button type="submit" disabled={loading} className="flex items-center justify-center w-full bg-blue-500 p-2 rounded-md hover:bg-blue-600 transition duration-200">
                         <img src="src/assets/images/login-icon.png" alt="Login" className="h-6" /> {/* Adjust the path and size as needed */}
-                    </button> 
+                    </button>
+                    <p className="text-white text-center mt-4">
+                        Not a member yet? <Link to="/register" className="text-blue-500 hover:underline">Click to register</Link>.
+                    </p>
                 </form>
             </div>
         </div>
