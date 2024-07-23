@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const Patient = require('../models/Patient');
 const Upload = require('../models/Upload');
 const requireAuth = require('../middleware/authMiddleware');
@@ -58,6 +59,41 @@ router.get('/:patientId', requireAuth, async (req, res) => {
         res.json(uploads);
     } catch (error) {
         console.error('Error fetching uploads:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint to delete an upload
+router.delete('/:uploadId', requireAuth, async (req, res) => {
+    try {
+        const upload = await Upload.findById(req.params.uploadId);
+        if (!upload) {
+            return res.status(404).json({ error: 'Upload not found' });
+        }
+
+        const filePath = path.join(__dirname, '../uploads', upload.imgId);
+        fs.access(filePath, fs.constants.F_OK, async (err) => {
+            if (!err) {
+                // File exists, proceed with deletion
+                fs.unlink(filePath, async (unlinkErr) => {
+                    if (unlinkErr) {
+                        console.error('Error deleting file:', unlinkErr);
+                        return res.status(500).json({ error: 'Error deleting file' });
+                    }
+
+                    await Upload.findByIdAndDelete(req.params.uploadId);
+                    res.json({ message: 'Upload deleted successfully' });
+                });
+            } else {
+                // File does not exist, log the error and proceed with upload deletion
+                console.warn('File does not exist, skipping file deletion:', err);
+
+                await Upload.findByIdAndDelete(req.params.uploadId);
+                res.json({ message: 'Upload deleted successfully' });
+            }
+        });
+    } catch (error) {
+        console.error('Error deleting upload:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });

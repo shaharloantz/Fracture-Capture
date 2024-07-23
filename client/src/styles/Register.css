@@ -12,10 +12,22 @@ html, body {
   
   /* Prevent scrolling for the register page */
   .register-page {
+    margin-top: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 10vh;
     background: linear-gradient(to right, #4e54c8, #8f94fb); /* Your gradient background */
     font-family: 'Arial', sans-serif;
   }
+  .text-white {
+    color: white;
+}
+
+.text-blue-500 {
+    color: #3b82f6;
+}
+
+.hover\:underline:hover {
+    text-decoration: underline;
+}
