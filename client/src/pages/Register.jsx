@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { toast } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import '../cssFiles/toasterCSS.css';
-import '../cssFiles/Register.css';
+import '../styles/toasterCSS.css';
+import '../styles/Register.css';
 
 
 export default function Register() {

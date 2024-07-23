@@ -1,0 +1,15 @@
+.header {
+    text-align: center;
+    color: white;
+    border-bottom: 1px solid #fff;
+    margin-bottom: 10vh;
+  }
+  
+  .logo {
+    width: 40px;
+    height: 40px;
+    background: url('/src/assets/images/fracture.png') no-repeat center center;
+    background-size: contain;
+    margin: 0 auto;
+  }
+  

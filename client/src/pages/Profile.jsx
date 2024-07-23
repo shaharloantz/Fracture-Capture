@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../cssFiles/Profile.css'; // Import the CSS file
+import '../styles/Profile.css'; // Import the CSS file
 
 export default function Profile() {
     const [profile, setProfile] = useState(null);
@@ -61,7 +61,6 @@ export default function Profile() {
     return (
         <div className="profile-container">
             <div className="user-details">
-                <h1>User Profile</h1>
                 <p><strong>Hi, {profile.name}</strong></p>
                 <p><strong>Name:</strong> {profile.name}</p>
                 <p><strong>Email:</strong> {profile.email}</p>

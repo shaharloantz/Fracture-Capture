@@ -1,0 +1,30 @@
+/* MainLayout.css */
+
+.main-layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.flex {
+  display: flex;
+  flex-grow: 1;
+}
+
+.flex-grow {
+  flex-grow: 1;
+  padding-bottom: 20px; /* To ensure content doesn't overlap footer */
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  background: url('/src/assets/images/fracture.png') no-repeat center center;
+  background-size: contain;
+  margin: 0 auto;
+}
