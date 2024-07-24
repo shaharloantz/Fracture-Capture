@@ -40,6 +40,7 @@ This project aims to address the shortage of skilled radiologists and the limita
 - NumPy
 - Pandas
 - Scikit-learn
+- Jupyter Notebook
 
 ### Frontend Module
 - HTML
@@ -54,8 +55,6 @@ This project aims to address the shortage of skilled radiologists and the limita
 ### Database
 - MongoDB
 
-### API Integration
-- Axios
 
 ## Installation
 
