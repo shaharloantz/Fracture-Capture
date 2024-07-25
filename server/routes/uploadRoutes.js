@@ -6,6 +6,10 @@ const Patient = require('../models/Patient');
 const Upload = require('../models/Upload');
 const requireAuth = require('../middleware/authMiddleware');
 
+const { exec } = require('child_process');
+const util = require('util');
+const execPromise = util.promisify(exec);
+
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -18,14 +22,36 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage: storage }); // Use the new storage configuration
+const upload = multer({ storage: storage });
 
-// Endpoint to create a new upload
 router.post('/', requireAuth, upload.single('image'), async (req, res) => {
     const { patientId, description, bodyPart } = req.body;
     const imgUrl = `/uploads/${req.file.filename}`;
+    const imagePath = path.join(__dirname, '..', 'uploads', req.file.filename);
 
     try {
+        // Run prediction
+        const { stdout, stderr } = await execPromise(`python predict.py "${imagePath}"`);
+        console.log('Raw stdout:', stdout); // Log full stdout
+        console.log('Raw stderr:', stderr);
+
+        if (stderr) {
+            console.error('Python script error:', stderr);
+            return res.status(500).json({ error: 'Error running prediction script' });
+        }
+
+        let prediction;
+        try {
+            const jsonString = stdout.substring(stdout.indexOf('{'), stdout.lastIndexOf('}') + 1);
+            prediction = JSON.parse(jsonString);
+        } catch (parseError) {
+            console.error('Error parsing prediction output:', parseError);
+            return res.status(500).json({ error: 'Error parsing prediction output' });
+        }
+
+        const processedImgPath = prediction.image_path;
+        const processedImgId = path.basename(processedImgPath);
+
         const patient = await Patient.findById(patientId);
         if (!patient) {
             return res.status(404).json({ error: 'Patient not found' });
@@ -38,19 +64,22 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
             bodyPart,
             imgId: req.file.filename,
             imgUrl: imgUrl,
+            processedImgId: processedImgId,
+            processedImgUrl: processedImgPath,
             dateUploaded: new Date(),
-            prediction: null, // Set to null or any default value if prediction is not available
+            prediction: prediction,
             createdByUser: req.user.id
         });
 
         await newUpload.save();
 
-        res.status(201).json(newUpload);
+        res.status(201).json({ newUpload, processedImagePath: processedImgPath });
     } catch (error) {
         console.error('Error creating upload:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
 // Endpoint to fetch uploads for a specific patient
 router.get('/:patientId', requireAuth, async (req, res) => {

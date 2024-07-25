@@ -3,6 +3,7 @@ import axios from 'axios';
 import { toast, Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import PatientForm from '../component/PatientForm';
+import ProcessingScreen from '../component/ProcessingScreen'; // Importing the new ProcessingScreen component
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
@@ -17,6 +18,7 @@ const Dashboard = () => {
   const [isAddingToExisting, setIsAddingToExisting] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [selectedBodyPart, setSelectedBodyPart] = useState('');
+  const [showProcessing, setShowProcessing] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -83,55 +85,52 @@ const Dashboard = () => {
   const handleBackClick = () => {
     setShowForm(false);
     setShowBodyParts(false);
+    setShowProcessing(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleUploadResponse = (response) => {
+    const { processedImagePath } = response.data;
+    navigate('/results', { state: { processedImagePath } });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isAddingToExisting) {
-      const formData = new FormData();
-      formData.append('patientId', uploadData.patientId);
-      formData.append('description', uploadData.description);
-      formData.append('bodyPart', selectedBodyPart);
-      formData.append('image', uploadData.image);
+      setShowProcessing(true); // Only set processing screen for image uploads
+      try {
+        const formData = new FormData();
+        formData.append('patientId', uploadData.patientId);
+        formData.append('description', uploadData.description);
+        formData.append('bodyPart', selectedBodyPart);
+        formData.append('image', uploadData.image);
 
-      axios.post('/uploads', formData, { withCredentials: true })
-        .then(response => {
-          toast.success("Upload successful!");
-          setSelectedPatient(uploadData.patientId);
-          setShowForm(false);
-          setShowBodyParts(true);
-        })
-        .catch(error => {
-          console.error('Error uploading:', error.response ? error.response.data : error.message);
-          toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
-        });
-    } else {
-      if (newPatient.age < 0) {
-        toast.error("Age must be 0 or greater.");
-        return;
+        const response = await axios.post('/uploads', formData, { withCredentials: true });
+        handleUploadResponse(response);
+      } catch (error) {
+        console.error('Error uploading:', error.response ? error.response.data : error.message);
+        toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
+        setShowProcessing(false);
       }
-
-      const patientData = {
-        ...newPatient,
-        createdByUser: profile._id,
-      };
-
-      axios.post('/patients', patientData, { withCredentials: true })
-        .then(response => {
-          toast.success("Patient created successfully!");
-          setProfile({ ...profile, numberOfPatients: profile.numberOfPatients + 1 });
-          setSelectedPatient(response.data._id);
-          setIsAddingToExisting(true);
-          setShowBodyParts(true);
-          setShowForm(false);
-          fetchPatients();
-        })
-        .catch(error => {
-          console.error('Error creating patient:', error.response ? error.response.data : error.message);
-          toast.error(error.response?.data?.error || 'Error creating patient. Please try again.');
-        });
+    } else {
+      // Handle new patient creation
+      try {
+        await axios.post('/patients', newPatient, { withCredentials: true });
+        toast.success('Patient created successfully!');
+        setNewPatient(initialPatientState);
+        setShowForm(false);
+        setShowBodyParts(true); // Go back to body parts selection after patient creation
+        setIsAddingToExisting(true); // Prepare for image upload
+        fetchPatients(); // Refresh the patients list
+      } catch (error) {
+        console.error('Error creating patient:', error.response ? error.response.data : error.message);
+        toast.error(error.response?.data?.error || 'Error creating patient. Please try again.');
+      }
     }
   };
+
+  if (showProcessing) {
+    return <ProcessingScreen />;
+  }
 
   if (!profile) {
     return <div>Loading...</div>;
@@ -166,7 +165,7 @@ const Dashboard = () => {
       ) : showBodyParts ? (
         <>
           <img 
-            src="src/assets/images/undo.png" 
+            src="./src/assets/images/undo.png" 
             alt="Back" 
             className="back-button" 
             onClick={handleBackClick} 
@@ -184,7 +183,7 @@ const Dashboard = () => {
             ))}
           </div>
         </>
-      ) : showForm ? (
+      ) : (
         <PatientForm 
           isAddingToExisting={isAddingToExisting}
           uploadData={uploadData}
@@ -196,7 +195,7 @@ const Dashboard = () => {
           handleSubmit={handleSubmit}
           handleBackClick={handleBackClick}
         />
-      ) : null}
+      )}
     </div>
   );
 };
