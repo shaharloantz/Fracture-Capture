@@ -18,9 +18,7 @@ const Dashboard = () => {
   const [isAddingToExisting, setIsAddingToExisting] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [selectedBodyPart, setSelectedBodyPart] = useState('');
-  const [showProcessing, setShowProcessing] = useState(false); // State for showing the processing screen
-  const [predictionResult, setPredictionResult] = useState(null);
-  const [processedImage, setProcessedImage] = useState(null); // State for the processed image
+  const [showProcessing, setShowProcessing] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -87,13 +85,17 @@ const Dashboard = () => {
   const handleBackClick = () => {
     setShowForm(false);
     setShowBodyParts(false);
-    setProcessedImage(null); // Hide the processed image when going back
-    setPredictionResult(null); // Hide prediction result when going back
+    setShowProcessing(false);
+  };
+
+  const handleUploadResponse = (response) => {
+    const { processedImagePath } = response.data;
+    navigate('/results', { state: { processedImagePath } });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setShowProcessing(true); // Show processing screen
+    setShowProcessing(true);
 
     try {
       const formData = new FormData();
@@ -103,17 +105,11 @@ const Dashboard = () => {
       formData.append('image', uploadData.image);
 
       const response = await axios.post('/uploads', formData, { withCredentials: true });
-      setPredictionResult(response.data.prediction);
-      setProcessedImage(response.data.image_url); // Set the processed image URL
-      setSelectedPatient(uploadData.patientId);
-      setShowProcessing(false); // Hide processing screen
-      setShowForm(false);
-      setShowBodyParts(false);
-      toast.success("Upload successful!");
+      handleUploadResponse(response);
     } catch (error) {
       console.error('Error uploading:', error.response ? error.response.data : error.message);
-      setShowProcessing(false); // Hide processing screen
       toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
+      setShowProcessing(false);
     }
   };
 
@@ -146,7 +142,7 @@ const Dashboard = () => {
           <li>3) Receive a prediction of fractures</li>
         </ol>
       </div>
-      {!showForm && !showBodyParts && !processedImage ? (
+      {!showForm && !showBodyParts ? (
         <div className="action-buttons">
           <div className="box" onClick={handleCreatePatientClick}>Create a new Patient</div>
           <div className="box" onClick={handleAddPatientClick}>Add to an existing Patient</div>
@@ -154,7 +150,7 @@ const Dashboard = () => {
       ) : showBodyParts ? (
         <>
           <img 
-            src="src/assets/images/undo.png" 
+            src="./src/assets/images/undo.png" 
             alt="Back" 
             className="back-button" 
             onClick={handleBackClick} 
@@ -172,7 +168,7 @@ const Dashboard = () => {
             ))}
           </div>
         </>
-      ) : showForm ? (
+      ) : (
         <PatientForm 
           isAddingToExisting={isAddingToExisting}
           uploadData={uploadData}
@@ -184,17 +180,6 @@ const Dashboard = () => {
           handleSubmit={handleSubmit}
           handleBackClick={handleBackClick}
         />
-      ) : (
-        <div className="processed-image-container">
-          <img src={processedImage} alt="Processed" className="processed-image" />
-          {predictionResult && (
-            <div className="prediction-result">
-              <h3>Prediction Result:</h3>
-              <pre>{JSON.stringify(predictionResult, null, 2)}</pre>
-            </div>
-          )}
-          <button onClick={handleBackClick}>Back</button>
-        </div>
       )}
     </div>
   );

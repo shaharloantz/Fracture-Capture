@@ -2,6 +2,7 @@ import sys
 import json
 import os
 from ultralytics import YOLO
+from PIL import Image, ImageDraw
 
 def predict(image_path):
     try:
@@ -13,19 +14,27 @@ def predict(image_path):
         model = YOLO(model_path)
         results = model(image_path)
         
-        # Convert numpy arrays to lists for JSON serialization
-        boxes_data = results[0].boxes.data.tolist()
+        # Extract boxes
+        boxes = results[0].boxes.data.tolist()
         
-        # Create a dictionary with the results
-        output = {
-            "boxes": boxes_data,
-            "image_path": image_path
-        }
+        # Load and process image
+        image = Image.open(image_path)
+        draw = ImageDraw.Draw(image)
+        for box in boxes:
+            x1, y1, x2, y2 = box[:4]
+            draw.rectangle([x1, y1, x2, y2], outline="red", width=2)
         
-        # Return JSON string
-        return json.dumps(output)
+        # Save processed image
+        processed_image_name = f'processed_{os.path.basename(image_path)}'
+        processed_image_path = os.path.join(script_dir, 'uploads', processed_image_name)
+        image.save(processed_image_path)
+        
+        # Return results
+        return json.dumps({
+            "boxes": boxes,
+            "image_path": f"/uploads/{processed_image_name}"
+        })
     except Exception as e:
-        # Return a JSON string with the error
         return json.dumps({"error": str(e)})
 
 if __name__ == "__main__":
@@ -34,5 +43,4 @@ if __name__ == "__main__":
     else:
         image_path = sys.argv[1]
         result = predict(image_path)
-        print(result)  # Print only the JSON string to stdout
-        sys.stdout.flush()  # Ensure the output is immediately flushed
+        print(result)
