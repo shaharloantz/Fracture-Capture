@@ -10,6 +10,7 @@ import About from './pages/About';
 import Profile from './pages/Profile';
 import NotFoundPage from './pages/NotFound';
 import Dashboard from './pages/Dashboard';
+import ProcessingScreen from './component/ProcessingScreen'; // Import the new component
 import { Toaster } from 'react-hot-toast';
 import './styles/App.css';
 
@@ -50,6 +51,7 @@ const App = () => {
         <Route path='/about' element={<About />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/processing' element={<ProcessingScreen />} /> {/* Add the new route */}
         <Route path='*' element={<NotFoundPage />} />
       </Route>
     )

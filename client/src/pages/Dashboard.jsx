@@ -3,6 +3,7 @@ import axios from 'axios';
 import { toast, Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import PatientForm from '../component/PatientForm';
+import ProcessingScreen from '../component/ProcessingScreen'; // Importing the new ProcessingScreen component
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
@@ -17,8 +18,10 @@ const Dashboard = () => {
   const [isAddingToExisting, setIsAddingToExisting] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [selectedBodyPart, setSelectedBodyPart] = useState('');
-  const navigate = useNavigate();
+  const [showProcessing, setShowProcessing] = useState(false); // State for showing the processing screen
   const [predictionResult, setPredictionResult] = useState(null);
+  const [processedImage, setProcessedImage] = useState(null); // State for the processed image
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProfileData();
@@ -84,56 +87,39 @@ const Dashboard = () => {
   const handleBackClick = () => {
     setShowForm(false);
     setShowBodyParts(false);
+    setProcessedImage(null); // Hide the processed image when going back
+    setPredictionResult(null); // Hide prediction result when going back
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isAddingToExisting) {
+    setShowProcessing(true); // Show processing screen
+
+    try {
       const formData = new FormData();
       formData.append('patientId', uploadData.patientId);
       formData.append('description', uploadData.description);
       formData.append('bodyPart', selectedBodyPart);
       formData.append('image', uploadData.image);
 
-      axios.post('/uploads', formData, { withCredentials: true })
-        .then(response => {
-          toast.success("Upload successful!");
-          setPredictionResult(response.data.prediction);
-          setSelectedPatient(uploadData.patientId);
-          setShowForm(false);
-          setShowBodyParts(true);
-        })
-        .catch(error => {
-          console.error('Error uploading:', error.response ? error.response.data : error.message);
-          toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
-        });
-    } else {
-      if (newPatient.age < 0) {
-        toast.error("Age must be 0 or greater.");
-        return;
-      }
-
-      const patientData = {
-        ...newPatient,
-        createdByUser: profile._id,
-      };
-
-      axios.post('/patients', patientData, { withCredentials: true })
-        .then(response => {
-          toast.success("Patient created successfully!");
-          setProfile({ ...profile, numberOfPatients: profile.numberOfPatients + 1 });
-          setSelectedPatient(response.data._id);
-          setIsAddingToExisting(true);
-          setShowBodyParts(true);
-          setShowForm(false);
-          fetchPatients();
-        })
-        .catch(error => {
-          console.error('Error creating patient:', error.response ? error.response.data : error.message);
-          toast.error(error.response?.data?.error || 'Error creating patient. Please try again.');
-        });
+      const response = await axios.post('/uploads', formData, { withCredentials: true });
+      setPredictionResult(response.data.prediction);
+      setProcessedImage(response.data.image_url); // Set the processed image URL
+      setSelectedPatient(uploadData.patientId);
+      setShowProcessing(false); // Hide processing screen
+      setShowForm(false);
+      setShowBodyParts(false);
+      toast.success("Upload successful!");
+    } catch (error) {
+      console.error('Error uploading:', error.response ? error.response.data : error.message);
+      setShowProcessing(false); // Hide processing screen
+      toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
     }
   };
+
+  if (showProcessing) {
+    return <ProcessingScreen />;
+  }
 
   if (!profile) {
     return <div>Loading...</div>;
@@ -160,7 +146,7 @@ const Dashboard = () => {
           <li>3) Receive a prediction of fractures</li>
         </ol>
       </div>
-      {!showForm && !showBodyParts ? (
+      {!showForm && !showBodyParts && !processedImage ? (
         <div className="action-buttons">
           <div className="box" onClick={handleCreatePatientClick}>Create a new Patient</div>
           <div className="box" onClick={handleAddPatientClick}>Add to an existing Patient</div>
@@ -198,11 +184,16 @@ const Dashboard = () => {
           handleSubmit={handleSubmit}
           handleBackClick={handleBackClick}
         />
-      ) : null}
-            {predictionResult && (
-        <div className="prediction-result">
-          <h3>Prediction Result:</h3>
-          <pre>{JSON.stringify(predictionResult, null, 2)}</pre>
+      ) : (
+        <div className="processed-image-container">
+          <img src={processedImage} alt="Processed" className="processed-image" />
+          {predictionResult && (
+            <div className="prediction-result">
+              <h3>Prediction Result:</h3>
+              <pre>{JSON.stringify(predictionResult, null, 2)}</pre>
+            </div>
+          )}
+          <button onClick={handleBackClick}>Back</button>
         </div>
       )}
     </div>
