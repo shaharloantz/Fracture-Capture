@@ -7,7 +7,7 @@ const uploadSchema = new mongoose.Schema({
     imgId: { type: String, required: true },
     imgUrl: { type: String, required: true },
     dateUploaded: { type: Date, default: Date.now },
-    prediction: { type: Number, default: null }, // Default to null if prediction is not available
+    prediction: { type: mongoose.Schema.Types.Mixed, default: null }, // Default to null if prediction is not available
     patient: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: true },
     createdByUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true } // Reference to the User model
 }, { timestamps: true });

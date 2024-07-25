@@ -18,6 +18,7 @@ const Dashboard = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [selectedBodyPart, setSelectedBodyPart] = useState('');
   const navigate = useNavigate();
+  const [predictionResult, setPredictionResult] = useState(null);
 
   useEffect(() => {
     fetchProfileData();
@@ -97,6 +98,7 @@ const Dashboard = () => {
       axios.post('/uploads', formData, { withCredentials: true })
         .then(response => {
           toast.success("Upload successful!");
+          setPredictionResult(response.data.prediction);
           setSelectedPatient(uploadData.patientId);
           setShowForm(false);
           setShowBodyParts(true);
@@ -197,6 +199,12 @@ const Dashboard = () => {
           handleBackClick={handleBackClick}
         />
       ) : null}
+            {predictionResult && (
+        <div className="prediction-result">
+          <h3>Prediction Result:</h3>
+          <pre>{JSON.stringify(predictionResult, null, 2)}</pre>
+        </div>
+      )}
     </div>
   );
 };
