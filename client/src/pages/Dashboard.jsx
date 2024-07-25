@@ -95,21 +95,36 @@ const Dashboard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setShowProcessing(true);
+    if (isAddingToExisting) {
+      setShowProcessing(true); // Only set processing screen for image uploads
+      try {
+        const formData = new FormData();
+        formData.append('patientId', uploadData.patientId);
+        formData.append('description', uploadData.description);
+        formData.append('bodyPart', selectedBodyPart);
+        formData.append('image', uploadData.image);
 
-    try {
-      const formData = new FormData();
-      formData.append('patientId', uploadData.patientId);
-      formData.append('description', uploadData.description);
-      formData.append('bodyPart', selectedBodyPart);
-      formData.append('image', uploadData.image);
-
-      const response = await axios.post('/uploads', formData, { withCredentials: true });
-      handleUploadResponse(response);
-    } catch (error) {
-      console.error('Error uploading:', error.response ? error.response.data : error.message);
-      toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
-      setShowProcessing(false);
+        const response = await axios.post('/uploads', formData, { withCredentials: true });
+        handleUploadResponse(response);
+      } catch (error) {
+        console.error('Error uploading:', error.response ? error.response.data : error.message);
+        toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
+        setShowProcessing(false);
+      }
+    } else {
+      // Handle new patient creation
+      try {
+        await axios.post('/patients', newPatient, { withCredentials: true });
+        toast.success('Patient created successfully!');
+        setNewPatient(initialPatientState);
+        setShowForm(false);
+        setShowBodyParts(true); // Go back to body parts selection after patient creation
+        setIsAddingToExisting(true); // Prepare for image upload
+        fetchPatients(); // Refresh the patients list
+      } catch (error) {
+        console.error('Error creating patient:', error.response ? error.response.data : error.message);
+        toast.error(error.response?.data?.error || 'Error creating patient. Please try again.');
+      }
     }
   };
 
