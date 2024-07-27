@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw
 def predict(image_path):
     try:
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        model_path = os.path.join(script_dir, 'best.pt')
+        model_path = os.path.join(script_dir, 'weights.pt')
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"Model file not found: {model_path}")
         
