@@ -7,15 +7,21 @@ from PIL import Image, ImageDraw
 def predict(image_path):
     try:
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        model_path = os.path.join(script_dir, 'best.pt')
+        model_path = os.path.join(script_dir, 'weights.pt')
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"Model file not found: {model_path}")
         
         model = YOLO(model_path)
         results = model(image_path)
         
-        # Extract boxes
-        boxes = results[0].boxes.data.tolist()
+        # Extract boxes and confidence scores
+        boxes = []
+        confidences = []
+        for result in results[0].boxes:
+            box_data = result.xyxy.tolist()[0]
+            confidence = result.conf.tolist()[0]
+            boxes.append(box_data)
+            confidences.append(confidence)
         
         # Load and process image
         image = Image.open(image_path)
@@ -30,12 +36,18 @@ def predict(image_path):
         image.save(processed_image_path)
         
         # Return results
-        return json.dumps({
+        result = json.dumps({
             "boxes": boxes,
+            "confidences": confidences,
             "image_path": f"/uploads/{processed_image_name}"
         })
+        print(result)
+        return result
     except Exception as e:
-        return json.dumps({"error": str(e)})
+        error_result = json.dumps({"error": str(e)})
+        print(error_result, file=sys.stderr)
+        return error_result
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

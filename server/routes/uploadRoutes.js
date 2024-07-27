@@ -42,8 +42,13 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
 
         let prediction;
         try {
-            const jsonString = stdout.substring(stdout.indexOf('{'), stdout.lastIndexOf('}') + 1);
-            prediction = JSON.parse(jsonString);
+            // Attempt to find the JSON part within the stdout
+            const jsonString = stdout.match(/\{.*\}/);
+            if (jsonString) {
+                prediction = JSON.parse(jsonString[0]);
+            } else {
+                throw new Error("No JSON found in stdout");
+            }
         } catch (parseError) {
             console.error('Error parsing prediction output:', parseError);
             return res.status(500).json({ error: 'Error parsing prediction output' });
@@ -67,7 +72,7 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
             processedImgId: processedImgId,
             processedImgUrl: processedImgPath,
             dateUploaded: new Date(),
-            prediction: prediction,
+            prediction: { boxes: prediction.boxes, confidences: prediction.confidences },
             createdByUser: req.user.id
         });
 

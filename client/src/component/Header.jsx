@@ -1,8 +1,9 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/Header.css';
 
 const Header = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
@@ -11,9 +12,9 @@ const Header = () => {
   }
 
   return (
-    <header className="header">
-      <div className="logo"></div>
-      <h1>FractureCapture</h1>
+    <header className="header" >
+      <div onClick={() => navigate('/')} className="logo"></div>
+      <h1 onClick={() => navigate('/')} className='clickable' >FractureCapture</h1>
     </header>
   );
 };
