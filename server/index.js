@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const Patient = require('./models/Patient'); // Ensure the path is correct
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI, {})
     .then(async () => {
         console.log('Database is connected... :)');
         await Patient.init(); // Ensure indexes are created

@@ -60,7 +60,7 @@ This project aims to address the shortage of skilled radiologists and the limita
 
 1. Clone the repository:
    ```
-   git clone https://github.com/shaharloantz/Fractures-Captures.git
+   git clone https://github.com/shaharloantz/Fracture-Capture.git
    ```
 2. Navigate to the project directory:
    ```
@@ -69,6 +69,10 @@ This project aims to address the shortage of skilled radiologists and the limita
 3. Install dependencies:
    ```
    npm install
+   ```
+4. Install Python dependencies:
+   ```
+   pip install -r requirements.txt
    ```
 
 ## Usage
