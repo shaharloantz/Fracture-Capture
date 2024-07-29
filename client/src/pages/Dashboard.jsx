@@ -167,8 +167,9 @@ const Dashboard = () => {
           <img 
             src="./src/assets/images/undo.png" 
             alt="Back" 
-            className="back-button" 
+            className="back-button-icon" 
             onClick={handleBackClick} 
+            
           />
           <div className="items-grid">
             {items.map((item) => (
