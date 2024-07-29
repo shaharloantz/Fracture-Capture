@@ -144,7 +144,6 @@ const Dashboard = () => {
     { title: 'Ankle', image: 'src/assets/images/ankle-icon.png' },
     { title: 'Leg', image: 'src/assets/images/leg-icon.png' },
     { title: 'Knee', image: 'src/assets/images/knee-icon.png' },
-    { title: 'Shoulder', image: 'src/assets/images/Shoulder-icon.png' },
   ];
 
   return (
