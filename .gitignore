@@ -17,3 +17,7 @@ node_modules/
 # IDE-specific ignores
 .vscode/
 .idea/
+
+
+#venv
+venv/
