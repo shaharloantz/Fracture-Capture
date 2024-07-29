@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useNavigate, Link } from "react-router-dom";
 import '../styles/toasterCSS.css';
-import '../styles/Login.css'; // If you have specific styles for login page
+import '../styles/Login.css';
 
 export default function Login({ setIsAuthenticated }) {
     const navigate = useNavigate();
@@ -68,7 +68,7 @@ export default function Login({ setIsAuthenticated }) {
                         />
                     </div>
                     <button type="submit" disabled={loading} className="flex items-center justify-center w-full bg-blue-500 p-2 rounded-md hover:bg-blue-600 transition duration-200">
-                        <img src="src/assets/images/login-icon.png" alt="Login" className="h-6" /> {/* Adjust the path and size as needed */}
+                        <img src="src/assets/images/login-icon.png" alt="Login" className="h-6" />
                     </button>
                     <p className="text-white text-center mt-4">
                         Not a member yet? <Link to="/register" className="text-blue-500 hover:underline">Click to register</Link>.
