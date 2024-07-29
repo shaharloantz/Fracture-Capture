@@ -18,3 +18,7 @@ venv/
 # IDE-specific ignores
 .vscode/
 .idea/
+
+
+#venv
+venv/
