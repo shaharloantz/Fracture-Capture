@@ -44,8 +44,18 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
             pdf.setFont('helvetica', 'bold');
             pdf.text(`Prediction:`, 10, yOffset + 40);
             pdf.setFont('helvetica', 'normal');
-            const predictionText = selectedUpload.prediction.confidences.length > 0 ? "Fracture detected" : "No fracture detected";
-            pdf.text(` ${predictionText}`, 45, yOffset + 40);
+
+        /*
+                    //// if want instead of '%' to write fracture/no fracture ///// instead of constConfidence
+
+             const predictionText = selectedUpload.prediction.confidences.length > 0 ? "Fracture detected" : "No fracture detected";
+             pdf.text(` ${predictionText}`, 45, yOffset + 40);
+        */
+
+            const confidenceText = selectedUpload.prediction.confidences.length > 0 
+                ? selectedUpload.prediction.confidences.map(conf => `${(conf * 100).toFixed(2)}%`).join(', ')
+                : 'No fracture detected';
+            pdf.text(` ${confidenceText}`, 45, yOffset + 40);
 
             pdf.save(`upload_details_${selectedUpload.patientName}.pdf`);
         });
@@ -64,20 +74,23 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
                 <p><strong>Description:</strong> {selectedUpload.description}</p>
                 <p><strong>Body Part:</strong> {selectedUpload.bodyPart}</p>
                 <p><strong>Date Uploaded:</strong> {new Date(selectedUpload.dateUploaded).toLocaleString()}</p>
-                <p><strong>Prediction:</strong> {selectedUpload.prediction.confidences.length > 0 ? "Fracture detected" : "No fracture detected"}</p>
+                <p><strong>Prediction:</strong> {selectedUpload.prediction.confidences.length > 0 
+                    ? selectedUpload.prediction.confidences.map(conf => `${(conf * 100).toFixed(2)}%`).join(', ')
+                    : 'No fracture detected'}
+                </p>
                 <img 
                     src={`http://localhost:8000${selectedUpload.processedImgUrl}`} 
                     alt="Processed Upload" 
                     onLoad={handleImageLoad} 
                     crossOrigin="anonymous"
-                    style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto', marginTop:'15px' }}
+                    style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto', marginTop: '15px' }}
                 />
             </div>
             <img 
                 src={downloadIcon} 
                 alt="Download as PDF" 
                 onClick={downloadPDF} 
-                style={{margin: '0 auto', cursor: 'pointer', width: '60px', marginTop: '30px' }}
+                style={{ cursor: 'pointer', width: '60px',margin: '0 auto', marginTop: '30px' }}
             />
         </div>
     );

@@ -170,6 +170,7 @@ const Dashboard = () => {
             alt="Back" 
             className="back-button-icon" 
             onClick={handleBackClick} 
+            
           />
           <div className="items-grid">
             {items.map((item) => (
