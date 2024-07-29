@@ -9,19 +9,11 @@ export default function Sidebar() {
 
     return (
         <>
-            {/* <button
-                onClick={toggleSidebar}
-                className="fixed top-4 left-4 flex items-center p-2 text-white bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white z-50"
-            >
-                <Bars3Icon className="h-6 w-6 mr-2" />
-                <span>Menu</span>
-                <span className="sr-only">Open sidebar</span>
-            </button> */}
             <button
                 onClick={toggleSidebar}
                 className="fixed top-4 left-4 flex items-center p-2 text-white bg-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white z-50"
             >
-                <img src="/src/assets/images/navbar-icon.png" alt="Menu" className="h-6 w-6 mr-2" /> {/* Use custom menu icon */}
+                <Bars3Icon className="h-6 w-6 mr-2" />
                 <span>Menu</span>
                 <span className="sr-only">Open sidebar</span>
             </button>
