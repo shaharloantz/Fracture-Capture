@@ -22,7 +22,11 @@
   
   .processed-image {
     max-width: 100%;
-    height: auto;
+    height: auto; /* Maintain aspect ratio */
+    width: 600px; /* Set a specific width */
+    height: 600px;
+    border: 1px solid #ccc; /* Optional: add border */
+    margin: 0 auto; /* Center image horizontally */
   }
   
   .prediction-result {
