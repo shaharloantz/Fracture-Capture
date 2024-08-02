@@ -10,14 +10,16 @@ import About from './pages/About';
 import Profile from './pages/Profile';
 import NotFoundPage from './pages/NotFound';
 import Dashboard from './pages/Dashboard';
-import ProcessingScreen from './component/ProcessingScreen'; // Import the new component
-import Results from './component/Results'; // Importing the new Results component
+import ProcessingScreen from './component/ProcessingScreen';
+import Results from './component/Results';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 
 import { Toaster } from 'react-hot-toast';
 import './styles/App.css';
 
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:8000'; // Adjust this if needed
+axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
 
 const App = () => {
@@ -39,7 +41,7 @@ const App = () => {
     axios.post('/logout', {}, { withCredentials: true })
       .then(() => {
         setIsAuthenticated(false);
-        window.location.href = '/'; // Redirect to home after logout
+        window.location.href = '/';
       });
   };
 
@@ -54,8 +56,10 @@ const App = () => {
         <Route path='/profile' element={<Profile />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path="/results" element={<Results />} />
-        <Route path='/processing' element={<ProcessingScreen />} /> {/* Add the new route */}
+        <Route path="/terms-of-service" element={<TermsOfService />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path='*' element={<NotFoundPage />} />
+        {/* Testing the loader animation at route -> <Route path='/processing' element={<ProcessingScreen />} />  --> */}
       </Route>
     )
   );
