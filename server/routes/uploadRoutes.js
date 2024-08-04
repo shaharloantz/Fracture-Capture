@@ -1,6 +1,5 @@
 const express = require('express');
 const multer = require('multer');
-const nodemailer = require('nodemailer');
 const path = require('path');
 const fs = require('fs');
 const Patient = require('../models/Patient');
@@ -13,9 +12,17 @@ const execPromise = util.promisify(exec);
 
 const router = express.Router();
 
-const storage = multer.memoryStorage(); // Use memory storage
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        const ext = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + Date.now() + ext);
+    }
+});
 
-const upload = multer({ storage: storage })
+const upload = multer({ storage: storage });
 
 router.post('/', requireAuth, upload.single('image'), async (req, res) => {
     const { patientId, description, bodyPart } = req.body;
@@ -24,7 +31,11 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
 
     try {
         const { stdout, stderr } = await execPromise(`python predict.py "${imagePath}"`);
+        console.log('Raw stdout:', stdout);
+        console.log('Raw stderr:', stderr);
+
         if (stderr) {
+            console.error('Python script error:', stderr);
             return res.status(500).json({ error: 'Error running prediction script' });
         }
 
@@ -37,6 +48,7 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
                 throw new Error("No JSON found in stdout");
             }
         } catch (parseError) {
+            console.error('Error parsing prediction output:', parseError);
             return res.status(500).json({ error: 'Error parsing prediction output' });
         }
 
@@ -63,8 +75,10 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
         });
 
         await newUpload.save();
+
         res.status(201).json({ newUpload, processedImagePath: processedImgPath });
     } catch (error) {
+        console.error('Error creating upload:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
@@ -88,68 +102,33 @@ router.delete('/:uploadId', requireAuth, async (req, res) => {
             return res.status(404).json({ error: 'Upload not found' });
         }
 
-        const filePath = path.join(__dirname, '../uploads', upload.imgId);
-        fs.access(filePath, fs.constants.F_OK, async (err) => {
-            if (!err) {
-                // File exists, proceed with deletion
-                fs.unlink(filePath, async (unlinkErr) => {
-                    if (unlinkErr) {
-                        console.error('Error deleting file:', unlinkErr);
-                        return res.status(500).json({ error: 'Error deleting file' });
-                    }
+        const filePaths = [
+            path.join(__dirname, '../uploads', upload.imgId),
+            path.join(__dirname, '../uploads', upload.processedImgId)
+        ];
 
-                    await Upload.findByIdAndDelete(req.params.uploadId);
-                    res.json({ message: 'Upload deleted successfully' });
-                });
-            } else {
-                // File does not exist, log the error and proceed with upload deletion
-                console.warn('File does not exist, skipping file deletion:', err);
-
-                await Upload.findByIdAndDelete(req.params.uploadId);
-                res.json({ message: 'Upload deleted successfully' });
-            }
+        // Function to delete a file and return a promise
+        const deleteFile = (filePath) => new Promise((resolve, reject) => {
+            fs.unlink(filePath, (err) => {
+                if (err && err.code !== 'ENOENT') {
+                    // If error is not "file not found"
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
         });
+
+        // Delete image and processed image files
+        await Promise.all(filePaths.map(deleteFile));
+
+        // Delete the upload document
+        await Upload.findByIdAndDelete(req.params.uploadId);
+        res.json({ message: 'Upload deleted successfully' });
     } catch (error) {
         console.error('Error deleting upload:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
-router.post('/send-email', upload.single('pdf'), async (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: 'No file uploaded' });
-    }
-
-    const { patientName, email } = req.body;
-
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'mailfractions@gmail.com',
-            pass: 'ekhe ympf novh vdns'
-        }
-    });
-
-    try {
-        let info = await transporter.sendMail({
-            from: '"Your Name" <mailfractions@gmail.com>',
-            to: email, // Use the email from the request body
-            subject: `Medical Report for ${patientName}`,
-            text: `Please find attached the medical report for ${patientName}.`,
-            attachments: [
-                {
-                    filename: req.file.originalname,
-                    content: req.file.buffer,
-                    contentType: 'application/pdf' // Ensure the content type is set to PDF
-                }
-            ]
-        });
-
-        res.json({ message: 'Email sent successfully' });
-    } catch (error) {
-        res.status(500).json({ error: 'Error sending email' });
-    }
-});
-
 
 module.exports = router;

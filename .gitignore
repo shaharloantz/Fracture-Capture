@@ -2,6 +2,7 @@
 node_modules/
 .env
 .DS_Store
+venv/
 
 # Backend ignores
 /server/node_modules/
@@ -17,3 +18,7 @@ node_modules/
 # IDE-specific ignores
 .vscode/
 .idea/
+
+
+#venv
+venv/
