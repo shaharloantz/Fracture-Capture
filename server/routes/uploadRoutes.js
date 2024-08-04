@@ -2,10 +2,10 @@ const express = require('express');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
 const path = require('path');
-const fs = require('fs');
 const Patient = require('../models/Patient');
 const Upload = require('../models/Upload');
 const requireAuth = require('../middleware/authMiddleware');
+const dotenv = require('dotenv').config();
 
 const { exec } = require('child_process');
 const util = require('util');
@@ -13,14 +13,13 @@ const execPromise = util.promisify(exec);
 
 const router = express.Router();
 
-const storage = multer.memoryStorage(); // Use memory storage
+const storage = multer.memoryStorage(); // Use memory storage for PDFs
 
-const upload = multer({ storage: storage })
+const upload = multer({ storage: storage });
 
 router.post('/', requireAuth, upload.single('image'), async (req, res) => {
     const { patientId, description, bodyPart } = req.body;
-    const imgUrl = `/uploads/${req.file.filename}`;
-    const imagePath = path.join(__dirname, '..', 'uploads', req.file.filename);
+    const imagePath = req.file.path;
 
     try {
         const { stdout, stderr } = await execPromise(`python predict.py "${imagePath}"`);
@@ -40,7 +39,7 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
             return res.status(500).json({ error: 'Error parsing prediction output' });
         }
 
-        const processedImgPath = prediction.image_path;
+        const processedImgPath = path.join('uploads', path.basename(prediction.image_path)); // Fix the path
         const processedImgId = path.basename(processedImgPath);
 
         const patient = await Patient.findById(patientId);
@@ -54,20 +53,22 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
             description,
             bodyPart,
             imgId: req.file.filename,
-            imgUrl: imgUrl,
+            imgUrl: `/uploads/${req.file.filename}`,
             processedImgId: processedImgId,
-            processedImgUrl: processedImgPath,
+            processedImgUrl: `/uploads/${processedImgId}`,
             dateUploaded: new Date(),
             prediction: { boxes: prediction.boxes, confidences: prediction.confidences },
             createdByUser: req.user.id
         });
 
         await newUpload.save();
-        res.status(201).json({ newUpload, processedImagePath: processedImgPath });
+        res.status(201).json({ newUpload, processedImagePath: newUpload.processedImgUrl });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+
 
 
 // Endpoint to fetch uploads for a specific patient
@@ -128,22 +129,22 @@ router.post('/send-email', upload.single('pdf'), async (req, res) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'mailfractions@gmail.com',
-            pass: 'ekhe ympf novh vdns'
+            user: process.env.EMAIL,
+            pass: process.env.EMAIL_PASSWORD
         }
     });
 
     try {
         let info = await transporter.sendMail({
-            from: '"Your Name" <mailfractions@gmail.com>',
-            to: email, // Use the email from the request body
+            from: '"Prediction Results" <mailfractions@gmail.com>',
+            to: email,
             subject: `Medical Report for ${patientName}`,
             text: `Please find attached the medical report for ${patientName}.`,
             attachments: [
                 {
                     filename: req.file.originalname,
                     content: req.file.buffer,
-                    contentType: 'application/pdf' // Ensure the content type is set to PDF
+                    contentType: 'application/pdf'
                 }
             ]
         });
