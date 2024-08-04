@@ -175,7 +175,11 @@ export default function Profile() {
                     setEditingPatient={setEditingPatient}
                 />
             ) : selectedUpload ? (
-                <UploadDetails selectedUpload={selectedUpload} handleBackClick={handleBackClick} />
+                <UploadDetails 
+                    selectedUpload={selectedUpload} 
+                    handleBackClick={handleBackClick} 
+                    profileEmail={profile.email}
+                />
             ) : selectedPatient ? (
                 <PatientUploads
                     patientUploads={patientUploads}

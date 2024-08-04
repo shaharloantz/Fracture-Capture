@@ -4,7 +4,7 @@ import html2canvas from 'html2canvas';
 import axios from 'axios';
 import downloadIcon from '../../assets/images/download-file-icon.png';
 
-const UploadDetails = ({ selectedUpload, handleBackClick }) => {
+const UploadDetails = ({ selectedUpload, handleBackClick, profileEmail }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
@@ -60,6 +60,10 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
     const handleShareSubmit = async (e) => {
         e.preventDefault();
         try {
+            if (email === profileEmail) {
+                setMessage("You cannot share with yourself.");
+                return;
+            }
             const response = await axios.post('/uploads/share', {
                 uploadId: selectedUpload._id,
                 email
@@ -106,12 +110,12 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
 
             <form onSubmit={handleShareSubmit} style={{ marginTop: '20px' }}>
                 <label>
-                    Share with another doctor:
+                    Doctor's Email:
                     <input
                         type="email"
                         value={email}
-                        placeholder="Enter doctor's email"
                         onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter doctor's email"
                         required
                         style={{ display: 'block', marginTop: '5px', padding: '5px', width: '100%' }}
                     />
