@@ -5,6 +5,8 @@ import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import QA from './pages/QA';
 import About from './pages/About';
 import Profile from './pages/Profile';
@@ -51,6 +53,8 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} /> 
+        <Route path='/reset-password' element={<ResetPassword />} />
         <Route path='/qa' element={<QA />} />
         <Route path='/about' element={<About />} />
         <Route path='/profile' element={<Profile />} />
