@@ -29,23 +29,23 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
             const yOffset = 190;
             pdf.setFontSize(12);
             pdf.setFont('helvetica', 'bold');
-            pdf.text(`Patient Name:`, 10, yOffset);
+            pdf.text('Patient Name:', 10, yOffset);
             pdf.setFont('helvetica', 'normal');
             pdf.text(` ${selectedUpload.patientName}`, 45, yOffset);
             pdf.setFont('helvetica', 'bold');
-            pdf.text(`Description:`, 10, yOffset + 10);
+            pdf.text('Description:', 10, yOffset + 10);
             pdf.setFont('helvetica', 'normal');
             pdf.text(` ${selectedUpload.description}`, 45, yOffset + 10);
             pdf.setFont('helvetica', 'bold');
-            pdf.text(`Body Part:`, 10, yOffset + 20);
+            pdf.text('Body Part:', 10, yOffset + 20);
             pdf.setFont('helvetica', 'normal');
             pdf.text(` ${selectedUpload.bodyPart}`, 45, yOffset + 20);
             pdf.setFont('helvetica', 'bold');
-            pdf.text(`Date Uploaded:`, 10, yOffset + 30);
+            pdf.text('Date Uploaded:', 10, yOffset + 30);
             pdf.setFont('helvetica', 'normal');
             pdf.text(` ${new Date(selectedUpload.dateUploaded).toLocaleString()}`, 45, yOffset + 30);
             pdf.setFont('helvetica', 'bold');
-            pdf.text(`Prediction:`, 10, yOffset + 40);
+            pdf.text('Prediction:', 10, yOffset + 40);
             pdf.setFont('helvetica', 'normal');
 
             const confidenceText = selectedUpload.prediction.confidences.length > 0 
@@ -67,7 +67,6 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
             setMessage(response.data.message);
         } catch (error) {
             console.error('Error sharing upload:', error);
-            console.error('Error details:', error.response ? error.response.data : error.message);
             setMessage('Error sharing upload');
         }
     };
@@ -107,10 +106,11 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
 
             <form onSubmit={handleShareSubmit} style={{ marginTop: '20px' }}>
                 <label>
-                    Doctor's Email:
+                    Share with another doctor:
                     <input
                         type="email"
                         value={email}
+                        placeholder="Enter doctor's email"
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         style={{ display: 'block', marginTop: '5px', padding: '5px', width: '100%' }}

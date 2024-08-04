@@ -36,7 +36,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 40px;
+    gap: 65px;
     margin-top: 20px;
 }
 
@@ -66,6 +66,8 @@
 .patient-info, .upload-info, .shared-info {
     text-align: center;
     color: white;
+    white-space: nowrap; 
+    text-overflow: ellipsis; 
 }
 
 .icon-container {
@@ -204,7 +206,7 @@
 .back-button-icon {
     width: 40px;
     height: 40px;
-    pointer-events: auto; /* Enable click on icons */
+    pointer-events: auto; 
     margin-bottom: 30px;
 }
 
@@ -217,5 +219,5 @@
 
 .sharedUploadsHeader{
     margin-top:60px;
-    margin-bottom:2px;
+    margin-bottom:10px;
 }

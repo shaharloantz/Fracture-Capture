@@ -7,6 +7,7 @@ import PatientUploads from '../component/profile/PatientUploads';
 import UploadDetails from '../component/profile/UploadDetails';
 import ChangePasswordForm from '../component/profile/ChangePasswordForm';
 import EditPatientForm from '../component/profile/EditPatientForm';
+import SharedPatientUploads from '../component/profile/sharedPatientUploads';
 import '../styles/Profile.css';
 
 export default function Profile() {
@@ -70,7 +71,10 @@ export default function Profile() {
         if (window.confirm("Are you sure you want to delete this upload?")) {
             axios.delete(`/uploads/${uploadId}`, { withCredentials: true })
                 .then(response => {
+                    // Update patientUploads if it's a patient upload
                     setPatientUploads(uploads => uploads.filter(upload => upload._id !== uploadId));
+                    // Update sharedUploads if it's a shared upload
+                    setSharedUploads(uploads => uploads.filter(upload => upload._id !== uploadId));
                 })
                 .catch(error => {
                     console.error('Error deleting upload:', error.response ? error.response.data : error.message);
@@ -189,21 +193,12 @@ export default function Profile() {
                         handleDeletePatientClick={handleDeletePatientClick}
                     />
                     <h2 className='sharedUploadsHeader'>Shared Uploads</h2>
-                    <div className="shared-folders">
-                        {sharedUploads.map((upload) => (
-                            <div key={upload._id} className="shared-folder" onClick={() => handleUploadClick(upload)}>
-                                <img src="/src/assets/images/folder-icon.png" alt="icon" className="folder-icon" />
-                                <div className="icon-container">
-                                    <img src="/src/assets/images/bin.png" alt="Delete" className="delete-icon" />
-                                    <img src="/src/assets/images/edit-text.png" alt="Edit" className="edit-icon" />
-                                </div>
-                                <div className="shared-info">
-                                    <p><strong>Patient Name:</strong> {upload.patientName}</p>
-                                    <p><strong>ID:</strong> {upload.patientId}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    <SharedPatientUploads 
+                        sharedUploads={sharedUploads}
+                        handleUploadClick={handleUploadClick}
+                        handleDeleteUploadClick={handleDeleteUploadClick}
+                        formatDate={formatDate}
+                    />
                 </>
             )}
         </div>
