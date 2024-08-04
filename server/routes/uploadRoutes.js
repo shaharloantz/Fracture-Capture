@@ -30,9 +30,8 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
     const imagePath = path.join(__dirname, '..', 'uploads', req.file.filename);
 
     try {
-        // Run prediction
         const { stdout, stderr } = await execPromise(`python predict.py "${imagePath}"`);
-        console.log('Raw stdout:', stdout); // Log full stdout
+        console.log('Raw stdout:', stdout);
         console.log('Raw stderr:', stderr);
 
         if (stderr) {
@@ -42,7 +41,6 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
 
         let prediction;
         try {
-            // Attempt to find the JSON part within the stdout
             const jsonString = stdout.match(/\{.*\}/);
             if (jsonString) {
                 prediction = JSON.parse(jsonString[0]);
@@ -85,7 +83,6 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
     }
 });
 
-
 // Endpoint to fetch uploads for a specific patient
 router.get('/:patientId', requireAuth, async (req, res) => {
     try {
@@ -105,27 +102,29 @@ router.delete('/:uploadId', requireAuth, async (req, res) => {
             return res.status(404).json({ error: 'Upload not found' });
         }
 
-        const filePath = path.join(__dirname, '../uploads', upload.imgId);
-        fs.access(filePath, fs.constants.F_OK, async (err) => {
-            if (!err) {
-                // File exists, proceed with deletion
-                fs.unlink(filePath, async (unlinkErr) => {
-                    if (unlinkErr) {
-                        console.error('Error deleting file:', unlinkErr);
-                        return res.status(500).json({ error: 'Error deleting file' });
-                    }
+        const filePaths = [
+            path.join(__dirname, '../uploads', upload.imgId),
+            path.join(__dirname, '../uploads', upload.processedImgId)
+        ];
 
-                    await Upload.findByIdAndDelete(req.params.uploadId);
-                    res.json({ message: 'Upload deleted successfully' });
-                });
-            } else {
-                // File does not exist, log the error and proceed with upload deletion
-                console.warn('File does not exist, skipping file deletion:', err);
-
-                await Upload.findByIdAndDelete(req.params.uploadId);
-                res.json({ message: 'Upload deleted successfully' });
-            }
+        // Function to delete a file and return a promise
+        const deleteFile = (filePath) => new Promise((resolve, reject) => {
+            fs.unlink(filePath, (err) => {
+                if (err && err.code !== 'ENOENT') {
+                    // If error is not "file not found"
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
         });
+
+        // Delete image and processed image files
+        await Promise.all(filePaths.map(deleteFile));
+
+        // Delete the upload document
+        await Upload.findByIdAndDelete(req.params.uploadId);
+        res.json({ message: 'Upload deleted successfully' });
     } catch (error) {
         console.error('Error deleting upload:', error);
         res.status(500).json({ error: 'Internal server error' });
