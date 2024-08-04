@@ -13,6 +13,7 @@ export default function Profile() {
     const [profile, setProfile] = useState(null);
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [patientUploads, setPatientUploads] = useState([]);
+    const [sharedUploads, setSharedUploads] = useState([]);
     const [selectedUpload, setSelectedUpload] = useState(null);
     const [editingPatient, setEditingPatient] = useState(null);
     const [changingPassword, setChangingPassword] = useState(false);
@@ -27,6 +28,12 @@ export default function Profile() {
                 navigate('/login');
             });
     }, [navigate]);
+
+    useEffect(() => {
+        axios.get('/user/shared-uploads', { withCredentials: true })
+            .then(response => setSharedUploads(response.data))
+            .catch(error => console.error('Error fetching shared uploads:', error.response ? error.response.data : error.message));
+    }, []);
 
     const fetchPatientUploads = (patientId) => {
         axios.get(`/uploads/${patientId}`, { withCredentials: true })
@@ -174,12 +181,30 @@ export default function Profile() {
                     handleBackClick={handleBackClick}
                 />
             ) : (
-                <PatientList
-                    patients={profile.patients}
-                    fetchPatientUploads={fetchPatientUploads}
-                    handleEditPatientClick={handleEditPatientClick}
-                    handleDeletePatientClick={handleDeletePatientClick}
-                />
+                <>
+                    <PatientList
+                        patients={profile.patients}
+                        fetchPatientUploads={fetchPatientUploads}
+                        handleEditPatientClick={handleEditPatientClick}
+                        handleDeletePatientClick={handleDeletePatientClick}
+                    />
+                    <h2 className='sharedUploadsHeader'>Shared Uploads</h2>
+                    <div className="shared-folders">
+                        {sharedUploads.map((upload) => (
+                            <div key={upload._id} className="shared-folder" onClick={() => handleUploadClick(upload)}>
+                                <img src="/src/assets/images/folder-icon.png" alt="icon" className="folder-icon" />
+                                <div className="icon-container">
+                                    <img src="/src/assets/images/bin.png" alt="Delete" className="delete-icon" />
+                                    <img src="/src/assets/images/edit-text.png" alt="Edit" className="edit-icon" />
+                                </div>
+                                <div className="shared-info">
+                                    <p><strong>Patient Name:</strong> {upload.patientName}</p>
+                                    <p><strong>ID:</strong> {upload.patientId}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </>
             )}
         </div>
     );

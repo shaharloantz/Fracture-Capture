@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/', require('./routes/authRoutes'));
-app.use('/user', require('./routes/userRoutes'));
+app.use('/user', require('./routes/userRoutes')); 
 app.use('/uploads', require('./routes/uploadRoutes'));
 
 const port = process.env.PORT || 8000;

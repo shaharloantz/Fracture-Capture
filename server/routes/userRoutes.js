@@ -48,4 +48,23 @@ router.post('/change-password', requireAuth, async (req, res) => {
     }
 });
 
+// Endpoint to get shared uploads
+router.get('/shared-uploads', requireAuth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).populate({
+            path: 'sharedUploads',
+            populate: {
+                path: 'patient'
+            }
+        });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json(user.sharedUploads);
+    } catch (error) {
+        console.error('Error fetching shared uploads:', error.message);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
+    }
+});
+
 module.exports = router;

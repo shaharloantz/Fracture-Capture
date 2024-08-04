@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import axios from 'axios';
 import downloadIcon from '../../assets/images/download-file-icon.png';
 
 const UploadDetails = ({ selectedUpload, handleBackClick }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
+    const [email, setEmail] = useState('');
+    const [message, setMessage] = useState('');
 
     const handleImageLoad = () => {
         setImageLoaded(true);
@@ -45,13 +48,6 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
             pdf.text(`Prediction:`, 10, yOffset + 40);
             pdf.setFont('helvetica', 'normal');
 
-        /*
-                    //// if want instead of '%' to write fracture/no fracture ///// instead of constConfidence
-
-             const predictionText = selectedUpload.prediction.confidences.length > 0 ? "Fracture detected" : "No fracture detected";
-             pdf.text(` ${predictionText}`, 45, yOffset + 40);
-        */
-
             const confidenceText = selectedUpload.prediction.confidences.length > 0 
                 ? selectedUpload.prediction.confidences.map(conf => `${(conf * 100).toFixed(2)}%`).join(', ')
                 : 'No fracture detected';
@@ -61,15 +57,31 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
         });
     };
 
+    const handleShareSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('/uploads/share', {
+                uploadId: selectedUpload._id,
+                email
+            });
+            setMessage(response.data.message);
+        } catch (error) {
+            console.error('Error sharing upload:', error);
+            console.error('Error details:', error.response ? error.response.data : error.message);
+            setMessage('Error sharing upload');
+        }
+    };
+
     return (
         <div className="upload-details">
-        <img 
-            src="/src/assets/images/undo.png" 
-            alt="Back to Patients" 
-            className="back-button-icon" 
-            onClick={handleBackClick} 
-            style = {{margin: '0 auto', marginBottom: '20px'}}
-        />            <div id="pdf-content">
+            <img 
+                src="/src/assets/images/undo.png" 
+                alt="Back to Patients" 
+                className="back-button-icon" 
+                onClick={handleBackClick} 
+                style={{ margin: '0 auto', marginBottom: '20px' }}
+            />
+            <div id="pdf-content">
                 <p><strong>Patient Name:</strong> {selectedUpload.patientName}</p>
                 <p><strong>Description:</strong> {selectedUpload.description}</p>
                 <p><strong>Body Part:</strong> {selectedUpload.bodyPart}</p>
@@ -90,8 +102,23 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
                 src={downloadIcon} 
                 alt="Download as PDF" 
                 onClick={downloadPDF} 
-                style={{ cursor: 'pointer', width: '60px',margin: '0 auto', marginTop: '30px' }}
+                style={{ cursor: 'pointer', width: '60px', margin: '0 auto', marginTop: '30px' }}
             />
+
+            <form onSubmit={handleShareSubmit} style={{ marginTop: '20px' }}>
+                <label>
+                    Doctor's Email:
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        style={{ display: 'block', marginTop: '5px', padding: '5px', width: '100%' }}
+                    />
+                </label>
+                <button type="submit" style={{ padding: '10px 20px', cursor: 'pointer' }}>Share</button>
+            </form>
+            {message && <p>{message}</p>}
         </div>
     );
 };

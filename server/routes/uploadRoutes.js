@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const Patient = require('../models/Patient');
 const Upload = require('../models/Upload');
+const User = require('../models/User');
 const requireAuth = require('../middleware/authMiddleware');
 
 const { exec } = require('child_process');
@@ -131,5 +132,38 @@ router.delete('/:uploadId', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+
+// Endpoint to share upload details via email
+router.post('/share', requireAuth, async (req, res) => {
+    const { uploadId, email } = req.body;
+
+    try {
+        // Ensure upload exists
+        const upload = await Upload.findById(uploadId).populate('patient createdByUser');
+        if (!upload) {
+            console.error('Upload not found');
+            return res.status(404).json({ error: 'Upload not found' });
+        }
+
+        // Ensure recipient doctor exists
+        const recipientDoctor = await User.findOne({ email });
+        if (!recipientDoctor) {
+            console.error('Recipient doctor not found');
+            return res.status(404).json({ error: 'Recipient doctor not found' });
+        }
+
+        // Add shared upload to recipient's profile
+        recipientDoctor.sharedUploads = recipientDoctor.sharedUploads || [];
+        recipientDoctor.sharedUploads.push(uploadId);
+        await recipientDoctor.save();
+
+        res.status(200).json({ message: 'Upload details shared successfully' });
+    } catch (error) {
+        console.error('Error sharing upload details:', error.message);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
+    }
+});
+
 
 module.exports = router;

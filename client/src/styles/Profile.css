@@ -32,7 +32,7 @@
     text-align: center;
 }
 
-.patient-folders, .upload-folders {
+.patient-folders, .upload-folders, .shared-folders {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -40,7 +40,11 @@
     margin-top: 20px;
 }
 
-.patient-folder, .upload-folder {
+.shared-folders {
+    margin-top: 40px; /* Increase this value to add more space */
+}
+
+.patient-folder, .upload-folder, .shared-folder {
     position: relative;
     width: 150px;
     height: 150px;
@@ -59,7 +63,7 @@
     margin-bottom: 10px;
 }
 
-.patient-info, .upload-info {
+.patient-info, .upload-info, .shared-info {
     text-align: center;
     color: white;
 }
@@ -82,14 +86,14 @@
 
 .edit-icon {
     position: absolute;
-    top: 30px;
-    right: 30px;
+    top: 25px;
+    right: 35px; /* Adjust this value to center more */
 }
 
 .delete-icon {
     position: absolute;
-    bottom: 60px;
-    left: 30px;
+    top: 25px;
+    left: 35px; /* Adjust this value to center more */
 }
 
 .patient-form, .password-form {
@@ -149,9 +153,69 @@
     background-color: #cc4444;
 }
 
-.back-button-icon{
+.upload-details {
+    background-color: rgba(0, 40, 85, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    width: 100%;
+    max-width: 600px;
+}
+
+.upload-details form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upload-details label {
+    display: block;
+    margin-bottom: 10px;
+    color: white;
+    width: 100%;
+}
+
+.upload-details input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.upload-details button[type="submit"] {
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0044cc;
+    color: white;
+    cursor: pointer;
+}
+
+.upload-details button[type="submit"]:hover {
+    background-color: #003399;
+}
+
+.back-button-icon {
     width: 40px;
     height: 40px;
     pointer-events: auto; /* Enable click on icons */
     margin-bottom: 30px;
- }
+}
+
+.download-icon {
+    cursor: pointer;
+    width: 60px;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+.sharedUploadsHeader{
+    margin-top:60px;
+    margin-bottom:2px;
+}
