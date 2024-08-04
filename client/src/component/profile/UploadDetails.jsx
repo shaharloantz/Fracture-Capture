@@ -6,9 +6,15 @@ import sendEmailIcon from '../../assets/images/send-email-icon.png';
 
 const UploadDetails = ({ selectedUpload, handleBackClick }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
+    const [email, setEmail] = useState('');
+    const [showEmailInput, setShowEmailInput] = useState(false);
 
     const handleImageLoad = () => {
         setImageLoaded(true);
+    };
+
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
     };
 
     const downloadPDF = () => {
@@ -94,6 +100,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
             const formData = new FormData();
             formData.append('pdf', pdfBlob, `upload_details_${selectedUpload.patientName}.pdf`);
             formData.append('patientName', selectedUpload.patientName);
+            formData.append('email', email);
 
             fetch('http://localhost:8000/uploads/send-email', {
                 method: 'POST',
@@ -103,6 +110,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
                 .then((data) => {
                     console.log('Success:', data);
                     alert('Email sent successfully');
+                    setShowEmailInput(false); // Hide the email input box after sending the email
                 })
                 .catch((error) => {
                     console.error('Error:', error);
@@ -143,9 +151,21 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
             <img 
                 src={sendEmailIcon}
                 alt="Send as Email" 
-                onClick={sendEmail}
+                onClick={() => setShowEmailInput(!showEmailInput)} // Toggle visibility
                 style={{margin: '0 auto', cursor: 'pointer', width: '60px', marginTop: '30px' }}
             />
+            {showEmailInput && (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={handleEmailChange}
+                        placeholder="Enter recipient email"
+                        style={{ padding: '10px', width: '40%', marginBottom: '10px', color:'black' }}
+                    />
+                    <button onClick={sendEmail} style={{ padding: '10px 20px', cursor: 'pointer' }}>Send</button>
+                </div>
+            )}
         </div>
     );
 };

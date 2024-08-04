@@ -120,7 +120,7 @@ router.post('/send-email', upload.single('pdf'), async (req, res) => {
         return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const { patientName } = req.body;
+    const { patientName, email } = req.body;
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -133,7 +133,7 @@ router.post('/send-email', upload.single('pdf'), async (req, res) => {
     try {
         let info = await transporter.sendMail({
             from: '"Your Name" <mailfractions@gmail.com>',
-            to: "mailfractions@gmail.com",
+            to: email, // Use the email from the request body
             subject: `Medical Report for ${patientName}`,
             text: `Please find attached the medical report for ${patientName}.`,
             attachments: [
