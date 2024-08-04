@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { toast } from 'react-hot-toast';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from 'axios';
-import '../cssFiles/toasterCSS.css';
-import '../cssFiles/Register.css';
-
+import '../styles/toasterCSS.css';
+import '../styles/Register.css';
 
 export default function Register() {
     const navigate = useNavigate();
@@ -101,6 +100,9 @@ export default function Register() {
                     <button type="submit" disabled={loading} className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-200">
                         {loading ? 'Registering...' : 'Submit'}
                     </button>
+                    <p className="text-white text-center mt-4">
+                        Already a member? <Link to="/login" className="text-blue-500">Click to log in</Link>.
+                    </p>
                 </form>         
             </div>
         </div>

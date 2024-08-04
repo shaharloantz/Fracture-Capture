@@ -32,7 +32,7 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
     };
 
     return (
-        <nav className="absolute top-0 right-0 mt-4 mr-4">
+        <nav className="absolute top-0 right-0 mt-4 mr-8">
             <div className="flex space-x-4">
                 {navigation.map((item) => (
                     <Link
@@ -40,8 +40,8 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
                         to={item.href}
                         onClick={(event) => handleNavigationClick(event, item)}
                         className={classNames(
-                            location.pathname === item.href ? 'text-white' : 'text-gray-300 hover:text-white',
-                            'text-sm font-medium'
+                            location.pathname === item.href ? 'text-white' : 'text-gray-300 hover:text-gray',
+                            'text-m font-medium'
                         )}
                     >
                         {item.name}

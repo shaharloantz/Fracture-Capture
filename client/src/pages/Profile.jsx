@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../cssFiles/Profile.css'; // Import the CSS file
+import UserDetails from '../component/profile/UserDetails';
+import PatientList from '../component/profile/PatientList';
+import PatientUploads from '../component/profile/PatientUploads';
+import UploadDetails from '../component/profile/UploadDetails';
+import ChangePasswordForm from '../component/profile/ChangePasswordForm';
+import EditPatientForm from '../component/profile/EditPatientForm';
+import '../styles/Profile.css';
 
 export default function Profile() {
     const [profile, setProfile] = useState(null);
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [patientUploads, setPatientUploads] = useState([]);
     const [selectedUpload, setSelectedUpload] = useState(null);
+    const [editingPatient, setEditingPatient] = useState(null);
+    const [changingPassword, setChangingPassword] = useState(false);
+    const [passwordData, setPasswordData] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
     const navigate = useNavigate();
 
     useEffect(() => {
         axios.get('/user/profile', { withCredentials: true })
-            .then(response => {
-                setProfile(response.data);
-            })
+            .then(response => setProfile(response.data))
             .catch(error => {
                 console.error('Error fetching profile:', error.response ? error.response.data : error.message);
                 navigate('/login');
@@ -26,7 +33,7 @@ export default function Profile() {
             .then(response => {
                 setPatientUploads(response.data);
                 setSelectedPatient(patientId);
-                setSelectedUpload(null); // Reset selected upload
+                setSelectedUpload(null);
             })
             .catch(error => {
                 console.error('Error fetching patient uploads:', error.response ? error.response.data : error.message);
@@ -36,15 +43,12 @@ export default function Profile() {
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}/${month}/${day}`;
     };
 
-    const handleUploadClick = (upload) => {
-        setSelectedUpload(upload);
-    };
-
+    const handleUploadClick = (upload) => setSelectedUpload(upload);
     const handleBackClick = () => {
         if (selectedUpload) {
             setSelectedUpload(null);
@@ -54,62 +58,128 @@ export default function Profile() {
         }
     };
 
+    const handleDeleteUploadClick = (uploadId, e) => {
+        e.stopPropagation();
+        if (window.confirm("Are you sure you want to delete this upload?")) {
+            axios.delete(`/uploads/${uploadId}`, { withCredentials: true })
+                .then(response => {
+                    setPatientUploads(uploads => uploads.filter(upload => upload._id !== uploadId));
+                })
+                .catch(error => {
+                    console.error('Error deleting upload:', error.response ? error.response.data : error.message);
+                });
+        }
+    };
+
+    const handleDeletePatientClick = (patientId, e) => {
+        e.stopPropagation();
+        if (window.confirm("Are you sure you want to delete this patient and all of its uploads?")) {
+            axios.delete(`/patients/${patientId}`, { withCredentials: true })
+                .then(response => {
+                    setProfile(profile => ({
+                        ...profile,
+                        patients: profile.patients.filter(patient => patient._id !== patientId)
+                    }));
+                    if (selectedPatient === patientId) {
+                        setSelectedPatient(null);
+                        setPatientUploads([]);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting patient:', error.response ? error.response.data : error.message);
+                });
+        }
+    };
+
+    const handleEditPatientClick = (patient, e) => {
+        e.stopPropagation();
+        setEditingPatient(patient);
+    };
+
+    const handleEditPatientChange = (e) => {
+        const { name, value } = e.target;
+        setEditingPatient({ ...editingPatient, [name]: value });
+    };
+
+    const handleEditPatientSubmit = (e) => {
+        e.preventDefault();
+        axios.put(`/patients/${editingPatient._id}`, editingPatient, { withCredentials: true })
+            .then(response => {
+                setProfile(profile => ({
+                    ...profile,
+                    patients: profile.patients.map(patient => 
+                        patient._id === editingPatient._id ? editingPatient : patient
+                    )
+                }));
+                setEditingPatient(null);
+            })
+            .catch(error => {
+                console.error('Error updating patient:', error.response ? error.response.data : error.message);
+            });
+    };
+
+    const handlePasswordChange = (e) => {
+        const { name, value } = e.target;
+        setPasswordData({ ...passwordData, [name]: value });
+    };
+
+    const handlePasswordSubmit = (e) => {
+        e.preventDefault();
+        if (passwordData.newPassword !== passwordData.confirmPassword) {
+            alert("New password and confirm password do not match");
+            return;
+        }
+        axios.post('/user/change-password', passwordData, { withCredentials: true })
+            .then(response => {
+                alert(response.data.message);
+                setChangingPassword(false);
+                setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+            })
+            .catch(error => {
+                console.error('Error changing password:', error.response ? error.response.data : error.message);
+                alert('Error changing password');
+            });
+    };
+
     if (!profile) {
         return <div>Loading...</div>;
     }
 
     return (
         <div className="profile-container">
-            <div className="user-details">
-                <h1>User Profile</h1>
-                <p><strong>Hi, {profile.name}</strong></p>
-                <p><strong>Name:</strong> {profile.name}</p>
-                <p><strong>Email:</strong> {profile.email}</p>
-            </div>
-            {selectedUpload ? (
-                <div className="upload-details">
-                    <button onClick={handleBackClick}>Back</button>
-                    <h2>Upload Details</h2>
-                    <p><strong>Patient Name:</strong> {selectedUpload.patientName}</p>
-                    <p><strong>Description:</strong> {selectedUpload.description}</p>
-                    <p><strong>Body Part:</strong> {selectedUpload.bodyPart}</p>
-                    <p><strong>Date Uploaded:</strong> {new Date(selectedUpload.dateUploaded).toLocaleString()}</p>
-                    <p><strong>Prediction:</strong> {selectedUpload.prediction ? `${selectedUpload.prediction}%` : 'N/A'}</p>
-                    <img src={`http://localhost:8000${selectedUpload.imgUrl}`} alt="Upload" />
-                </div>
+            <UserDetails profile={profile} toggleChangingPassword={() => setChangingPassword(!changingPassword)} />
+            {changingPassword && (
+                <ChangePasswordForm
+                    passwordData={passwordData}
+                    handlePasswordChange={handlePasswordChange}
+                    handlePasswordSubmit={handlePasswordSubmit}
+                    setChangingPassword={setChangingPassword}
+                />
+            )}
+            {editingPatient ? (
+                <EditPatientForm
+                    editingPatient={editingPatient}
+                    handleEditPatientChange={handleEditPatientChange}
+                    handleEditPatientSubmit={handleEditPatientSubmit}
+                    setEditingPatient={setEditingPatient}
+                />
+            ) : selectedUpload ? (
+                <UploadDetails selectedUpload={selectedUpload} handleBackClick={handleBackClick} />
             ) : selectedPatient ? (
-                <div className="patient-uploads">
-                    <button onClick={handleBackClick}>Back to Patients</button>
-                    <h2>Uploads for Patient</h2>
-                    <div className="upload-folders">
-                        {patientUploads.length > 0 ? (
-                            patientUploads.map(upload => (
-                                <div key={upload._id} className="upload-folder" onClick={() => handleUploadClick(upload)}>
-                                    <p><strong>Date Uploaded:</strong> {formatDate(upload.dateUploaded)}</p>
-                                    <p><strong>Body Part:</strong> {upload.bodyPart}</p>
-                                </div>
-                            ))
-                        ) : (
-                            <p>No uploads found for this patient.</p>
-                        )}
-                    </div>
-                </div>
+                <PatientUploads
+                    patientUploads={patientUploads}
+                    handleUploadClick={handleUploadClick}
+                    handleDeleteUploadClick={handleDeleteUploadClick}
+                    formatDate={formatDate}
+                    handleBackClick={handleBackClick}
+                />
             ) : (
-                <div className="patient-history">
-                    <h2>History</h2>
-                    <div className="patient-folders">
-                        {profile.patients && profile.patients.length > 0 ? (
-                            profile.patients.map(patient => (
-                                <div key={patient._id} className="patient-folder" onClick={() => fetchPatientUploads(patient._id)}>
-                                    <p><strong>Patient Name:</strong> {patient.name}</p>
-                                    <p><strong>ID:</strong> {patient.idNumber}</p>
-                                </div>
-                            ))
-                        ) : (
-                            <p>No patients found.</p>
-                        )}
-                    </div>
-                </div>
+                <PatientList
+                    patients={profile.patients}
+                    fetchPatientUploads={fetchPatientUploads}
+                    handleEditPatientClick={handleEditPatientClick}
+                    handleDeletePatientClick={handleDeletePatientClick}
+                />
             )}
         </div>
     );

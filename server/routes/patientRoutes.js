@@ -1,7 +1,10 @@
 const express = require('express');
 const Patient = require('../models/Patient');
+const Upload = require('../models/Upload');
 const User = require('../models/User');
 const requireAuth = require('../middleware/authMiddleware');
+const path = require('path');
+const fs = require('fs');
 
 const router = express.Router();
 
@@ -30,6 +33,80 @@ router.post('/', requireAuth, async (req, res) => {
             return res.status(400).json({ error: 'Duplicate key error: A patient with this ID number already exists for this user' });
         }
         console.error('Error creating patient:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint to delete a patient and all of its uploads
+router.delete('/:patientId', requireAuth, async (req, res) => {
+    try {
+        const patient = await Patient.findById(req.params.patientId);
+        if (!patient) {
+            return res.status(404).json({ error: 'Patient not found' });
+        }
+
+        // Find and delete all uploads associated with the patient
+        const uploads = await Upload.find({ patient: req.params.patientId });
+
+        for (const upload of uploads) {
+            const filePaths = [
+                path.join(__dirname, '../uploads', upload.imgId),
+                path.join(__dirname, '../uploads', upload.processedImgId)
+            ];
+
+            for (const filePath of filePaths) {
+                fs.access(filePath, fs.constants.F_OK, (err) => {
+                    if (!err) {
+                        // File exists, proceed with deletion
+                        fs.unlink(filePath, (unlinkErr) => {
+                            if (unlinkErr) {
+                                console.error('Error deleting file:', unlinkErr);
+                            }
+                        });
+                    } else {
+                        console.warn('File does not exist, skipping file deletion:', err);
+                    }
+                });
+            }
+        }
+
+        // Delete all uploads associated with the patient
+        await Upload.deleteMany({ patient: req.params.patientId });
+        // Delete the patient
+        await Patient.findByIdAndDelete(req.params.patientId);
+
+        // Decrease the user's patient count
+        const user = await User.findById(req.user.id);
+        user.numberOfPatients -= 1;
+        await user.save();
+
+        res.json({ message: 'Patient and all related uploads deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting patient:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Endpoint to update a patient's details
+router.put('/:patientId', requireAuth, async (req, res) => {
+    const { name, gender, age, idNumber } = req.body;
+
+    try {
+        const patient = await Patient.findById(req.params.patientId);
+        if (!patient) {
+            return res.status(404).json({ error: 'Patient not found' });
+        }
+
+        patient.name = name;
+        patient.gender = gender;
+        patient.age = age;
+        patient.idNumber = idNumber;
+
+        await patient.save();
+
+        res.json(patient);
+    } catch (error) {
+        console.error('Error updating patient:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });

@@ -1,0 +1,151 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: #002855;
+  font-family: 'Calibri', sans-serif;
+  overflow-x: hidden;
+}
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: white;
+}
+
+.welcome-text {
+  text-align: center;
+}
+
+.welcome-text h2 {
+  margin-bottom: 10px;
+}
+
+.welcome-text ol {
+  text-align: left;
+  padding-left: 20px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 40, 85, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.item img {
+  width: 120px;
+  height: 120px;
+}
+
+.item p {
+  margin: 10px 0 0 0;
+}
+
+.box {
+  width: 200px;
+  height: 100px;
+  background-color: rgb(230, 230, 28);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 20px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.box:hover {
+  background-color: rgb(188, 178, 35);
+  transform: translateY(-5px);
+}
+
+.patient-form {
+  background-color: rgba(0, 40, 85, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  width: 300px;
+}
+
+.patient-form h2 {
+  text-align: center;
+}
+
+.patient-form label {
+  display: block;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.patient-form input,
+.patient-form select,
+.patient-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 10px 0;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.patient-form select option {
+  color: black;
+}
+
+.patient-form button {
+  padding: 10px;
+  margin: 10px 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0044cc;
+  color: white;
+  cursor: pointer;
+}
+
+.patient-form button[type="button"] {
+  background-color: #ff5555;
+}
+
+.patient-form button:hover {
+  background-color: #003399;
+}
+
+.patient-form button[type="button"]:hover {
+  background-color: #cc4444;
+}
+
+.back-button-icon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  margin: 15px 0 0;
+}
