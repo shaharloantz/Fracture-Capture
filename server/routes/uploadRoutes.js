@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const nodemailer = require('nodemailer');
 const path = require('path');
 const fs = require('fs');
 const Patient = require('../models/Patient');
@@ -12,17 +13,9 @@ const execPromise = util.promisify(exec);
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-        const ext = path.extname(file.originalname);
-        cb(null, file.fieldname + '-' + Date.now() + ext);
-    }
-});
+const storage = multer.memoryStorage(); // Use memory storage
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage })
 
 router.post('/', requireAuth, upload.single('image'), async (req, res) => {
     const { patientId, description, bodyPart } = req.body;
@@ -30,19 +23,13 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
     const imagePath = path.join(__dirname, '..', 'uploads', req.file.filename);
 
     try {
-        // Run prediction
         const { stdout, stderr } = await execPromise(`python predict.py "${imagePath}"`);
-        console.log('Raw stdout:', stdout); // Log full stdout
-        console.log('Raw stderr:', stderr);
-
         if (stderr) {
-            console.error('Python script error:', stderr);
             return res.status(500).json({ error: 'Error running prediction script' });
         }
 
         let prediction;
         try {
-            // Attempt to find the JSON part within the stdout
             const jsonString = stdout.match(/\{.*\}/);
             if (jsonString) {
                 prediction = JSON.parse(jsonString[0]);
@@ -50,7 +37,6 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
                 throw new Error("No JSON found in stdout");
             }
         } catch (parseError) {
-            console.error('Error parsing prediction output:', parseError);
             return res.status(500).json({ error: 'Error parsing prediction output' });
         }
 
@@ -77,14 +63,11 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
         });
 
         await newUpload.save();
-
         res.status(201).json({ newUpload, processedImagePath: processedImgPath });
     } catch (error) {
-        console.error('Error creating upload:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
 
 // Endpoint to fetch uploads for a specific patient
 router.get('/:patientId', requireAuth, async (req, res) => {
@@ -131,5 +114,42 @@ router.delete('/:uploadId', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+router.post('/send-email', upload.single('pdf'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const { patientName } = req.body;
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'mailfractions@gmail.com',
+            pass: 'ekhe ympf novh vdns'
+        }
+    });
+
+    try {
+        let info = await transporter.sendMail({
+            from: '"Your Name" <mailfractions@gmail.com>',
+            to: "mailfractions@gmail.com",
+            subject: `Medical Report for ${patientName}`,
+            text: `Please find attached the medical report for ${patientName}.`,
+            attachments: [
+                {
+                    filename: req.file.originalname,
+                    content: req.file.buffer,
+                    contentType: 'application/pdf' // Ensure the content type is set to PDF
+                }
+            ]
+        });
+
+        res.json({ message: 'Email sent successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Error sending email' });
+    }
+});
+
 
 module.exports = router;
