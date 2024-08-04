@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
 const path = require('path');
+const fs = require('fs');
 const Patient = require('../models/Patient');
 const Upload = require('../models/Upload');
 const requireAuth = require('../middleware/authMiddleware');
@@ -13,11 +14,23 @@ const execPromise = util.promisify(exec);
 
 const router = express.Router();
 
-const storage = multer.memoryStorage(); // Use memory storage for PDFs
+// Storage for file processing
+const diskStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    }
+});
 
-const upload = multer({ storage: storage });
+// Storage for sending emails
+const memoryStorage = multer.memoryStorage();
 
-router.post('/', requireAuth, upload.single('image'), async (req, res) => {
+const uploadToDisk = multer({ storage: diskStorage });
+const uploadToMemory = multer({ storage: memoryStorage });
+
+router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => {
     const { patientId, description, bodyPart } = req.body;
     const imagePath = req.file.path;
 
@@ -39,7 +52,7 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
             return res.status(500).json({ error: 'Error parsing prediction output' });
         }
 
-        const processedImgPath = path.join('uploads', path.basename(prediction.image_path)); // Fix the path
+        const processedImgPath = path.join('uploads', path.basename(prediction.image_path));
         const processedImgId = path.basename(processedImgPath);
 
         const patient = await Patient.findById(patientId);
@@ -67,7 +80,6 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
 
 
 
@@ -119,7 +131,7 @@ router.delete('/:uploadId', requireAuth, async (req, res) => {
     }
 });
 
-router.post('/send-email', upload.single('pdf'), async (req, res) => {
+router.post('/send-email', uploadToMemory.single('pdf'), async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded' });
     }
@@ -136,7 +148,7 @@ router.post('/send-email', upload.single('pdf'), async (req, res) => {
 
     try {
         let info = await transporter.sendMail({
-            from: '"Prediction Results" <mailfractions@gmail.com>',
+            from: '"Your Name" <mailfractions@gmail.com>',
             to: email,
             subject: `Medical Report for ${patientName}`,
             text: `Please find attached the medical report for ${patientName}.`,
