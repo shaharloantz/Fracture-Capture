@@ -27,9 +27,11 @@ app.use(express.urlencoded({ extended: false }));
 // Serve static files from the uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Ensure the path to uploadRoutes is correct
+app.use('/uploads', require('./routes/uploadRoutes'));
+
 app.use('/', require('./routes/authRoutes'));
 app.use('/user', require('./routes/userRoutes')); 
-app.use('/uploads', require('./routes/uploadRoutes'));
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`Server is running on port ${port}`));

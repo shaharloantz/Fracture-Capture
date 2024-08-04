@@ -86,11 +86,10 @@ router.post('/', requireAuth, upload.single('image'), async (req, res) => {
     }
 });
 
-
 // Endpoint to fetch uploads for a specific patient
 router.get('/:patientId', requireAuth, async (req, res) => {
     try {
-        const uploads = await Upload.find({ patient: req.params.patientId });
+        const uploads = await Upload.find({ patient: req.params.patientId }).exec();
         res.json(uploads);
     } catch (error) {
         console.error('Error fetching uploads:', error);
@@ -133,7 +132,6 @@ router.delete('/:uploadId', requireAuth, async (req, res) => {
     }
 });
 
-
 // Endpoint to share upload details via email
 router.post('/share', requireAuth, async (req, res) => {
     const { uploadId, email } = req.body;
@@ -161,6 +159,47 @@ router.post('/share', requireAuth, async (req, res) => {
         res.status(200).json({ message: 'Upload details shared successfully' });
     } catch (error) {
         console.error('Error sharing upload details:', error.message);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
+    }
+});
+
+
+
+router.post('/share/patient/:patientId', requireAuth, async (req, res) => {
+    const { patientId } = req.params;
+    const { email } = req.body;
+
+    console.log('Received request to share uploads for patient:', patientId);
+
+    try {
+        const uploads = await Upload.find({ patient: patientId }).exec();
+
+        if (!uploads.length) {
+            console.log('No uploads found for this patient');
+            return res.status(404).json({ error: 'No uploads found for this patient' });
+        }
+
+        console.log('Uploads found:', uploads);
+
+        const recipientDoctor = await User.findOne({ email });
+        if (!recipientDoctor) {
+            console.log('Recipient doctor not found');
+            return res.status(404).json({ error: 'Recipient doctor not found' });
+        }
+
+        console.log('Recipient doctor found:', recipientDoctor);
+
+        recipientDoctor.sharedUploads = recipientDoctor.sharedUploads || [];
+        uploads.forEach(upload => {
+            if (!recipientDoctor.sharedUploads.includes(upload._id)) {
+                recipientDoctor.sharedUploads.push(upload._id);
+            }
+        });
+        await recipientDoctor.save();
+
+        res.status(200).json({ message: 'Patient uploads shared successfully' });
+    } catch (error) {
+        console.error('Error sharing patient uploads:', error.message);
         res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });

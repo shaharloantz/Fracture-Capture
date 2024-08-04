@@ -80,7 +80,7 @@
     pointer-events: none; /* Allow click to pass through */
 }
 
-.edit-icon, .delete-icon {
+.edit-icon, .delete-icon ,.share-icon{
     width: 20px;
     height: 20px;
     pointer-events: auto; /* Enable click on icons */
@@ -89,13 +89,19 @@
 .edit-icon {
     position: absolute;
     top: 25px;
-    right: 35px; /* Adjust this value to center more */
+    right: 35px; 
 }
 
 .delete-icon {
     position: absolute;
     top: 25px;
-    left: 35px; /* Adjust this value to center more */
+    left: 35px; 
+}
+
+.share-icon {
+    position: absolute;
+    top: 25px;
+    right: 60px; 
 }
 
 .patient-form, .password-form {
@@ -220,4 +226,42 @@
 .sharedUploadsHeader{
     margin-top:60px;
     margin-bottom:10px;
+}
+
+/* Profile.css */
+.Modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    z-index: 1000;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 999;
+}
+
+.shared-uploads-container {
+    text-align: center;
+    margin-top: 60px;
+}
+
+.shared-uploads-container h2,
+.shared-uploads-container p {
+    text-align: center;
+    margin: 0 auto;
 }

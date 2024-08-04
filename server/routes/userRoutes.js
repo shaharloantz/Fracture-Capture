@@ -67,4 +67,26 @@ router.get('/shared-uploads', requireAuth, async (req, res) => {
     }
 });
 
+// Route to remove a shared upload for a specific user
+router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {
+    const { uploadId } = req.params;
+    const userId = req.user.id;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        user.sharedUploads = user.sharedUploads.filter(id => id.toString() !== uploadId);
+        await user.save();
+
+        res.status(200).json({ message: 'Shared upload removed successfully' });
+    } catch (error) {
+        console.error('Error removing shared upload:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
 module.exports = router;
