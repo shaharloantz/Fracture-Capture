@@ -192,7 +192,6 @@ export default function Profile() {
                         handleEditPatientClick={handleEditPatientClick}
                         handleDeletePatientClick={handleDeletePatientClick}
                     />
-                    <h2 className='sharedUploadsHeader'>Shared Uploads</h2>
                     <SharedPatientUploads 
                         sharedUploads={sharedUploads}
                         handleUploadClick={handleUploadClick}
