@@ -8,6 +8,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [email, setEmail] = useState('');
     const [showEmailInput, setShowEmailInput] = useState(false);
+    const [isSending, setIsSending] = useState(false);
 
     const handleImageLoad = () => {
         setImageLoaded(true);
@@ -61,6 +62,8 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
     const sendEmail = () => {
         if (!imageLoaded) return;
 
+        setIsSending(true); // Set loading state to true
+
         const input = document.getElementById('pdf-content');
         html2canvas(input, {
             useCORS: true,
@@ -111,10 +114,14 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
                     console.log('Success:', data);
                     alert('Email sent successfully');
                     setShowEmailInput(false); // Hide the email input box after sending the email
+                    setEmail(''); // Clear the email input field
                 })
                 .catch((error) => {
                     console.error('Error:', error);
                     alert('Error sending email');
+                })
+                .finally(() => {
+                    setIsSending(false); // Set loading state to false
                 });
         });
     };
@@ -161,9 +168,12 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
                         value={email}
                         onChange={handleEmailChange}
                         placeholder="Enter recipient email"
-                        style={{ padding: '10px', width: '40%', marginBottom: '10px', color:'black' }}
+                        style={{ padding: '10px', width: '40%', marginBottom: '10px',color:'black' }}
+                        disabled={isSending} // Disable input while sending
                     />
-                    <button onClick={sendEmail} style={{ padding: '10px 20px', cursor: 'pointer' }}>Send</button>
+                    <button onClick={sendEmail} style={{ padding: '10px 20px', cursor: 'pointer' }} disabled={isSending}>
+                        {isSending ? 'Sending...' : 'Send'}
+                    </button>
                 </div>
             )}
         </div>
