@@ -49,33 +49,24 @@ router.delete('/:patientId', requireAuth, async (req, res) => {
         const uploads = await Upload.find({ patient: req.params.patientId });
 
         for (const upload of uploads) {
-            const filePaths = [
-                path.join(__dirname, '../uploads', upload.imgId),
-                path.join(__dirname, '../uploads', upload.processedImgId)
-            ];
-
-            for (const filePath of filePaths) {
-                fs.access(filePath, fs.constants.F_OK, (err) => {
-                    if (!err) {
-                        // File exists, proceed with deletion
-                        fs.unlink(filePath, (unlinkErr) => {
-                            if (unlinkErr) {
-                                console.error('Error deleting file:', unlinkErr);
-                            }
-                        });
-                    } else {
-                        console.warn('File does not exist, skipping file deletion:', err);
-                    }
-                });
-            }
+            const filePath = path.join(__dirname, '../uploads', upload.imgId);
+            fs.access(filePath, fs.constants.F_OK, (err) => {
+                if (!err) {
+                    // File exists, proceed with deletion
+                    fs.unlink(filePath, (unlinkErr) => {
+                        if (unlinkErr) {
+                            console.error('Error deleting file:', unlinkErr);
+                        }
+                    });
+                } else {
+                    console.warn('File does not exist, skipping file deletion:', err);
+                }
+            });
         }
 
-        // Delete all uploads associated with the patient
         await Upload.deleteMany({ patient: req.params.patientId });
-        // Delete the patient
         await Patient.findByIdAndDelete(req.params.patientId);
 
-        // Decrease the user's patient count
         const user = await User.findById(req.user.id);
         user.numberOfPatients -= 1;
         await user.save();

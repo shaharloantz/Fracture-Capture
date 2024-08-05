@@ -1,13 +1,8 @@
-section{
-  margin-bottom: 30px;
-}
 .header {
-  padding-top: 30px;
     text-align: center;
     color: white;
     border-bottom: 1px solid #fff;
     margin-bottom: 35px;
-    background-color:  #012044;
   }
   
   .logo {

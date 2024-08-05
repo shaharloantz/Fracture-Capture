@@ -1,6 +1,4 @@
 .processing-screen {
-    margin-top: 3%;
-    margin-bottom: 5%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,19 +26,4 @@
 
 .processing-screen p {
     margin-top: 20px;
-}
-
-.progress-bar {
-    width: 40%;
-    height: 20px;
-    background-color: #f3f3f3;
-    margin-top: 40px;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.progress {
-    height: 100%;
-    background-color: #3498db;
-    width: 0%;
 }
