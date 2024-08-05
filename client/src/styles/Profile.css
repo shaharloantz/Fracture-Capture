@@ -82,13 +82,13 @@
 
 .edit-icon {
     position: absolute;
-    top: 30px;
-    right: 30px;
+    top: 32px;
+    right: 25px;
 }
 
 .delete-icon {
     position: absolute;
-    bottom: 60px;
+    bottom: 68.5px;
     left: 30px;
 }
 
