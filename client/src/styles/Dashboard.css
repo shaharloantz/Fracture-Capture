@@ -67,7 +67,7 @@ body, html {
 .box {
   width: 200px;
   height: 100px;
-  background-color: rgb(230, 230, 28);
+  background-color: rgb(247, 198, 35);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -82,7 +82,7 @@ body, html {
 }
 
 .box:hover {
-  background-color: rgb(188, 178, 35);
+  background-color: rgb(226, 181, 30);
   transform: translateY(-5px);
 }
 
