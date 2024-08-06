@@ -1,14 +1,16 @@
 import React, { useState, useRef } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import axios from 'axios';
 import downloadIcon from '../../assets/images/download-file-icon.png';
 import sendEmailIcon from '../../assets/images/send-email-icon.png';
 
-const UploadDetails = ({ selectedUpload, handleBackClick }) => {
+const UploadDetails = ({ selectedUpload, handleBackClick, profileEmail }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [email, setEmail] = useState('');
     const [showEmailInput, setShowEmailInput] = useState(false);
     const [isSending, setIsSending] = useState(false);
+    const [message, setMessage] = useState('');
     const pdfRef = useRef(null); // Use ref to store the created PDF
 
     const handleImageLoad = () => {
@@ -104,6 +106,24 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
         }
     };
 
+    const handleShareSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            if (email === profileEmail) {
+                setMessage("You cannot share with yourself.");
+                return;
+            }
+            const response = await axios.post('/uploads/share', {
+                uploadId: selectedUpload._id,
+                email
+            });
+            setMessage(response.data.message);
+        } catch (error) {
+            console.error('Error sharing upload:', error);
+            setMessage('Error sharing upload');
+        }
+    };
+
     return (
         <div className="upload-details">
             <img 
@@ -111,8 +131,8 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
                 alt="Back to Patients" 
                 className="back-button-icon" 
                 onClick={handleBackClick} 
-                style={{margin: '0 auto', marginBottom: '20px'}}
-            />            
+                style={{ margin: '0 auto', marginBottom: '20px' }}
+            />
             <div id="pdf-content">
                 <p><strong>Patient Name:</strong> {selectedUpload.patientName}</p>
                 <p><strong>Description:</strong> {selectedUpload.description}</p>
@@ -134,13 +154,13 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
                 src={downloadIcon} 
                 alt="Download as PDF" 
                 onClick={downloadPDF} 
-                style={{ cursor: 'pointer', width: '60px',margin: '0 auto', marginTop: '30px' }}
+                style={{ cursor: 'pointer', width: '60px', margin: '0 auto', marginTop: '30px' }}
             />
             <img 
-                src={sendEmailIcon}
+                src={sendEmailIcon} 
                 alt="Send as Email" 
                 onClick={() => setShowEmailInput(!showEmailInput)} // Toggle visibility
-                style={{margin: '0 auto', cursor: 'pointer', width: '60px', marginTop: '30px' }}
+                style={{ margin: '0 auto', cursor: 'pointer', width: '60px', marginTop: '30px' }}
             />
             {showEmailInput && (
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
@@ -149,7 +169,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
                         value={email}
                         onChange={handleEmailChange}
                         placeholder="Enter recipient email"
-                        style={{ padding: '10px', width: '40%', marginBottom: '10px',color:'black' }}
+                        style={{ padding: '10px', width: '40%', marginBottom: '10px', color:'black' }}
                         disabled={isSending} // Disable input while sending
                     />
                     <button onClick={sendEmail} style={{ padding: '10px 20px', cursor: 'pointer' }} disabled={isSending}>
@@ -157,6 +177,21 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
                     </button>
                 </div>
             )}
+            <form onSubmit={handleShareSubmit} style={{ marginTop: '20px' }}>
+                <label>
+                    Doctor's Email:
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter doctor's email"
+                        required
+                        style={{ display: 'block', marginTop: '5px', padding: '5px', width: '100%' }}
+                    />
+                </label>
+                <button type="submit" style={{ padding: '10px 20px', cursor: 'pointer' }}>Share</button>
+            </form>
+            {message && <p>{message}</p>}
         </div>
     );
 };

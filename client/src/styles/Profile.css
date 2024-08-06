@@ -59,6 +59,7 @@
     margin-bottom: 10px;
 }
 
+
 .patient-info, .upload-info {
     text-align: center;
     color: white;
@@ -74,7 +75,7 @@
     pointer-events: none; /* Allow click to pass through */
 }
 
-.edit-icon, .delete-icon {
+.edit-icon, .delete-icon ,.share-icon{
     width: 20px;
     height: 20px;
     pointer-events: auto; /* Enable click on icons */
@@ -84,6 +85,13 @@
     position: absolute;
     top: 32px;
     right: 25px;
+}
+
+.share-icon{
+    position: absolute;
+    bottom: 68.5px;
+    margin-left: 60px;
+    left: 30px;
 }
 
 .delete-icon {
@@ -155,3 +163,105 @@
     pointer-events: auto; /* Enable click on icons */
     margin-bottom: 30px;
  }
+
+ /* Modal styles */
+.Modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0px 5px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    z-index: 1000;
+}
+
+.Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Form styles inside the modal */
+.Modal form {
+    display: flex;
+    flex-direction: column;
+}
+
+.Modal form label {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.Modal form input[type="email"] {
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.Modal form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.Modal form button:hover {
+    background-color: #0056b3;
+}
+
+/* Close button styles */
+.Modal .close-button {
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.Modal .close-button:hover {
+    background-color: #c82333;
+}
+
+.upload-folders{
+    margin-top: 50px;
+}
+
+.shared-uploads-container{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.upload-details input[type="email"] {
+    color: black; /* Ensure text is black */
+    background-color: white; /* Ensure background is white */
+}
+
+.upload-details button {
+    background-color: #0044cc; /* Consistent button color */
+    color: white;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.upload-details button:hover {
+    background-color: #003399;
+}

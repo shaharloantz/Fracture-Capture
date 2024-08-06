@@ -5,23 +5,19 @@ import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
 import QA from './pages/QA';
 import About from './pages/About';
 import Profile from './pages/Profile';
 import NotFoundPage from './pages/NotFound';
 import Dashboard from './pages/Dashboard';
-import ProcessingScreen from './component/ProcessingScreen';
-import Results from './component/Results';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import TermsOfService from './pages/TermsOfService';
+import ProcessingScreen from './component/ProcessingScreen'; // Import the new component
+import Results from './component/Results'; // Importing the new Results component
 
 import { Toaster } from 'react-hot-toast';
 import './styles/App.css';
 
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.baseURL = 'http://localhost:8000'; // Adjust this if needed
 axios.defaults.withCredentials = true;
 
 const App = () => {
@@ -43,7 +39,7 @@ const App = () => {
     axios.post('/logout', {}, { withCredentials: true })
       .then(() => {
         setIsAuthenticated(false);
-        window.location.href = '/';
+        window.location.href = '/'; // Redirect to home after logout
       });
   };
 
@@ -53,17 +49,13 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-        <Route path='/forgot-password' element={<ForgotPassword />} /> 
-        <Route path='/reset-password' element={<ResetPassword />} />
         <Route path='/qa' element={<QA />} />
         <Route path='/about' element={<About />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path="/results" element={<Results />} />
-        <Route path="/terms-of-service" element={<TermsOfService />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path='/processing' element={<ProcessingScreen />} /> {/* Add the new route */}
         <Route path='*' element={<NotFoundPage />} />
-        {/* Testing the loader animation at route -> <Route path='/processing' element={<ProcessingScreen />} />  --> */}
       </Route>
     )
   );

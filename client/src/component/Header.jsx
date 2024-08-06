@@ -12,13 +12,10 @@ const Header = () => {
   }
 
   return (
-    <section>
-
     <header className="header" >
       <div onClick={() => navigate('/')} className="logo"></div>
       <h1 onClick={() => navigate('/')} className='clickable' >FractureCapture</h1>
     </header>
-    </section>
   );
 };
 

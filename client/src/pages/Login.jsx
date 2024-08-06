@@ -73,9 +73,6 @@ export default function Login({ setIsAuthenticated }) {
                     <p className="text-white text-center mt-4">
                         Not a member yet? <Link to="/register" className="text-blue-500 hover:underline">Click to register</Link>.
                     </p>
-                    <p className="text-white text-center mt-4">
-                        Forgot your password? <Link to="/forgot-password" className="text-blue-500 hover:underline">Click to reset</Link>.
-                    </p>
                 </form>
             </div>
         </div>
