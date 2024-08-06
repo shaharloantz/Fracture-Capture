@@ -263,7 +263,7 @@ export default function Profile() {
                         className="Modal"
                         overlayClassName="Overlay"
                     >
-                        <h2>Share Patient Uploads</h2>
+                        <h2>Share patient folder</h2>
                         <form onSubmit={handleSharePatientUploads}>
                             <label>
                                 Doctor's Email:
@@ -279,7 +279,6 @@ export default function Profile() {
                             <button type="submit" style={{ padding: '10px 20px', cursor: 'pointer' }}>Share</button>
                         </form>
                         {message && <p>{message}</p>}
-                        <button onClick={closeModal} style={{ padding: '10px 20px', cursor: 'pointer', marginTop: '10px' }}>Close</button>
                     </Modal>
                 </>
             )}
