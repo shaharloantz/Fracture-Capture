@@ -1,0 +1,29 @@
+.upload-image-label {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.upload-button-icon {
+    width: 50px; /* Adjust the size as needed */
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out; /* Smooth transition for hover effect */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.upload-button-icon:hover {
+    transform: scale(1.1); /* Slightly increase the size on hover */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Align buttons to the right */
+    width: 100%; /* Ensure the container takes the full width */
+    gap: 10px; /* Add some space between the buttons */
+    margin-top: 10px; /* Add some space above the buttons */
+}

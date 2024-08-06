@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/PatientForm.css'
 
 const PatientForm = ({ 
     isAddingToExisting, 
@@ -42,7 +43,10 @@ const PatientForm = ({
                     </label>
                     <label>
                         Upload Image:
-                        <input type="file" name="image" onChange={handleFileChange} required />
+                        <input type="file" name="image" onChange={handleFileChange} id="file-upload" style={{ display: 'none' }} required />
+                        <label htmlFor="file-upload" className="upload-image-label">
+                            <img src="src/assets/images/upload-file.png" alt="Upload" className="upload-button-icon" />
+                        </label>
                     </label>
                 </>
             ) : (
@@ -70,8 +74,10 @@ const PatientForm = ({
                     </label>
                 </>
             )}
-            <button type="submit">Submit</button>
-            <button type="button" onClick={handleBackClick}>Cancel</button>
+            <div className="button-container">
+                <button type="submit">Submit</button>
+                <button type="button" onClick={handleBackClick}>Cancel</button>
+            </div>
         </form>
     </div>
 );
