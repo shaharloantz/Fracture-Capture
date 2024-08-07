@@ -43,7 +43,7 @@
 .patient-folder, .upload-folder {
     position: relative;
     width: 150px;
-    height: 200px;
+    height: 200px; /* Adjust height to accommodate icons */
     border: none;
     background: none;
     display: flex;
@@ -66,7 +66,7 @@
 
 .icon-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 100%;
     margin-top: 10px;
 }
@@ -75,6 +75,23 @@
     width: 24px;
     height: 24px;
     cursor: pointer;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Hover effects for each icon */
+.edit-icon:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}
+
+.delete-icon:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}
+
+.share-icon:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
 }
 
 .patient-form, .password-form {
