@@ -13,19 +13,19 @@ const PatientList = ({ patients, fetchPatientUploads, handleEditPatientClick, ha
                     </div>
                     <div className="icon-container">
                         <img 
-                            src="/src/assets/images/edit-text.png" 
+                            src="/src/assets/images/pen.png" 
                             alt="Edit" 
                             className="edit-icon" 
                             onClick={(e) => handleEditPatientClick(patient, e)}
                         />
                         <img 
-                            src="/src/assets/images/bin.png" 
+                            src="/src/assets/images/delete.png" 
                             alt="Delete" 
                             className="delete-icon" 
                             onClick={(e) => handleDeletePatientClick(patient._id, e)}
                         />
                         <img 
-                            src="/src/assets/images/share.png" 
+                            src="/src/assets/images/shareblue.png" 
                             alt="Share" 
                             className="share-icon" 
                             onClick={() => handleSelectSharePatient(patient._id)}

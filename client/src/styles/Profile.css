@@ -43,7 +43,7 @@
 .patient-folder, .upload-folder {
     position: relative;
     width: 150px;
-    height: 150px;
+    height: 200px;
     border: none;
     background: none;
     display: flex;
@@ -59,45 +59,22 @@
     margin-bottom: 10px;
 }
 
-
 .patient-info, .upload-info {
     text-align: center;
     color: white;
 }
 
 .icon-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    pointer-events: none; /* Allow click to pass through */
+    width: 100%;
+    margin-top: 10px;
 }
 
-.edit-icon, .delete-icon ,.share-icon{
-    width: 20px;
-    height: 20px;
-    pointer-events: auto; /* Enable click on icons */
-}
-
-.edit-icon {
-    position: absolute;
-    top: 32px;
-    right: 25px;
-}
-
-.share-icon{
-    position: absolute;
-    bottom: 68.5px;
-    margin-left: 60px;
-    left: 30px;
-}
-
-.delete-icon {
-    position: absolute;
-    bottom: 68.5px;
-    left: 30px;
+.icon-container img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
 }
 
 .patient-form, .password-form {
@@ -157,14 +134,14 @@
     background-color: #cc4444;
 }
 
-.back-button-icon{
+.back-button-icon {
     width: 40px;
     height: 40px;
     pointer-events: auto; /* Enable click on icons */
     margin-bottom: 30px;
- }
+}
 
- /* Modal styles */
+/* Modal styles */
 .Modal {
     position: fixed;
     top: 50%;
@@ -238,11 +215,11 @@
     background-color: #c82333;
 }
 
-.upload-folders{
+.upload-folders {
     margin-top: 50px;
 }
 
-.shared-uploads-container{
+.shared-uploads-container {
     text-align: center;
     margin-top: 20px;
 }
