@@ -44,46 +44,54 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName }) =
 
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF('p', 'mm', 'a4');
-        pdf.addImage(imgData, 'PNG', 10, 0, 190, 160);
+        pdf.addImage(imgData, 'PNG', 10, -20, 190, 160);
+
+        // Add the headline
+        pdf.setFontSize(18);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Prediction Results', 10, 175);
 
         const yOffset = 190;
+        const xOffsetLabel = 10;
+        const xOffsetValue = 50;
+
         pdf.setFontSize(12);
         pdf.setFont('helvetica', 'bold');
-        pdf.text(`Patient Name:`, 10, yOffset);
+        pdf.text(`Patient Name:`, xOffsetLabel, yOffset);
         pdf.setFont('helvetica', 'normal');
-        pdf.text(` ${selectedUpload.patientName || 'N/A'}`, 45, yOffset);
+        pdf.text(` ${selectedUpload.patientName || 'N/A'}`, xOffsetValue, yOffset);
         pdf.setFont('helvetica', 'bold');
-        pdf.text(`Patient ID:`, 10, yOffset + 10);
+        pdf.text(`Patient ID:`, xOffsetLabel, yOffset + 10);
         pdf.setFont('helvetica', 'normal');
-        pdf.text(` ${patient?.idNumber || selectedUpload.patient?.patientId || 'N/A'}`, 45, yOffset + 10);
+        pdf.text(` ${patient?.idNumber || selectedUpload.patient?.patientId || 'N/A'}`, xOffsetValue, yOffset + 10);
         pdf.setFont('helvetica', 'bold');
-        pdf.text(`Gender:`, 10, yOffset + 20);
+        pdf.text(`Gender:`, xOffsetLabel, yOffset + 20);
         pdf.setFont('helvetica', 'normal');
-        pdf.text(` ${patient?.gender || selectedUpload.patient?.gender || 'N/A'}`, 45, yOffset + 20);
+        pdf.text(` ${patient?.gender || selectedUpload.patient?.gender || 'N/A'}`, xOffsetValue, yOffset + 20);
         pdf.setFont('helvetica', 'bold');
-        pdf.text(`Associated doctor:`, 10, yOffset + 30);
+        pdf.text(`Associated doctor:`, xOffsetLabel, yOffset + 30);
         pdf.setFont('helvetica', 'normal');
-        pdf.text(` ${userName}`, 45, yOffset + 30);
+        pdf.text(` ${userName}`, xOffsetValue, yOffset + 30);
         pdf.setFont('helvetica', 'bold');
-        pdf.text(`Body Part:`, 10, yOffset + 40);
+        pdf.text(`Body Part:`, xOffsetLabel, yOffset + 40);
         pdf.setFont('helvetica', 'normal');
-        pdf.text(` ${selectedUpload ? selectedUpload.bodyPart : 'N/A'}`, 45, yOffset + 40);
+        pdf.text(` ${selectedUpload ? selectedUpload.bodyPart : 'N/A'}`, xOffsetValue, yOffset + 40);
         pdf.setFont('helvetica', 'bold');
-        pdf.text(`Description:`, 10, yOffset + 50);
+        pdf.text(`Description:`, xOffsetLabel, yOffset + 50);
         pdf.setFont('helvetica', 'normal');
-        pdf.text(` ${selectedUpload ? selectedUpload.description : 'N/A'}`, 45, yOffset + 50);
+        pdf.text(` ${selectedUpload ? selectedUpload.description : 'N/A'}`, xOffsetValue, yOffset + 50);
         pdf.setFont('helvetica', 'bold');
-        pdf.text(`Date Uploaded:`, 10, yOffset + 60);
+        pdf.text(`Date Uploaded:`, xOffsetLabel, yOffset + 60);
         pdf.setFont('helvetica', 'normal');
-        pdf.text(` ${selectedUpload ? new Date(selectedUpload.dateUploaded).toLocaleString() : 'N/A'}`, 45, yOffset + 60);
+        pdf.text(` ${selectedUpload ? new Date(selectedUpload.dateUploaded).toLocaleString() : 'N/A'}`, xOffsetValue, yOffset + 60);
         pdf.setFont('helvetica', 'bold');
-        pdf.text(`Prediction:`, 10, yOffset + 70);
+        pdf.text(`Prediction:`, xOffsetLabel, yOffset + 70);
         pdf.setFont('helvetica', 'normal');
 
         const confidenceText = selectedUpload && selectedUpload.prediction.confidences.length > 0 
             ? selectedUpload.prediction.confidences.map(conf => `${(conf * 100).toFixed(2)}%`).join(', ')
             : 'No fracture detected';
-        pdf.text(` ${confidenceText}`, 45, yOffset + 70);
+        pdf.text(` ${confidenceText}`, xOffsetValue, yOffset + 70);
 
         return pdf;
     };
