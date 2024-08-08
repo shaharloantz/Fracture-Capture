@@ -6,7 +6,8 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     resetToken: { type: String, required: false }, 
-    numberOfPatients: { type: Number, default: 0 } 
+    numberOfPatients: { type: Number, default: 0 } ,
+    sharedUploads: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Upload' }]
 }, { timestamps: true });
 
 // Create the User model

@@ -3,10 +3,12 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import downloadIcon from '../../assets/images/download-file-icon.png';
 import sendEmailIcon from '../../assets/images/send-email-icon.png';
+import axios from 'axios';
 
 const UploadDetails = ({ selectedUpload, handleBackClick }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [email, setEmail] = useState('');
+    const [message, setMessage] = useState('');
     const [showEmailInput, setShowEmailInput] = useState(false);
     const [isSending, setIsSending] = useState(false);
     const pdfRef = useRef(null); // Use ref to store the created PDF
@@ -104,6 +106,21 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
         }
     };
 
+    const handleShareSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('/uploads/share', {
+                uploadId: selectedUpload._id,
+                email
+            });
+            setMessage(response.data.message);
+        } catch (error) {
+            console.error('Error sharing upload:', error);
+            console.error('Error details:', error.response ? error.response.data : error.message);
+            setMessage('Error sharing upload');
+        }
+    };
+
     return (
         <div className="upload-details">
             <img 
@@ -157,6 +174,21 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
                     </button>
                 </div>
             )}
+             <form onSubmit={handleShareSubmit} style={{ marginTop: '20px' }}>
+                <label>
+                 <p>Share with another doctor:</p>
+                    <input
+                        type="email"
+                        value={email}
+                        placeholder="Enter doctor's email"
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        style={{   padding: '10px 20px', width: '40%' }}
+                    />
+                </label>
+                <button type="submit" style={{ padding: '10px 20px', cursor: 'pointer' }}>Share</button>
+            </form>
+            {message && <p>{message}</p>}
         </div>
     );
 };

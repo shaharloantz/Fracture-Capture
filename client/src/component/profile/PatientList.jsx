@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PatientList = ({ patients, fetchPatientUploads, handleEditPatientClick, handleDeletePatientClick }) => (
+const PatientList = ({ patients, fetchPatientUploads, handleEditPatientClick, handleDeletePatientClick, handleSelectSharePatient }) => (
     <div className="patient-history">
         <h2>History</h2>
         <div className="patient-folders">
@@ -23,6 +23,12 @@ const PatientList = ({ patients, fetchPatientUploads, handleEditPatientClick, ha
                             alt="Delete" 
                             className="delete-icon" 
                             onClick={(e) => handleDeletePatientClick(patient._id, e)}
+                        />
+                        <img 
+                            src="/src/assets/images/share.png" 
+                            alt="Share" 
+                            className="share-icon" 
+                            onClick={() => handleSelectSharePatient(patient._id)}
                         />
                     </div>
                 </div>
