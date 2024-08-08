@@ -28,5 +28,4 @@ const SharedPatientUploads = ({ sharedUploads, handleUploadClick, handleDeleteUp
         </div>
     </>
 );
-
 export default SharedPatientUploads;

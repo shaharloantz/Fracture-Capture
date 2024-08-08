@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const { registerUser, loginUser } = require('../controllers/authCtrl');
+const { registerUser, loginUser, forgotPassword, resetPassword } = require('../controllers/authCtrl');
 const patientRoutes = require('./patientRoutes');
 const uploadRoutes = require('./uploadRoutes');
 
@@ -21,6 +21,8 @@ router.post('/logout', (req, res) => {
     res.clearCookie('token');
     res.json({ message: 'Logged out successfully' });
 });
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 router.use('/patients', patientRoutes);
 router.use('/uploads', uploadRoutes);
 
