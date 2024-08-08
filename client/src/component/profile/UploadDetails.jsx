@@ -63,7 +63,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName }) =
         pdf.setFont('helvetica', 'bold');
         pdf.text(`Patient ID:`, xOffsetLabel, yOffset + 10);
         pdf.setFont('helvetica', 'normal');
-        pdf.text(` ${patient?.idNumber || selectedUpload.patient?.patientId || 'N/A'}`, xOffsetValue, yOffset + 10);
+        pdf.text(` ${patient?.idNumber || selectedUpload.patient?.idNumber || 'N/A'}`, xOffsetValue, yOffset + 10);
         pdf.setFont('helvetica', 'bold');
         pdf.text(`Gender:`, xOffsetLabel, yOffset + 20);
         pdf.setFont('helvetica', 'normal');
