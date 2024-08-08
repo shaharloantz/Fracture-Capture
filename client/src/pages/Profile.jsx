@@ -1,31 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Modal from 'react-modal';
 import UserDetails from '../component/profile/UserDetails';
 import PatientList from '../component/profile/PatientList';
 import PatientUploads from '../component/profile/PatientUploads';
 import UploadDetails from '../component/profile/UploadDetails';
 import ChangePasswordForm from '../component/profile/ChangePasswordForm';
 import EditPatientForm from '../component/profile/EditPatientForm';
-import SharedPatientUploads from '../component/profile/sharedPatientUploads';
 import '../styles/Profile.css';
-
-Modal.setAppElement('#root'); // Ensure this is the id of your root element
 
 export default function Profile() {
     const [profile, setProfile] = useState(null);
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [patientUploads, setPatientUploads] = useState([]);
-    const [sharedUploads, setSharedUploads] = useState([]);
     const [selectedUpload, setSelectedUpload] = useState(null);
     const [editingPatient, setEditingPatient] = useState(null);
     const [changingPassword, setChangingPassword] = useState(false);
     const [passwordData, setPasswordData] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
-    const [email, setEmail] = useState('');
-    const [message, setMessage] = useState('');
-    const [selectedSharePatient, setSelectedSharePatient] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,12 +27,6 @@ export default function Profile() {
                 navigate('/login');
             });
     }, [navigate]);
-
-    useEffect(() => {
-        axios.get('/user/shared-uploads', { withCredentials: true })
-            .then(response => setSharedUploads(response.data))
-            .catch(error => console.error('Error fetching shared uploads:', error.response ? error.response.data : error.message));
-    }, []);
 
     const fetchPatientUploads = (patientId) => {
         axios.get(`/uploads/${patientId}`, { withCredentials: true })
@@ -79,7 +64,6 @@ export default function Profile() {
             axios.delete(`/uploads/${uploadId}`, { withCredentials: true })
                 .then(response => {
                     setPatientUploads(uploads => uploads.filter(upload => upload._id !== uploadId));
-                    setSharedUploads(uploads => uploads.filter(upload => upload._id !== uploadId));
                 })
                 .catch(error => {
                     console.error('Error deleting upload:', error.response ? error.response.data : error.message);
@@ -157,51 +141,6 @@ export default function Profile() {
             });
     };
 
-    const handleSharePatientUploads = async (e) => {
-        e.preventDefault();
-        console.log('Sharing patient uploads', selectedSharePatient, email);
-        try {
-            if (email === profile.email) {
-                setMessage("You cannot share with yourself.");
-                return;
-            }
-            const response = await axios.post(`/uploads/share/patient/${selectedSharePatient}`, {
-                email
-            }, { withCredentials: true });
-            setMessage(response.data.message);
-            setIsModalOpen(false); // Close modal after successful share
-        } catch (error) {
-            console.error('Error sharing patient uploads:', error);
-            setMessage('Error sharing patient uploads');
-        }
-    };
-
-    const handleSelectSharePatient = (patientId) => {
-        console.log('Selected patient for sharing:', patientId);
-        setSelectedSharePatient(patientId);
-        setMessage('');
-        setEmail(''); // Reset email input
-        setIsModalOpen(true); // Open modal
-    };
-
-    const handleRemoveSharedUpload = async (uploadId) => {
-        try {
-            const response = await axios.delete(`/user/shared-upload/${uploadId}`, { withCredentials: true });
-            setMessage(response.data.message);
-    
-            // Update shared uploads in the state
-            setSharedUploads(sharedUploads.filter(upload => upload._id !== uploadId));
-        } catch (error) {
-            console.error('Error removing shared upload:', error);
-            setMessage('Error removing shared upload');
-        }
-    };
-    
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
-
     if (!profile) {
         return <div>Loading...</div>;
     }
@@ -225,11 +164,7 @@ export default function Profile() {
                     setEditingPatient={setEditingPatient}
                 />
             ) : selectedUpload ? (
-                <UploadDetails 
-                    selectedUpload={selectedUpload} 
-                    handleBackClick={handleBackClick} 
-                    profileEmail={profile.email}
-                />
+                <UploadDetails selectedUpload={selectedUpload} handleBackClick={handleBackClick} />
             ) : selectedPatient ? (
                 <PatientUploads
                     patientUploads={patientUploads}
@@ -239,48 +174,12 @@ export default function Profile() {
                     handleBackClick={handleBackClick}
                 />
             ) : (
-                <>
-                    <PatientList
-                        patients={profile.patients}
-                        fetchPatientUploads={fetchPatientUploads}
-                        handleEditPatientClick={handleEditPatientClick}
-                        handleDeletePatientClick={handleDeletePatientClick}
-                        handleSelectSharePatient={handleSelectSharePatient}
-                    />
-                    <div>
-                        <SharedPatientUploads 
-                            sharedUploads={sharedUploads}
-                            handleUploadClick={handleUploadClick}
-                            handleDeleteUploadClick={handleDeleteUploadClick}
-                            handleRemoveSharedUpload={handleRemoveSharedUpload}
-                            formatDate={formatDate}
-                        />
-                    </div>
-                    <Modal
-                        isOpen={isModalOpen}
-                        onRequestClose={closeModal}
-                        contentLabel="Share Patient Uploads"
-                        className="Modal"
-                        overlayClassName="Overlay"
-                    >
-                        <h2>Share patient folder</h2>
-                        <form onSubmit={handleSharePatientUploads}>
-                            <label>
-                                Doctor's Email:
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Enter doctor's email"
-                                    required
-                                    style={{ display: 'block', marginTop: '5px', padding: '5px', width: '100%' }}
-                                />
-                            </label>
-                            <button type="submit" style={{ padding: '10px 20px', cursor: 'pointer' }}>Share</button>
-                        </form>
-                        {message && <p>{message}</p>}
-                    </Modal>
-                </>
+                <PatientList
+                    patients={profile.patients}
+                    fetchPatientUploads={fetchPatientUploads}
+                    handleEditPatientClick={handleEditPatientClick}
+                    handleDeletePatientClick={handleDeletePatientClick}
+                />
             )}
         </div>
     );
