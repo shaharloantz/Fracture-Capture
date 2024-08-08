@@ -149,7 +149,7 @@ router.post('/send-email', uploadToMemory.single('pdf'), async (req, res) => {
 
     try {
         let info = await transporter.sendMail({
-            from: '"Your Name" <mailfractions@gmail.com>',
+            from: `"Prediction Results" <${process.env.EMAIL}>`,
             to: email,
             subject: `Medical Report for ${patientName}`,
             text: `Please find attached the medical report for ${patientName}.`,

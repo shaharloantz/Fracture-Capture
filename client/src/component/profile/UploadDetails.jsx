@@ -8,6 +8,7 @@ import axios from 'axios';
 const UploadDetails = ({ selectedUpload, handleBackClick }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [email, setEmail] = useState('');
+    const [shareEmail, setShareEmail] = useState(''); // Separate state for sharing email
     const [message, setMessage] = useState('');
     const [showEmailInput, setShowEmailInput] = useState(false);
     const [isSending, setIsSending] = useState(false);
@@ -19,6 +20,10 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
+    };
+
+    const handleShareEmailChange = (e) => {
+        setShareEmail(e.target.value);
     };
 
     const createPDF = async () => {
@@ -111,9 +116,10 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
         try {
             const response = await axios.post('/uploads/share', {
                 uploadId: selectedUpload._id,
-                email
+                email: shareEmail // Use separate state for sharing email
             });
             setMessage(response.data.message);
+            setShareEmail(''); // Clear the share email input field
         } catch (error) {
             console.error('Error sharing upload:', error);
             console.error('Error details:', error.response ? error.response.data : error.message);
@@ -166,7 +172,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
                         value={email}
                         onChange={handleEmailChange}
                         placeholder="Enter recipient email"
-                        style={{ padding: '10px', width: '40%', marginBottom: '10px',color:'black' }}
+                        style={{ padding: '10px', width: '40%', marginBottom: '10px', color: 'black' }}
                         disabled={isSending} // Disable input while sending
                     />
                     <button onClick={sendEmail} style={{ padding: '10px 20px', cursor: 'pointer' }} disabled={isSending}>
@@ -174,16 +180,16 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
                     </button>
                 </div>
             )}
-             <form onSubmit={handleShareSubmit} style={{ marginTop: '20px' }}>
+            <form onSubmit={handleShareSubmit} style={{ marginTop: '20px' }}>
                 <label>
-                 <p>Share with another doctor:</p>
+                    <p>Share with another doctor:</p>
                     <input
                         type="email"
-                        value={email}
+                        value={shareEmail} // Use separate state for sharing email
                         placeholder="Enter doctor's email"
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={handleShareEmailChange}
                         required
-                        style={{   padding: '10px 20px', width: '40%' }}
+                        style={{ padding: '10px 20px', width: '40%' }}
                     />
                 </label>
                 <button type="submit" style={{ padding: '10px 20px', cursor: 'pointer' }}>Share</button>
