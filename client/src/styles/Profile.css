@@ -6,12 +6,10 @@
     padding: 20px;
     color: white;
 }
-
 .user-details {
     text-align: center;
     margin-bottom: 20px;
 }
-
 .user-details button {
     padding: 10px;
     margin: 10px;
@@ -21,17 +19,14 @@
     color: white;
     cursor: pointer;
 }
-
 .user-details button:hover {
     background-color: #003399;
 }
-
 .patient-history, .patient-uploads, .upload-details {
     width: 100%;
     max-width: 800px;
     text-align: center;
 }
-
 .patient-folders, .upload-folders {
     display: flex;
     flex-wrap: wrap;
@@ -39,11 +34,10 @@
     gap: 40px;
     margin-top: 20px;
 }
-
 .patient-folder, .upload-folder {
     position: relative;
     width: 150px;
-    height: 200px; /* Adjust height to accommodate icons */
+    height: 150px;
     border: none;
     background: none;
     display: flex;
@@ -52,48 +46,50 @@
     justify-content: center;
     cursor: pointer;
 }
-
 .folder-icon {
     width: 100px;
     height: 100px;
     margin-bottom: 10px;
 }
 
+
 .patient-info, .upload-info {
     text-align: center;
     color: white;
 }
-
 .icon-container {
-    display: flex;
-    justify-content: space-around;
+    position: absolute;
     width: 100%;
-    margin-top: 10px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none; /* Allow click to pass through */
 }
 
-.icon-container img {
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-    transition: transform 0.3s ease, filter 0.3s ease;
+.edit-icon, .delete-icon ,.share-icon{
+    width: 20px;
+    height: 20px;
+    pointer-events: auto; /* Enable click on icons */
+}
+.edit-icon {
+    position: absolute;
+    top: 32px;
+    right: 25px;
 }
 
-/* Hover effects for each icon */
-.edit-icon:hover {
-    transform: scale(1.1);
-    filter: brightness(1.2);
+.share-icon{
+    position: absolute;
+    bottom: 68.5px;
+    margin-left: 60px;
+    left: 30px;
 }
 
-.delete-icon:hover {
-    transform: scale(1.1);
-    filter: brightness(1.2);
+.delete-icon {
+    position: absolute;
+    bottom: 68.5px;
+    left: 30px;
 }
-
-.share-icon:hover {
-    transform: scale(1.1);
-    filter: brightness(1.2);
-}
-
 .patient-form, .password-form {
     background-color: rgba(0, 40, 85, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.5);
@@ -102,17 +98,14 @@
     margin: 20px 0;
     width: 300px;
 }
-
 .patient-form h2, .password-form h2 {
     text-align: center;
 }
-
 .patient-form label, .password-form label {
     display: block;
     margin-bottom: 10px;
     color: white;
 }
-
 .patient-form input,
 .patient-form select,
 .password-form input {
@@ -124,11 +117,9 @@
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
 }
-
 .patient-form select option {
     color: black;
 }
-
 .patient-form button, .password-form button {
     padding: 10px;
     margin: 10px 5px;
@@ -138,27 +129,23 @@
     color: white;
     cursor: pointer;
 }
-
 .patient-form button[type="button"], .password-form button[type="button"] {
     background-color: #ff5555;
 }
-
 .patient-form button:hover, .password-form button:hover {
     background-color: #003399;
 }
-
 .patient-form button[type="button"]:hover, .password-form button[type="button"]:hover {
     background-color: #cc4444;
 }
-
-.back-button-icon {
+.back-button-icon{
     width: 40px;
     height: 40px;
     pointer-events: auto; /* Enable click on icons */
     margin-bottom: 30px;
-}
+ }
 
-/* Modal styles */
+ /* Modal styles */
 .Modal {
     position: fixed;
     top: 50%;
@@ -232,11 +219,11 @@
     background-color: #c82333;
 }
 
-.upload-folders {
+.upload-folders{
     margin-top: 50px;
 }
 
-.shared-uploads-container {
+.shared-uploads-container{
     text-align: center;
     margin-top: 20px;
 }

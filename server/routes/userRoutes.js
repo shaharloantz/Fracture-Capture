@@ -48,7 +48,6 @@ router.post('/change-password', requireAuth, async (req, res) => {
     }
 });
 
-// Endpoint to get shared uploads
 router.get('/shared-uploads', requireAuth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id).populate({
@@ -87,6 +86,5 @@ router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
 
 module.exports = router;

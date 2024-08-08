@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast, Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import PatientForm from '../component/PatientForm';
-import ProcessingScreen from '../component/ProcessingScreen'; // Importing the new ProcessingScreen component
+import ProcessingScreen from '../component/ProcessingScreen';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
@@ -19,6 +19,7 @@ const Dashboard = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [selectedBodyPart, setSelectedBodyPart] = useState('');
   const [showProcessing, setShowProcessing] = useState(false);
+  const [estimatedTime, setEstimatedTime] = useState(10); // Default estimated time
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -95,8 +96,10 @@ const Dashboard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const startTime = Date.now();
+
     if (isAddingToExisting) {
-      setShowProcessing(true); // Only set processing screen for image uploads
+      setShowProcessing(true); // Set processing screen for image uploads only
       try {
         const formData = new FormData();
         formData.append('patientId', uploadData.patientId);
@@ -105,6 +108,9 @@ const Dashboard = () => {
         formData.append('image', uploadData.image);
 
         const response = await axios.post('/uploads', formData, { withCredentials: true });
+        const endTime = Date.now();
+        const duration = (endTime - startTime) / 1000;
+        setEstimatedTime(duration); // Update estimated time based on actual processing time
         handleUploadResponse(response);
       } catch (error) {
         console.error('Error uploading:', error.response ? error.response.data : error.message);
@@ -129,7 +135,7 @@ const Dashboard = () => {
   };
 
   if (showProcessing) {
-    return <ProcessingScreen />;
+    return <ProcessingScreen estimatedTime={estimatedTime} />;
   }
 
   if (!profile) {
@@ -170,7 +176,6 @@ const Dashboard = () => {
             alt="Back" 
             className="back-button-icon" 
             onClick={handleBackClick} 
-            
           />
           <div className="items-grid">
             {items.map((item) => (

@@ -10,7 +10,6 @@ import ChangePasswordForm from '../component/profile/ChangePasswordForm';
 import EditPatientForm from '../component/profile/EditPatientForm';
 import SharedPatientUploads from '../component/profile/sharedPatientUploads';
 import '../styles/Profile.css';
-
 Modal.setAppElement('#root'); // Ensure this is the id of your root element
 
 export default function Profile() {
@@ -21,11 +20,11 @@ export default function Profile() {
     const [selectedUpload, setSelectedUpload] = useState(null);
     const [editingPatient, setEditingPatient] = useState(null);
     const [changingPassword, setChangingPassword] = useState(false);
-    const [passwordData, setPasswordData] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
     const [selectedSharePatient, setSelectedSharePatient] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [passwordData, setPasswordData] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -47,12 +46,24 @@ export default function Profile() {
         axios.get(`/uploads/${patientId}`, { withCredentials: true })
             .then(response => {
                 setPatientUploads(response.data);
-                setSelectedPatient(patientId);
+                const patient = profile.patients.find(p => p._id === patientId);
+                setSelectedPatient(patient);
                 setSelectedUpload(null);
             })
             .catch(error => {
                 console.error('Error fetching patient uploads:', error.response ? error.response.data : error.message);
             });
+    };
+
+    const fetchSharedPatientDetails = async (upload) => {
+        try {
+            const response = await axios.get(`/patients/${upload.patient}`, { withCredentials: true });
+            const patient = response.data;
+            setSelectedUpload(upload);
+            setSelectedPatient(patient);
+        } catch (error) {
+            console.error('Error fetching patient details:', error.response ? error.response.data : error.message);
+        }
     };
 
     const formatDate = (dateString) => {
@@ -63,7 +74,14 @@ export default function Profile() {
         return `${year}/${month}/${day}`;
     };
 
-    const handleUploadClick = (upload) => setSelectedUpload(upload);
+    const handleUploadClick = (upload) => {
+        if (upload.shared) {
+            fetchSharedPatientDetails(upload);
+        } else {
+            setSelectedUpload(upload);
+        }
+    };
+
     const handleBackClick = () => {
         if (selectedUpload) {
             setSelectedUpload(null);
@@ -96,7 +114,7 @@ export default function Profile() {
                         ...profile,
                         patients: profile.patients.filter(patient => patient._id !== patientId)
                     }));
-                    if (selectedPatient === patientId) {
+                    if (selectedPatient && selectedPatient._id === patientId) {
                         setSelectedPatient(null);
                         setPatientUploads([]);
                     }
@@ -127,6 +145,9 @@ export default function Profile() {
                         patient._id === editingPatient._id ? editingPatient : patient
                     )
                 }));
+                if (selectedPatient && selectedPatient._id === editingPatient._id) {
+                    setSelectedPatient(editingPatient); // Update selected patient details
+                }
                 setEditingPatient(null);
             })
             .catch(error => {
@@ -188,7 +209,7 @@ export default function Profile() {
         try {
             const response = await axios.delete(`/user/shared-upload/${uploadId}`, { withCredentials: true });
             setMessage(response.data.message);
-    
+
             // Update shared uploads in the state
             setSharedUploads(sharedUploads.filter(upload => upload._id !== uploadId));
         } catch (error) {
@@ -196,7 +217,6 @@ export default function Profile() {
             setMessage('Error removing shared upload');
         }
     };
-    
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -228,8 +248,10 @@ export default function Profile() {
                 <UploadDetails 
                     selectedUpload={selectedUpload} 
                     handleBackClick={handleBackClick} 
+                    patient={selectedPatient} // Pass the selected patient details
+                    userName={profile.name} // Pass the user name who created the upload
                     profileEmail={profile.email}
-                />
+                />            
             ) : selectedPatient ? (
                 <PatientUploads
                     patientUploads={patientUploads}
