@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const Patient = require('../models/Patient');
 const Upload = require('../models/Upload');
+const User = require('../models/User');
 const requireAuth = require('../middleware/authMiddleware');
 const dotenv = require('dotenv').config();
 
@@ -86,7 +87,7 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
 // Endpoint to fetch uploads for a specific patient
 router.get('/:patientId', requireAuth, async (req, res) => {
     try {
-        const uploads = await Upload.find({ patient: req.params.patientId });
+        const uploads = await Upload.find({ patient: req.params.patientId }).exec();
         res.json(uploads);
     } catch (error) {
         console.error('Error fetching uploads:', error);
@@ -148,7 +149,7 @@ router.post('/send-email', uploadToMemory.single('pdf'), async (req, res) => {
 
     try {
         let info = await transporter.sendMail({
-            from: '"Your Name" <mailfractions@gmail.com>',
+            from: `"Prediction Results" <${process.env.EMAIL}>`,
             to: email,
             subject: `Medical Report for ${patientName}`,
             text: `Please find attached the medical report for ${patientName}.`,
@@ -164,6 +165,74 @@ router.post('/send-email', uploadToMemory.single('pdf'), async (req, res) => {
         res.json({ message: 'Email sent successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Error sending email' });
+    }
+});
+
+router.post('/share', requireAuth, async (req, res) => {
+    const { uploadId, email } = req.body;
+
+    try {
+        // Ensure upload exists
+        const upload = await Upload.findById(uploadId).populate('patient createdByUser');
+        if (!upload) {
+            console.error('Upload not found');
+            return res.status(404).json({ error: 'Upload not found' });
+        }
+
+        // Ensure recipient doctor exists
+        const recipientDoctor = await User.findOne({ email });
+        if (!recipientDoctor) {
+            console.error('Recipient doctor not found');
+            return res.status(404).json({ error: 'Recipient doctor not found' });
+        }
+
+        // Add shared upload to recipient's profile
+        recipientDoctor.sharedUploads = recipientDoctor.sharedUploads || [];
+        recipientDoctor.sharedUploads.push(uploadId);
+        await recipientDoctor.save();
+
+        res.status(200).json({ message: 'Upload details shared successfully' });
+    } catch (error) {
+        console.error('Error sharing upload details:', error.message);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
+    }
+});
+router.post('/share/patient/:patientId', requireAuth, async (req, res) => {
+    const { patientId } = req.params;
+    const { email } = req.body;
+
+    console.log('Received request to share uploads for patient:', patientId);
+
+    try {
+        const uploads = await Upload.find({ patient: patientId }).exec();
+
+        if (!uploads.length) {
+            console.log('No uploads found for this patient');
+            return res.status(404).json({ error: 'No uploads found for this patient' });
+        }
+
+        console.log('Uploads found:', uploads);
+
+        const recipientDoctor = await User.findOne({ email });
+        if (!recipientDoctor) {
+            console.log('Recipient doctor not found');
+            return res.status(404).json({ error: 'Recipient doctor not found' });
+        }
+
+        console.log('Recipient doctor found:', recipientDoctor);
+
+        recipientDoctor.sharedUploads = recipientDoctor.sharedUploads || [];
+        uploads.forEach(upload => {
+            if (!recipientDoctor.sharedUploads.includes(upload._id)) {
+                recipientDoctor.sharedUploads.push(upload._id);
+            }
+        });
+        await recipientDoctor.save();
+
+        res.status(200).json({ message: 'Patient uploads shared successfully' });
+    } catch (error) {
+        console.error('Error sharing patient uploads:', error.message);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
 

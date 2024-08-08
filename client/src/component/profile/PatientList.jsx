@@ -2,7 +2,6 @@ import React from 'react';
 
 const PatientList = ({ patients, fetchPatientUploads, handleEditPatientClick, handleDeletePatientClick }) => (
     <div className="patient-history">
-        <h2>History</h2>
         <div className="patient-folders">
             {patients.length > 0 ? patients.map(patient => (
                 <div key={patient._id} className="patient-folder">
