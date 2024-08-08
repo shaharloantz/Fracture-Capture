@@ -46,7 +46,8 @@ export default function Profile() {
         axios.get(`/uploads/${patientId}`, { withCredentials: true })
             .then(response => {
                 setPatientUploads(response.data);
-                setSelectedPatient(patientId);
+                const patient = profile.patients.find(p => p._id === patientId);
+                setSelectedPatient(patient);
                 setSelectedUpload(null);
             })
             .catch(error => {
@@ -95,7 +96,7 @@ export default function Profile() {
                         ...profile,
                         patients: profile.patients.filter(patient => patient._id !== patientId)
                     }));
-                    if (selectedPatient === patientId) {
+                    if (selectedPatient && selectedPatient._id === patientId) {
                         setSelectedPatient(null);
                         setPatientUploads([]);
                     }
@@ -126,6 +127,9 @@ export default function Profile() {
                         patient._id === editingPatient._id ? editingPatient : patient
                     )
                 }));
+                if (selectedPatient && selectedPatient._id === editingPatient._id) {
+                    setSelectedPatient(editingPatient); // Update selected patient details
+                }
                 setEditingPatient(null);
             })
             .catch(error => {
@@ -155,6 +159,7 @@ export default function Profile() {
                 alert('Error changing password');
             });
     };
+
     const handleSharePatientUploads = async (e) => {
         e.preventDefault();
         console.log('Sharing patient uploads', selectedSharePatient, email);
@@ -195,7 +200,6 @@ export default function Profile() {
         }
     };
 
-
     const closeModal = () => {
         setIsModalOpen(false);
     };
@@ -226,8 +230,10 @@ export default function Profile() {
                 <UploadDetails 
                     selectedUpload={selectedUpload} 
                     handleBackClick={handleBackClick} 
+                    patient={selectedPatient} // Pass the selected patient details
                     profileEmail={profile.email}
-                />            ) : selectedPatient ? (
+                />            
+            ) : selectedPatient ? (
                 <PatientUploads
                     patientUploads={patientUploads}
                     handleUploadClick={handleUploadClick}
@@ -244,7 +250,7 @@ export default function Profile() {
                         handleDeletePatientClick={handleDeletePatientClick}
                         handleSelectSharePatient={handleSelectSharePatient}
                     />
-<div>
+                    <div>
                         <SharedPatientUploads 
                             sharedUploads={sharedUploads}
                             handleUploadClick={handleUploadClick}
@@ -281,6 +287,4 @@ export default function Profile() {
             )}
         </div>
     );
-
-  
 }

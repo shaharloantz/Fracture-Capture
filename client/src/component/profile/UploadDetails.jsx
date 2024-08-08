@@ -5,7 +5,7 @@ import downloadIcon from '../../assets/images/download-file-icon.png';
 import sendEmailIcon from '../../assets/images/send-email-icon.png';
 import axios from 'axios';
 
-const UploadDetails = ({ selectedUpload, handleBackClick }) => {
+const UploadDetails = ({ selectedUpload, handleBackClick, patient }) => { // Receive patient details as a prop
     const [imageLoaded, setImageLoaded] = useState(false);
     const [email, setEmail] = useState('');
     const [shareEmail, setShareEmail] = useState(''); // Separate state for sharing email
@@ -137,7 +137,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick }) => {
                 style={{margin: '0 auto', marginBottom: '20px'}}
             />            
             <div id="pdf-content">
-                <p><strong>Patient Name:</strong> {selectedUpload.patientName}</p>
+                <p><strong>Patient Name:</strong> {patient.name}</p> {/* Use the updated patient details */}
                 <p><strong>Description:</strong> {selectedUpload.description}</p>
                 <p><strong>Body Part:</strong> {selectedUpload.bodyPart}</p>
                 <p><strong>Date Uploaded:</strong> {new Date(selectedUpload.dateUploaded).toLocaleString()}</p>
