@@ -55,6 +55,17 @@ export default function Profile() {
             });
     };
 
+    const fetchSharedPatientDetails = async (upload) => {
+        try {
+            const response = await axios.get(`/patients/${upload.patient}`, { withCredentials: true });
+            const patient = response.data;
+            setSelectedUpload(upload);
+            setSelectedPatient(patient);
+        } catch (error) {
+            console.error('Error fetching patient details:', error.response ? error.response.data : error.message);
+        }
+    };
+
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const year = date.getFullYear();
@@ -63,7 +74,14 @@ export default function Profile() {
         return `${year}/${month}/${day}`;
     };
 
-    const handleUploadClick = (upload) => setSelectedUpload(upload);
+    const handleUploadClick = (upload) => {
+        if (upload.shared) {
+            fetchSharedPatientDetails(upload);
+        } else {
+            setSelectedUpload(upload);
+        }
+    };
+
     const handleBackClick = () => {
         if (selectedUpload) {
             setSelectedUpload(null);
@@ -231,6 +249,7 @@ export default function Profile() {
                     selectedUpload={selectedUpload} 
                     handleBackClick={handleBackClick} 
                     patient={selectedPatient} // Pass the selected patient details
+                    userName={profile.name} // Pass the user name who created the upload
                     profileEmail={profile.email}
                 />            
             ) : selectedPatient ? (
