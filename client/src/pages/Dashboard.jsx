@@ -7,7 +7,7 @@ import ProcessingScreen from '../component/ProcessingScreen';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
-  const initialPatientState = { name: '', age: '', gender: '', idNumber: '' };
+  const initialPatientState = { name: '', dateOfBirth: '', gender: '', idNumber: '' };
   const initialUploadState = { patientId: '', description: '', bodyPart: '', image: null };
   const [profile, setProfile] = useState(null);
   const [showForm, setShowForm] = useState(false);

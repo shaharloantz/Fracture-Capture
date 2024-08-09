@@ -37,30 +37,37 @@ export const createPDF = async (selectedUpload, patient, userName, imageLoaded) 
     pdf.text(`Gender:`, xOffsetLabel, yOffset + 20);
     pdf.setFont('helvetica', 'normal');
     pdf.text(` ${patient?.gender || selectedUpload.patient?.gender || 'N/A'}`, xOffsetValue, yOffset + 20);
+
     pdf.setFont('helvetica', 'bold');
-    pdf.text(`Associated doctor:`, xOffsetLabel, yOffset + 30);
+    pdf.text(`Date of Birth:`, xOffsetLabel, yOffset + 30);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${userName}`, xOffsetValue, yOffset + 30);
+    pdf.text(` ${new Date(patient?.dateOfBirth).toLocaleString().substring(0,9)  || 'N/A'}`, xOffsetValue, yOffset + 30);
+
+
     pdf.setFont('helvetica', 'bold');
-    pdf.text(`Body Part:`, xOffsetLabel, yOffset + 40);
+    pdf.text(`Associated doctor:`, xOffsetLabel, yOffset + 40);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${selectedUpload ? selectedUpload.bodyPart : 'N/A'}`, xOffsetValue, yOffset + 40);
+    pdf.text(` ${userName}`, xOffsetValue, yOffset + 40);
     pdf.setFont('helvetica', 'bold');
-    pdf.text(`Description:`, xOffsetLabel, yOffset + 50);
+    pdf.text(`Body Part:`, xOffsetLabel, yOffset + 50);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${selectedUpload ? selectedUpload.description : 'N/A'}`, xOffsetValue, yOffset + 50);
+    pdf.text(` ${selectedUpload ? selectedUpload.bodyPart : 'N/A'}`, xOffsetValue, yOffset + 50);
     pdf.setFont('helvetica', 'bold');
-    pdf.text(`Date Uploaded:`, xOffsetLabel, yOffset + 60);
+    pdf.text(`Description:`, xOffsetLabel, yOffset + 60);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${selectedUpload ? new Date(selectedUpload.dateUploaded).toLocaleString() : 'N/A'}`, xOffsetValue, yOffset + 60);
+    pdf.text(` ${selectedUpload ? selectedUpload.description : 'N/A'}`, xOffsetValue, yOffset + 60);
     pdf.setFont('helvetica', 'bold');
-    pdf.text(`Prediction:`, xOffsetLabel, yOffset + 70);
+    pdf.text(`Date Uploaded:`, xOffsetLabel, yOffset + 70);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(` ${selectedUpload ? new Date(selectedUpload.dateUploaded).toLocaleString() : 'N/A'}`, xOffsetValue, yOffset + 70);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text(`Prediction:`, xOffsetLabel, yOffset + 80);
     pdf.setFont('helvetica', 'normal');
 
     const confidenceText = selectedUpload && selectedUpload.prediction.confidences.length > 0 
         ? selectedUpload.prediction.confidences.map(conf => `${(conf * 100).toFixed(2)}%`).join(', ')
         : 'No fracture detected';
-    pdf.text(` ${confidenceText}`, xOffsetValue, yOffset + 70);
+    pdf.text(` ${confidenceText}`, xOffsetValue, yOffset + 80);
 
     return pdf;
 };

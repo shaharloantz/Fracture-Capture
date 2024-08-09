@@ -6,7 +6,7 @@ const patientSchema = new mongoose.Schema({
     idNumber: { type: String, required: true },
     gender: { type: String, required: true },
     name: { type: String, required: true },
-    age: { type: Number, required: true },
+    dateOfBirth: { type: Date, required: true }, // Changed from age to dateOfBirth
     createdAt: { type: Date, default: Date.now },
 }, { timestamps: true });
 

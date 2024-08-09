@@ -10,7 +10,7 @@ const router = express.Router();
 
 // Endpoint to create a new patient
 router.post('/', requireAuth, async (req, res) => {
-    const { name, gender, age, idNumber } = req.body;
+    const { name, gender, dateOfBirth, idNumber } = req.body;
 
     try {
         const patient = new Patient({
@@ -19,7 +19,7 @@ router.post('/', requireAuth, async (req, res) => {
             idNumber,
             gender,
             name,
-            age
+            dateOfBirth
         });
         await patient.save();
 
@@ -89,7 +89,7 @@ router.delete('/:patientId', requireAuth, async (req, res) => {
 
 // Endpoint to update a patient's details
 router.put('/:patientId', requireAuth, async (req, res) => {
-    const { name, gender, age, idNumber } = req.body;
+    const { name, gender, dateOfBirth, idNumber } = req.body;
 
     try {
         const patient = await Patient.findById(req.params.patientId);
@@ -99,7 +99,7 @@ router.put('/:patientId', requireAuth, async (req, res) => {
 
         patient.name = name;
         patient.gender = gender;
-        patient.age = age;
+        patient.dateOfBirth = dateOfBirth;
         patient.idNumber = idNumber;
 
         await patient.save();

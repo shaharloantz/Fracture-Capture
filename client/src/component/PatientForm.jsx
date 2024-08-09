@@ -71,15 +71,15 @@ const PatientForm = ({
                             <input type="text" name="name" value={newPatient.name} onChange={handleInputChange} required />
                         </label>
                         <label>
-                            Age:
-                            <input type="number" name="age" value={newPatient.age} onChange={handleInputChange} min="0" required />
+                            Date of Birth:
+                            <input type="date" name="dateOfBirth" value={newPatient.dateOfBirth} onChange={handleInputChange} required />
                         </label>
                         <label>
                             Gender:
                             <select name="gender" value={newPatient.gender} onChange={handleInputChange} required>
                                 <option value="">Select</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
                             </select>
                         </label>
                         <label>
