@@ -30,6 +30,7 @@ const memoryStorage = multer.memoryStorage();
 
 const uploadToDisk = multer({ storage: diskStorage });
 const uploadToMemory = multer({ storage: memoryStorage });
+const upload = multer();
 
 router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => {
     const { patientId, description, bodyPart } = req.body;
@@ -132,39 +133,32 @@ router.delete('/:uploadId', requireAuth, async (req, res) => {
     }
 });
 
-router.post('/send-email', uploadToMemory.single('pdf'), async (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: 'No file uploaded' });
-    }
 
+router.post('/send-email', upload.single('pdf'), async (req, res) => {
     const { patientName, email } = req.body;
+    const pdfBuffer = req.file.buffer;
 
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.EMAIL,
-            pass: process.env.EMAIL_PASSWORD
-        }
-    });
+    const transporter = req.app.locals.emailTransporter;
+
+    const mailOptions = {
+        from: process.env.EMAIL,
+        to: email,
+        subject: 'Prediction Results',
+        text: `Please find attached the upload details for patient: ${patientName}`,
+        attachments: [
+            {
+                filename: `upload_details_${patientName}.pdf`,
+                content: pdfBuffer,
+            },
+        ],
+    };
 
     try {
-        let info = await transporter.sendMail({
-            from: `"Prediction Results" <${process.env.EMAIL}>`,
-            to: email,
-            subject: `Medical Report for ${patientName}`,
-            text: `Please find attached the medical report for ${patientName}.`,
-            attachments: [
-                {
-                    filename: req.file.originalname,
-                    content: req.file.buffer,
-                    contentType: 'application/pdf'
-                }
-            ]
-        });
-
+        await transporter.sendMail(mailOptions);
         res.json({ message: 'Email sent successfully' });
     } catch (error) {
-        res.status(500).json({ error: 'Error sending email' });
+        console.error('Error sending email:', error);
+        res.status(500).json({ error: 'Error sending email. Please try again later.' });
     }
 });
 
