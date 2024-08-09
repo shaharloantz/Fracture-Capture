@@ -2,7 +2,6 @@
 node_modules/
 .env
 .DS_Store
-venv/
 
 # Backend ignores
 /server/node_modules/
@@ -13,7 +12,7 @@ venv/
 # Frontend ignores
 /client/node_modules/
 /client/build/
-
+/client/.vite/deps/
 
 # IDE-specific ignores
 .vscode/
