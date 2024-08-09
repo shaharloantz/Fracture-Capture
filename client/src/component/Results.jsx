@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import { createPDF } from '../utils/pdfUtils';
 import downloadIcon from '../assets/images/download-file-icon.png'; // Make sure the path is correct
 import '../styles/Results.css';
+import axios from 'axios';
 
 const Results = () => {
   const location = useLocation();
-  const { processedImagePath } = location.state || {};
+  const { processedImagePath, selectedUpload, patient, userName } = location.state || {};
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [patientDetails, setPatientDetails] = useState(patient);
+  useEffect(() => {
+    if (!patient && selectedUpload?.id) {
+      axios.get(`/patients/${selectedUpload.id}`)
+        .then(response => {
+          setPatientDetails(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching patient details:', error);
+        });
+    }
+  }, [patient, selectedUpload]);
 
   const handleImageLoad = () => {
     setImageLoaded(true);
@@ -18,20 +30,13 @@ const Results = () => {
     console.error('Failed to load the processed image from:', processedImagePath);
   };
 
-  const downloadPDF = () => {
+  const downloadPDF = async () => {
     if (!imageLoaded) return;
 
-    const input = document.getElementById('pdf-content');
-    html2canvas(input, {
-      useCORS: true,
-      scale: 2,
-      backgroundColor: '#ffffff',
-    }).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      pdf.addImage(imgData, 'PNG', 10, 10, 190, 160); // Adjust the size and position as needed
+    const pdf = await createPDF(selectedUpload, patientDetails, userName, imageLoaded);
+    if (pdf) {
       pdf.save(`prediction_result.pdf`);
-    });
+    }
   };
 
   return (
@@ -47,7 +52,7 @@ const Results = () => {
             onError={handleImageError}
           />
         ) : (
-          <p>No image available.</p>
+          <p>No processed image available.</p>
         )}
       </div>
       <img 

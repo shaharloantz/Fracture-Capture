@@ -43,7 +43,6 @@ export const createPDF = async (selectedUpload, patient, userName, imageLoaded) 
     pdf.setFont('helvetica', 'normal');
     pdf.text(` ${new Date(patient?.dateOfBirth).toLocaleString().substring(0,9)  || 'N/A'}`, xOffsetValue, yOffset + 30);
 
-
     pdf.setFont('helvetica', 'bold');
     pdf.text(`Associated doctor:`, xOffsetLabel, yOffset + 40);
     pdf.setFont('helvetica', 'normal');
@@ -67,7 +66,7 @@ export const createPDF = async (selectedUpload, patient, userName, imageLoaded) 
     const confidenceText = selectedUpload && selectedUpload.prediction.confidences.length > 0 
         ? selectedUpload.prediction.confidences.map(conf => `${(conf * 100).toFixed(2)}%`).join(', ')
         : 'No fracture detected';
-    pdf.text(` ${confidenceText}`, xOffsetValue, yOffset + 80);
+    pdf.text(confidenceText, xOffsetValue, yOffset + 80);
 
     return pdf;
 };

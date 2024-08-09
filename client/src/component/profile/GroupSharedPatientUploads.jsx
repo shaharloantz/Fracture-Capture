@@ -14,14 +14,14 @@ const GroupedSharedPatientUploads = ({ sharedUploads, handleUploadClick, handleD
         <div className="shared-patient-uploads">
             <h2 className="sharedUploadsHeader">Shared Uploads</h2>
             {Object.keys(groupedUploads).length > 0 ? (
-                Object.keys(groupedUploads).map(patientId => (
-                    <div key={patientId} className="shared-patient-folder">
+                Object.keys(groupedUploads).map(id => (
+                    <div key={id} className="shared-patient-folder">
                         <div className="folder-info">
                             <img src="/src/assets/images/folder.png" alt="Shared Folder" className="folder-icon" />
-                            <p><strong>Patient Name:</strong> {groupedUploads[patientId].patientName}</p>
+                            <p><strong>Patient Name:</strong> {groupedUploads[id].patientName}</p>
                         </div>
                         <div className="uploads-list">
-                            {groupedUploads[patientId].uploads.map(upload => (
+                            {groupedUploads[id].uploads.map(upload => (
                                 <div key={upload._id} className="upload-item">
                                     <div className="upload-info" onClick={() => handleUploadClick(upload)}>
                                         <p><strong>Date Uploaded:</strong> {formatDate(upload.dateUploaded)}</p>

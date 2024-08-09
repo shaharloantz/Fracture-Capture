@@ -14,7 +14,6 @@ router.post('/', requireAuth, async (req, res) => {
 
     try {
         const patient = new Patient({
-            patientId: req.user.id,
             createdByUser: req.user.id,
             idNumber,
             gender,
@@ -36,17 +35,16 @@ router.post('/', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
 // Endpoint to delete a patient and all of its uploads
-router.delete('/:patientId', requireAuth, async (req, res) => {
+router.delete('/:id', requireAuth, async (req, res) => {
     try {
-        const patient = await Patient.findById(req.params.patientId);
+        const patient = await Patient.findById(req.params.id);
         if (!patient) {
             return res.status(404).json({ error: 'Patient not found' });
         }
 
         // Find and delete all uploads associated with the patient
-        const uploads = await Upload.find({ patient: req.params.patientId });
+        const uploads = await Upload.find({ patient: req.params.id });
 
         for (const upload of uploads) {
             const filePaths = [
@@ -71,9 +69,9 @@ router.delete('/:patientId', requireAuth, async (req, res) => {
         }
 
         // Delete all uploads associated with the patient
-        await Upload.deleteMany({ patient: req.params.patientId });
+        await Upload.deleteMany({ patient: req.params.id });
         // Delete the patient
-        await Patient.findByIdAndDelete(req.params.patientId);
+        await Patient.findByIdAndDelete(req.params.id);
 
         // Decrease the user's patient count
         const user = await User.findById(req.user.id);
@@ -88,11 +86,11 @@ router.delete('/:patientId', requireAuth, async (req, res) => {
 });
 
 // Endpoint to update a patient's details
-router.put('/:patientId', requireAuth, async (req, res) => {
+router.put('/:id', requireAuth, async (req, res) => {
     const { name, gender, dateOfBirth, idNumber } = req.body;
 
     try {
-        const patient = await Patient.findById(req.params.patientId);
+        const patient = await Patient.findById(req.params.id);
         if (!patient) {
             return res.status(404).json({ error: 'Patient not found' });
         }
@@ -110,5 +108,19 @@ router.put('/:patientId', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+// Get patient by ID
+router.get('/:id', async (req, res) => {
+    try {
+      const patient = await Patient.findById(req.params.id);
+      if (!patient) {
+        return res.status(404).json({ error: 'Patient not found' });
+      }
+      res.json(patient);
+    } catch (error) {
+      console.error('Error fetching patient:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 
 module.exports = router;

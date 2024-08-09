@@ -33,7 +33,7 @@ const uploadToMemory = multer({ storage: memoryStorage });
 const upload = multer();
 
 router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => {
-    const { patientId, description, bodyPart } = req.body;
+    const { id, description, bodyPart } = req.body;
     const imagePath = req.file.path;
 
     try {
@@ -57,13 +57,13 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
         const processedImgPath = path.join('uploads', path.basename(prediction.image_path));
         const processedImgId = path.basename(processedImgPath);
 
-        const patient = await Patient.findById(patientId);
+        const patient = await Patient.findById(id);
         if (!patient) {
             return res.status(404).json({ error: 'Patient not found' });
         }
 
         const newUpload = new Upload({
-            patient: patientId,
+            patient: id,
             patientName: patient.name,
             description,
             bodyPart,
@@ -86,9 +86,9 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
 
 
 // Endpoint to fetch uploads for a specific patient
-router.get('/:patientId', requireAuth, async (req, res) => {
+router.get('/:id', requireAuth, async (req, res) => {
     try {
-        const uploads = await Upload.find({ patient: req.params.patientId }).exec();
+        const uploads = await Upload.find({ patient: req.params.id }).exec();
         res.json(uploads);
     } catch (error) {
         console.error('Error fetching uploads:', error);
@@ -191,14 +191,14 @@ router.post('/share', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
-router.post('/share/patient/:patientId', requireAuth, async (req, res) => {
-    const { patientId } = req.params;
+router.post('/share/patient/:id', requireAuth, async (req, res) => {
+    const { id } = req.params;
     const { email } = req.body;
 
-    console.log('Received request to share uploads for patient:', patientId);
+    console.log('Received request to share uploads for patient:', id);
 
     try {
-        const uploads = await Upload.find({ patient: patientId }).exec();
+        const uploads = await Upload.find({ patient: id }).exec();
 
         if (!uploads.length) {
             console.log('No uploads found for this patient');
