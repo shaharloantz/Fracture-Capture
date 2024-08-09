@@ -23,7 +23,7 @@ const PatientList = ({ patients, fetchPatientUploads, handleEditPatientClick, ha
                             onClick={() => handleSelectSharePatient(patient._id)}
                         />
                         <img 
-                            src="src/assets/images/delete.png" 
+                            src="src/assets/images/bin.png" 
                             alt="Delete" 
                             className="delete-icon" 
                             onClick={(e) => handleDeletePatientClick(patient._id, e)}

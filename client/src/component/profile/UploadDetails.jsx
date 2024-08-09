@@ -87,18 +87,21 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName }) =
                     style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto', marginTop: '15px' }}
                 />
             </div>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '30px' }}>
             <img 
                 src={downloadIcon} 
                 alt="Download as PDF" 
                 onClick={downloadPDF} 
-                style={{ cursor: 'pointer', width: '60px', margin: '0 auto', marginTop: '30px' }}
+                style={{ cursor: 'pointer', width: '60px', marginRight: '20px' }}
             />
             <img 
                 src={sendEmailIcon}
                 alt="Send as Email" 
                 onClick={() => setShowEmailInput(!showEmailInput)}
-                style={{ cursor: 'pointer', width: '60px', margin: '0 auto', marginTop: '30px' }}
+                style={{ cursor: 'pointer', width: '60px' }}
             />
+            </div>
+
             {showEmailInput && (
                 <form onSubmit={(e) => { 
                     e.preventDefault(); 

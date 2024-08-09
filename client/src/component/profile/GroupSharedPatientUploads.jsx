@@ -17,7 +17,7 @@ const GroupedSharedPatientUploads = ({ sharedUploads, handleUploadClick, handleD
                 Object.keys(groupedUploads).map(patientId => (
                     <div key={patientId} className="shared-patient-folder">
                         <div className="folder-info">
-                            <img src="/src/assets/images/folder.png" alt="Shared Folder" className="folder-icon" />
+                            <img src="/src/assets/images/folderNEW.png" alt="Shared Folder" className="folder-icon" />
                             <p><strong>Patient Name:</strong> {groupedUploads[patientId].patientName}</p>
                         </div>
                         <div className="uploads-list">
