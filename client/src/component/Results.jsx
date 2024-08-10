@@ -6,22 +6,24 @@ import '../styles/Results.css';
 import axios from 'axios';
 
 const Results = () => {
-  const location = useLocation();
-  const { processedImagePath, selectedUpload, patient, userName } = location.state || {};
+const location = useLocation();
+const { processedImagePath, selectedUpload, patient, userName } = location.state || {};
+
   const [imageLoaded, setImageLoaded] = useState(false);
   const [patientDetails, setPatientDetails] = useState(patient);
+
   useEffect(() => {
     if (!patient && selectedUpload?.id) {
-      axios.get(`/patients/${selectedUpload.id}`)
-        .then(response => {
-          setPatientDetails(response.data);
-        })
-        .catch(error => {
-          console.error('Error fetching patient details:', error);
-        });
+       axios.get(`/patients/${selectedUpload.id}`)
+          .then(response => {
+             setPatientDetails(response.data);
+          })
+          .catch(error => {
+             console.error('Error fetching patient details:', error);
+          });
     }
-  }, [patient, selectedUpload]);
-
+ }, [patient, selectedUpload]);
+ 
   const handleImageLoad = () => {
     setImageLoaded(true);
   };
@@ -31,13 +33,12 @@ const Results = () => {
   };
 
   const downloadPDF = async () => {
-    if (!imageLoaded) return;
-
     const pdf = await createPDF(selectedUpload, patientDetails, userName, imageLoaded);
     if (pdf) {
-      pdf.save(`prediction_result.pdf`);
+       pdf.save(`upload_details_${selectedUpload.name || 'unknown'}.pdf`);
     }
-  };
+ };
+ 
 
   return (
     <div className="results-container">
@@ -58,7 +59,7 @@ const Results = () => {
       <img 
         src={downloadIcon} 
         alt="Download as PDF" 
-        onClick={downloadPDF} 
+        onClick={downloadPDF}
         style={{ cursor: 'pointer', width: '60px', margin: '0 auto', marginTop: '30px' }}
       />
       <Link to="/dashboard" className="back-button">Back</Link>

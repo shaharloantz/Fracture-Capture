@@ -100,8 +100,10 @@ const Dashboard = () => {
         patient: selectedPatient, 
         userName: profile.name 
       } 
-    });
-  };
+   });
+   
+};
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -115,6 +117,7 @@ const Dashboard = () => {
         formData.append('description', uploadData.description);
         formData.append('bodyPart', selectedBodyPart);
         formData.append('image', uploadData.image);
+        console.log('Selected Body Part:', selectedBodyPart); // Frontend
 
         const response = await axios.post('/uploads', formData, { withCredentials: true });
         const endTime = Date.now();

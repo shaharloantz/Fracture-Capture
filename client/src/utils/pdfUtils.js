@@ -15,7 +15,6 @@ export const createPDF = async (selectedUpload, patient, userName, imageLoaded) 
     const pdf = new jsPDF('p', 'mm', 'a4');
     pdf.addImage(imgData, 'PNG', 10, -20, 190, 160);
 
-    // Add the headline
     pdf.setFontSize(18);
     pdf.setFont('helvetica', 'bold');
     pdf.text('Prediction Results', 10, 175);
@@ -28,7 +27,7 @@ export const createPDF = async (selectedUpload, patient, userName, imageLoaded) 
     pdf.setFont('helvetica', 'bold');
     pdf.text(`Patient Name:`, xOffsetLabel, yOffset);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${selectedUpload.patientName || 'N/A'}`, xOffsetValue, yOffset);
+    pdf.text(` ${patient?.name || 'N/A'}`, xOffsetValue, yOffset);
     pdf.setFont('helvetica', 'bold');
     pdf.text(`Patient ID:`, xOffsetLabel, yOffset + 10);
     pdf.setFont('helvetica', 'normal');
@@ -41,7 +40,7 @@ export const createPDF = async (selectedUpload, patient, userName, imageLoaded) 
     pdf.setFont('helvetica', 'bold');
     pdf.text(`Date of Birth:`, xOffsetLabel, yOffset + 30);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${new Date(patient?.dateOfBirth).toLocaleString().substring(0,9)  || 'N/A'}`, xOffsetValue, yOffset + 30);
+    pdf.text(` ${new Date(patient?.dateOfBirth).toLocaleString().split(',')[0] || 'N/A'}`, xOffsetValue, yOffset + 30);
 
     pdf.setFont('helvetica', 'bold');
     pdf.text(`Associated doctor:`, xOffsetLabel, yOffset + 40);
@@ -63,7 +62,7 @@ export const createPDF = async (selectedUpload, patient, userName, imageLoaded) 
     pdf.text(`Prediction:`, xOffsetLabel, yOffset + 80);
     pdf.setFont('helvetica', 'normal');
 
-    const confidenceText = selectedUpload && selectedUpload.prediction.confidences.length > 0 
+    const confidenceText = selectedUpload?.prediction?.confidences?.length > 0 
         ? selectedUpload.prediction.confidences.map(conf => `${(conf * 100).toFixed(2)}%`).join(', ')
         : 'No fracture detected';
     pdf.text(confidenceText, xOffsetValue, yOffset + 80);
