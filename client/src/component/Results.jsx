@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const Results = () => {
   const location = useLocation();
-  const { processedImagePath, selectedUpload, patient, userName } = location.state || {};
+  const { processedImagePath, selectedUpload, patient, userName, processingTime } = location.state || {};
   const [imageLoaded, setImageLoaded] = useState(false);
   const [patientDetails, setPatientDetails] = useState(patient);
   const [email, setEmail] = useState('');
@@ -66,7 +66,7 @@ const Results = () => {
           <p>No processed image available.</p>
         )}
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '30px', gap:'20vh'}}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px',marginBottom:'30px', gap:'20vh'}}>
       <img 
         src={downloadIcon} 
         alt="Download as PDF" 

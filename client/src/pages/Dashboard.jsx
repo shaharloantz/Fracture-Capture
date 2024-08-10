@@ -89,7 +89,7 @@ const Dashboard = () => {
     setShowProcessing(false);
   };
 
-  const handleUploadResponse = (response) => {
+  const handleUploadResponse = (response, processingTime) => {
     const { processedImagePath } = response.data;
     const selectedPatient = patients.find(p => p._id === uploadData.id); // Ensure you get the correct patient
   
@@ -98,56 +98,58 @@ const Dashboard = () => {
         processedImagePath, 
         selectedUpload: uploadData, 
         patient: selectedPatient, 
-        userName: profile.name 
+        userName: profile.name,
+        processingTime  // Pass it correctly
       } 
    });
-   
 };
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const startTime = Date.now();
 
-    if (isAddingToExisting) {
-      setShowProcessing(true); // Set processing screen for image uploads only
-      try {
-        const formData = new FormData();
-        formData.append('id', uploadData.id);
-        formData.append('description', uploadData.description);
-        formData.append('bodyPart', selectedBodyPart);
-        formData.append('image', uploadData.image);
-        console.log('Selected Body Part:', selectedBodyPart); // Frontend
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const startTime = Date.now(); // Initialize startTime here
 
-        const response = await axios.post('/uploads', formData, { withCredentials: true });
-        const endTime = Date.now();
-        const duration = (endTime - startTime) / 1000;
-        setEstimatedTime(duration); // Update estimated time based on actual processing time
-        handleUploadResponse(response);
-      } catch (error) {
-        console.error('Error uploading:', error.response ? error.response.data : error.message);
-        toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
-        setShowProcessing(false);
-      }
-    } else {
-      // Handle new patient creation
-      try {
-        await axios.post('/patients', newPatient, { withCredentials: true });
-        toast.success('Patient created successfully!');
-        setNewPatient(initialPatientState);
-        setShowForm(false);
-        setShowBodyParts(true); // Go back to body parts selection after patient creation
-        setIsAddingToExisting(true); // Prepare for image upload
-        fetchPatients(); // Refresh the patients list
-      } catch (error) {
-        console.error('Error creating patient:', error.response ? error.response.data : error.message);
-        toast.error(error.response?.data?.error || 'Error creating patient. Please try again.');
-      }
+  if (isAddingToExisting) {
+    setShowProcessing(true); // Set processing screen for image uploads only
+    try {
+      const formData = new FormData();
+      formData.append('id', uploadData.id);
+      formData.append('description', uploadData.description);
+      formData.append('bodyPart', selectedBodyPart);
+      formData.append('image', uploadData.image);
+
+      const response = await axios.post('/uploads', formData, { withCredentials: true });
+      const endTime = Date.now();
+      const duration = (endTime - startTime) / 1000;
+      setEstimatedTime(duration); // Update estimated time based on actual processing time
+
+      handleUploadResponse(response, duration); // Pass duration to the response handler
+    } catch (error) {
+      console.error('Error uploading:', error.response ? error.response.data : error.message);
+      toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
+      setShowProcessing(false);
     }
-  };
+  } else {
+    // Handle new patient creation
+    try {
+      await axios.post('/patients', newPatient, { withCredentials: true });
+      toast.success('Patient created successfully!');
+      setNewPatient(initialPatientState);
+      setShowForm(false);
+      setShowBodyParts(true); // Go back to body parts selection after patient creation
+      setIsAddingToExisting(true); // Prepare for image upload
+      fetchPatients(); // Refresh the patients list
+    } catch (error) {
+      console.error('Error creating patient:', error.response ? error.response.data : error.message);
+      toast.error(error.response?.data?.error || 'Error creating patient. Please try again.');
+    }
+  }
+};
+
 
   if (showProcessing) {
-    return <ProcessingScreen estimatedTime={estimatedTime} />;
+    return <ProcessingScreen processingTime={estimatedTime} />;
   }
 
   if (!profile) {

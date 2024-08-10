@@ -37,6 +37,8 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
     const imagePath = req.file.path;
 
     try {
+        const startTime = Date.now(); // Start time
+
         const { stdout, stderr } = await execPromise(`python predict.py "${imagePath}"`);
         if (stderr) {
             return res.status(500).json({ error: 'Error running prediction script' });
@@ -77,7 +79,15 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
         });
 
         await newUpload.save();
-        res.status(201).json({ newUpload, processedImagePath: newUpload.processedImgUrl });
+
+        const endTime = Date.now(); // End time
+        const processingTime = (endTime - startTime) / 1000; // Processing time in seconds
+
+        res.status(201).json({ 
+            newUpload, 
+            processedImagePath: newUpload.processedImgUrl,
+            processingTime  // Send processing time to frontend
+        });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }
