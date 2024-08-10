@@ -31,10 +31,10 @@
 }
 
 .progress-bar {
-    width: 60%; /* Increased width for better visibility */
+    width: 40%; /* Increased width for better visibility */
     height: 30px; /* Increased height for better visibility */
     background-color: #e0e0e0; /* Light grey background */
-    margin-top: 40px;
+    margin-top: 60px;
     border-radius: 25px; /* More rounded corners */
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow for depth */

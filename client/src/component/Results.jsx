@@ -38,9 +38,11 @@ const Results = () => {
   const downloadPDF = async () => {
     const pdf = await createPDF(selectedUpload, patientDetails, userName, imageLoaded);
     if (pdf) {
-        pdf.save(`upload_details_${selectedUpload.patientName || 'unknown'}.pdf`);
+        const patientName = patientDetails?.name || selectedUpload.patientName || 'unknown';
+        pdf.save(`upload_details_${patientName}.pdf`);
     }
-  };
+};
+
 
   const handleSendEmail = async () => {
     if (!email) {
