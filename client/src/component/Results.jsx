@@ -66,18 +66,21 @@ const Results = () => {
           <p>No processed image available.</p>
         )}
       </div>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '30px', gap:'20vh'}}>
       <img 
         src={downloadIcon} 
         alt="Download as PDF" 
         onClick={downloadPDF}
-        style={{ cursor: 'pointer', width: '60px', margin: '0 auto', marginTop: '30px' }}
+        style={{ cursor: 'pointer', width: '60px', marginRight: '20px' }}
       />
       <img 
         src={sendEmailIcon}
         alt="Send as Email" 
         onClick={() => setShowEmailInput(!showEmailInput)}
-        style={{ cursor: 'pointer', width: '60px', margin: '0 auto', marginTop: '30px' }}
+        style={{ cursor: 'pointer', width: '60px' }}
+
       />
+      </div>
       {showEmailInput && (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
           <input

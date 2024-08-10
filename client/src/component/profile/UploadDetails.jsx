@@ -88,7 +88,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName }) =
                     style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto', marginTop: '15px' }}
                 />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '30px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '30px', gap:'20vh' }}>
             <img 
                 src={downloadIcon} 
                 alt="Download as PDF" 
