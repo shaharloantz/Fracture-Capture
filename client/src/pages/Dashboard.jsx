@@ -7,8 +7,8 @@ import ProcessingScreen from '../component/ProcessingScreen';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
-  const initialPatientState = { name: '', age: '', gender: '', idNumber: '' };
-  const initialUploadState = { patientId: '', description: '', bodyPart: '', image: null };
+  const initialPatientState = { name: '', dateOfBirth: '', gender: '', idNumber: '' };
+  const initialUploadState = { id: '', description: '', bodyPart: '', image: null };
   const [profile, setProfile] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [showBodyParts, setShowBodyParts] = useState(false);
@@ -91,8 +91,19 @@ const Dashboard = () => {
 
   const handleUploadResponse = (response) => {
     const { processedImagePath } = response.data;
-    navigate('/results', { state: { processedImagePath } });
-  };
+    const selectedPatient = patients.find(p => p._id === uploadData.id); // Ensure you get the correct patient
+  
+    navigate('/results', { 
+      state: { 
+        processedImagePath, 
+        selectedUpload: uploadData, 
+        patient: selectedPatient, 
+        userName: profile.name 
+      } 
+   });
+   
+};
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -102,10 +113,11 @@ const Dashboard = () => {
       setShowProcessing(true); // Set processing screen for image uploads only
       try {
         const formData = new FormData();
-        formData.append('patientId', uploadData.patientId);
+        formData.append('id', uploadData.id);
         formData.append('description', uploadData.description);
         formData.append('bodyPart', selectedBodyPart);
         formData.append('image', uploadData.image);
+        console.log('Selected Body Part:', selectedBodyPart); // Frontend
 
         const response = await axios.post('/uploads', formData, { withCredentials: true });
         const endTime = Date.now();

@@ -8,6 +8,7 @@ node_modules/
 /server/dist/
 /server/.env
 /server/weights.pt
+/server/uploads/
 
 # Frontend ignores
 /client/node_modules/

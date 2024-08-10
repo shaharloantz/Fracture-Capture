@@ -42,11 +42,11 @@ export default function Profile() {
             .catch(error => console.error('Error fetching shared uploads:', error.response ? error.response.data : error.message));
     }, []);
 
-    const fetchPatientUploads = (patientId) => {
-        axios.get(`/uploads/${patientId}`, { withCredentials: true })
+    const fetchPatientUploads = (id) => {
+        axios.get(`/uploads/${id}`, { withCredentials: true })
             .then(response => {
                 setPatientUploads(response.data);
-                const patient = profile.patients.find(p => p._id === patientId);
+                const patient = profile.patients.find(p => p._id === id);
                 setSelectedPatient(patient);
                 setSelectedUpload(null);
             })
@@ -105,16 +105,16 @@ export default function Profile() {
         }
     };
 
-    const handleDeletePatientClick = (patientId, e) => {
+    const handleDeletePatientClick = (id, e) => {
         e.stopPropagation();
         if (window.confirm("Are you sure you want to delete this patient and all of its uploads?")) {
-            axios.delete(`/patients/${patientId}`, { withCredentials: true })
+            axios.delete(`/patients/${id}`, { withCredentials: true })
                 .then(response => {
                     setProfile(profile => ({
                         ...profile,
-                        patients: profile.patients.filter(patient => patient._id !== patientId)
+                        patients: profile.patients.filter(patient => patient._id !== id)
                     }));
-                    if (selectedPatient && selectedPatient._id === patientId) {
+                    if (selectedPatient && selectedPatient._id === id) {
                         setSelectedPatient(null);
                         setPatientUploads([]);
                     }
@@ -197,9 +197,9 @@ export default function Profile() {
         }
     };
 
-    const handleSelectSharePatient = (patientId) => {
-        console.log('Selected patient for sharing:', patientId);
-        setSelectedSharePatient(patientId);
+    const handleSelectSharePatient = (id) => {
+        console.log('Selected patient for sharing:', id);
+        setSelectedSharePatient(id);
         setMessage('');
         setEmail(''); // Reset email input
         setIsModalOpen(true); // Open modal
