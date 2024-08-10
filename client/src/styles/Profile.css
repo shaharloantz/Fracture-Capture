@@ -31,6 +31,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
     gap: 40px;
     margin-top: 20px;
 }
@@ -74,20 +75,20 @@
 }
 .edit-icon {
     position: absolute;
-    top: 12px;
+    top: 20px;
     right: 30px;
 }
 
 .share-icon{
     position: absolute;
-    bottom: 80px;
+    bottom: 95px;
     margin-left: 60px;
     left: 40px;
 }
 
 .delete-icon {
     position: absolute;
-    bottom: 80px;
+    bottom: 95px;
     left: 30px;
 }
 .patient-form, .password-form {
@@ -236,4 +237,26 @@
 
 .upload-details button:hover {
     background-color: #003399;
+}
+.patient-folder {
+    position: relative;
+    width: 150px;
+    height: 180px; /* Set a consistent height */
+    border: none;
+    background: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* Distribute content evenly within the folder */
+    cursor: pointer;
+}
+
+.patient-info {
+    text-align: center;
+    color: white;
+    flex-grow: 1; /* Allows text to expand evenly */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers the text vertically */
+    margin-top: 10px; /* Add some margin to ensure space from icons */
 }
