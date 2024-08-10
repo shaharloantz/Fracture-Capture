@@ -7,7 +7,7 @@ const SharedPatientUploads = ({ sharedUploads, handleUploadClick, handleDeleteUp
         <div className="upload-folders">
             {sharedUploads.length > 0 ? sharedUploads.map(upload => (
                 <div key={upload._id} className="upload-folder">
-                    <img src="/src/assets/images/folder.png" alt="Upload Folder" className="folder-icon" onClick={() => handleUploadClick(upload)} />
+                    <img src="/src/assets/images/folderNEW.png" alt="Upload Folder" className="folder-icon" onClick={() => handleUploadClick(upload)} />
                     <div className="upload-info">
                         <p><strong>Patient Name:</strong> {upload.patientName}</p>
                         <p><strong>Date Uploaded:</strong> {formatDate(upload.dateUploaded)}</p>

@@ -40,7 +40,7 @@
     height: 150px;
     border: none;
     background: none;
-    display: flex;
+    display: flex;  
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -68,26 +68,26 @@
 }
 
 .edit-icon, .delete-icon ,.share-icon{
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     pointer-events: auto; /* Enable click on icons */
 }
 .edit-icon {
     position: absolute;
-    top: 32px;
-    right: 25px;
+    top: 12px;
+    right: 30px;
 }
 
 .share-icon{
     position: absolute;
-    bottom: 68.5px;
+    bottom: 80px;
     margin-left: 60px;
-    left: 30px;
+    left: 40px;
 }
 
 .delete-icon {
     position: absolute;
-    bottom: 68.5px;
+    bottom: 80px;
     left: 30px;
 }
 .patient-form, .password-form {
@@ -148,7 +148,7 @@
  /* Modal styles */
 .Modal {
     position: fixed;
-    top: 50%;
+    top: 50%;  
     left: 50%;
     transform: translate(-50%, -50%);
     width: 50%;
@@ -158,7 +158,6 @@
     border-radius: 8px;
     z-index: 1000;
 }
-
 .Overlay {
     position: fixed;
     top: 0;
@@ -168,18 +167,15 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
 }
-
 /* Form styles inside the modal */
 .Modal form {
     display: flex;
     flex-direction: column;
 }
-
 .Modal form label {
     margin-bottom: 10px;
     font-weight: bold;
 }
-
 .Modal form input[type="email"] {
     padding: 10px;
     margin-top: 5px;
@@ -188,7 +184,6 @@
     border-radius: 4px;
     width: 100%;
 }
-
 .Modal form button {
     padding: 10px 20px;
     background-color: #007bff;
@@ -198,11 +193,9 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
 .Modal form button:hover {
     background-color: #0056b3;
 }
-
 /* Close button styles */
 .Modal .close-button {
     padding: 10px 20px;
@@ -214,7 +207,6 @@
     transition: background-color 0.3s ease;
     margin-top: 10px;
 }
-
 .Modal .close-button:hover {
     background-color: #c82333;
 }
@@ -232,7 +224,6 @@
     color: black; /* Ensure text is black */
     background-color: white; /* Ensure background is white */
 }
-
 .upload-details button {
     background-color: #0044cc; /* Consistent button color */
     color: white;
