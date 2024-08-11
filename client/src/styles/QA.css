@@ -57,13 +57,16 @@ body {
   max-width: 600px;
   padding: 20px;
   text-align: left; /* Ensure text is left-aligned */
+  font-size: 1.2em; /* Increase the base font size */
+  
 }
 
 .qa-content h2 {
-  border-bottom: 2px solid #fff;
+  border-bottom: 1px solid #fff;
   display: inline-block;
   padding-bottom: 10px;
   margin-bottom: 20px;
+  font-size: 1.5em; /* Increase the font size of h2 elements */
 }
 
 .subtitle {
@@ -72,14 +75,19 @@ body {
   padding-bottom: 5px;
   margin: 20px 0;
   text-align: left; /* Ensure subtitles are left-aligned */
+  font-size: 1.4em; /* Increase the font size of subtitles */
+
 }
 
 .qa-item {
   margin: 20px 0;
   text-align: left; /* Ensure items are left-aligned */
+  font-size: 1.2em; /* Increase the font size of Q&A items */
+
 }
 
 .question {
+  font-size: 1.2em; /* Increase the font size of questions */
   margin: 0;
   padding: 10px;
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -94,6 +102,7 @@ body {
 }
 
 .answer {
+  font-size: 1.2em; /* Increase the font size of answers */
   margin: 0;
   padding: 10px;
   border: 1px solid rgba(255, 255, 255, 0.5);
