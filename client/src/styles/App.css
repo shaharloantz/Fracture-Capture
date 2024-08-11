@@ -2,66 +2,8 @@
 body {
     margin: 0;
     font-family: 'Arial', sans-serif;
-    padding-top: 50px; /* Make space for the navbar */
     height: 100vh; /* Full viewport height */
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .navbar, .sidebar {
-    width: 100%; /* Full width to align with the rest of the elements */
-    text-align: center; /* Center text in navbar and sidebar */
-  }
-  
-  .main-content {
-    text-align: center;
-  }
-  
-  /* Play button styling */
-  .play-button {
-    background-color: #ff9800;
-    border: none;
-    padding: 15px 25px;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  
-  /* Start icon image inside button */
-  .start-icon {
-    width: 50px; /* Adjust size as necessary */
-    height: auto;
-  }
-  
-  /* Fix class name typo */
-  .go-upload {
-    margin-top: 20px;
-  }
-  
-
-  .navbar{
-    background-color: #333;
-    color: white;
-    padding: 10px 20px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    text-align: center; /* Center text within the navbar */
-  }
-  /* Additional responsive adjustments can be added here */
-  .container { /* You might need to wrap main content in a .container div */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    margin-top: 50px; /* Offset for navbar */
-  }
-  .headliner{
-    font-size: 100px;
-    display: flex;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   }
