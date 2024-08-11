@@ -14,13 +14,12 @@ const EditPatientForm = ({ editingPatient, handleEditPatientChange, handleEditPa
             />
         </label>
         <label>
-            Age:
+            Date of Birth:
             <input
-                type="number"
-                name="age"
-                value={editingPatient.age}
+                type="date"
+                name="dateOfBirth"
+                value={editingPatient.dateOfBirth}
                 onChange={handleEditPatientChange}
-                min="0"
                 required
             />
         </label>

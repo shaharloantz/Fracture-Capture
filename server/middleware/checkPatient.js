@@ -1,10 +1,10 @@
 const Patient = require('../models/Patient');
 
 const checkPatient = async (req, res, next) => {
-    const { patientId } = req.body;
+    const { id } = req.body;
     
     try {
-        const patient = await Patient.findOne({ patientId });
+        const patient = await Patient.findOne({ id });
         if (!patient) {
             return res.status(404).json({ error: 'Patient not found. Please create a patient first.' });
         }

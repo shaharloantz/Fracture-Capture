@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const Patient = require('../models/Patient');
 const Upload = require('../models/Upload');
+const User = require('../models/User');
 const requireAuth = require('../middleware/authMiddleware');
 const dotenv = require('dotenv').config();
 
@@ -29,12 +30,15 @@ const memoryStorage = multer.memoryStorage();
 
 const uploadToDisk = multer({ storage: diskStorage });
 const uploadToMemory = multer({ storage: memoryStorage });
+const upload = multer();
 
 router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => {
-    const { patientId, description, bodyPart } = req.body;
+    const { id, description, bodyPart } = req.body;
     const imagePath = req.file.path;
 
     try {
+        const startTime = Date.now(); // Start time
+
         const { stdout, stderr } = await execPromise(`python predict.py "${imagePath}"`);
         if (stderr) {
             return res.status(500).json({ error: 'Error running prediction script' });
@@ -55,13 +59,13 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
         const processedImgPath = path.join('uploads', path.basename(prediction.image_path));
         const processedImgId = path.basename(processedImgPath);
 
-        const patient = await Patient.findById(patientId);
+        const patient = await Patient.findById(id);
         if (!patient) {
             return res.status(404).json({ error: 'Patient not found' });
         }
 
         const newUpload = new Upload({
-            patient: patientId,
+            patient: id,
             patientName: patient.name,
             description,
             bodyPart,
@@ -75,7 +79,15 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
         });
 
         await newUpload.save();
-        res.status(201).json({ newUpload, processedImagePath: newUpload.processedImgUrl });
+
+        const endTime = Date.now(); // End time
+        const processingTime = (endTime - startTime) / 1000; // Processing time in seconds
+
+        res.status(201).json({ 
+            newUpload, 
+            processedImagePath: newUpload.processedImgUrl,
+            processingTime  // Send processing time to frontend
+        });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }
@@ -84,9 +96,9 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
 
 
 // Endpoint to fetch uploads for a specific patient
-router.get('/:patientId', requireAuth, async (req, res) => {
+router.get('/:id', requireAuth, async (req, res) => {
     try {
-        const uploads = await Upload.find({ patient: req.params.patientId });
+        const uploads = await Upload.find({ patient: req.params.id }).exec();
         res.json(uploads);
     } catch (error) {
         console.error('Error fetching uploads:', error);
@@ -131,39 +143,96 @@ router.delete('/:uploadId', requireAuth, async (req, res) => {
     }
 });
 
-router.post('/send-email', uploadToMemory.single('pdf'), async (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: 'No file uploaded' });
-    }
 
+router.post('/send-email', upload.single('pdf'), async (req, res) => {
     const { patientName, email } = req.body;
+    const pdfBuffer = req.file.buffer;
 
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.EMAIL,
-            pass: process.env.EMAIL_PASSWORD
-        }
-    });
+    const transporter = req.app.locals.emailTransporter;
+
+    const mailOptions = {
+        from: process.env.EMAIL,
+        to: email,
+        subject: 'Prediction Results',
+        text: `Please find attached the upload details for patient: ${patientName}`,
+        attachments: [
+            {
+                filename: `upload_details_${patientName}.pdf`,
+                content: pdfBuffer,
+            },
+        ],
+    };
 
     try {
-        let info = await transporter.sendMail({
-            from: '"Your Name" <mailfractions@gmail.com>',
-            to: email,
-            subject: `Medical Report for ${patientName}`,
-            text: `Please find attached the medical report for ${patientName}.`,
-            attachments: [
-                {
-                    filename: req.file.originalname,
-                    content: req.file.buffer,
-                    contentType: 'application/pdf'
-                }
-            ]
-        });
-
+        await transporter.sendMail(mailOptions);
         res.json({ message: 'Email sent successfully' });
     } catch (error) {
-        res.status(500).json({ error: 'Error sending email' });
+        console.error('Error sending email:', error);
+        res.status(500).json({ error: 'Error sending email. Please try again later.' });
+    }
+});
+
+router.post('/share', requireAuth, async (req, res) => {
+    const { uploadId, email } = req.body;
+
+    try {
+        // Ensure upload exists
+        const upload = await Upload.findById(uploadId).populate('patient createdByUser');
+        if (!upload) {
+            console.error('Upload not found');
+            return res.status(404).json({ error: 'Upload not found' });
+        }
+
+        // Ensure recipient doctor exists
+        const recipientDoctor = await User.findOne({ email });
+        if (!recipientDoctor) {
+            console.error('Recipient doctor not found');
+            return res.status(404).json({ error: 'Recipient doctor not found' });
+        }
+
+        // Add shared upload to recipient's profile
+        recipientDoctor.sharedUploads = recipientDoctor.sharedUploads || [];
+        recipientDoctor.sharedUploads.push(uploadId);
+        await recipientDoctor.save();
+
+        res.status(200).json({ message: 'Upload details shared successfully' });
+    } catch (error) {
+        console.error('Error sharing upload details:', error.message);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
+    }
+});
+router.post('/share/patient/:id', requireAuth, async (req, res) => {
+    const { id } = req.params;
+    const { email } = req.body;
+
+
+    try {
+        const uploads = await Upload.find({ patient: id }).exec();
+
+        if (!uploads.length) {
+            console.log('No uploads found for this patient');
+            return res.status(404).json({ error: 'No uploads found for this patient' });
+        }
+
+
+        const recipientDoctor = await User.findOne({ email });
+        if (!recipientDoctor) {
+            console.log('Recipient doctor not found');
+            return res.status(404).json({ error: 'Recipient doctor not found' });
+        }
+
+        recipientDoctor.sharedUploads = recipientDoctor.sharedUploads || [];
+        uploads.forEach(upload => {
+            if (!recipientDoctor.sharedUploads.includes(upload._id)) {
+                recipientDoctor.sharedUploads.push(upload._id);
+            }
+        });
+        await recipientDoctor.save();
+
+        res.status(200).json({ message: 'Patient uploads shared successfully' });
+    } catch (error) {
+        console.error('Error sharing patient uploads:', error.message);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
 

@@ -7,8 +7,8 @@ import ProcessingScreen from '../component/ProcessingScreen';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
-  const initialPatientState = { name: '', age: '', gender: '', idNumber: '' };
-  const initialUploadState = { patientId: '', description: '', bodyPart: '', image: null };
+  const initialPatientState = { name: '', dateOfBirth: '', gender: '', idNumber: '' };
+  const initialUploadState = { id: '', description: '', bodyPart: '', image: null };
   const [profile, setProfile] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [showBodyParts, setShowBodyParts] = useState(false);
@@ -89,53 +89,77 @@ const Dashboard = () => {
     setShowProcessing(false);
   };
 
-  const handleUploadResponse = (response) => {
-    const { processedImagePath } = response.data;
-    navigate('/results', { state: { processedImagePath } });
+  const handleUploadResponse = (response, processingTime) => {
+    const { newUpload } = response.data;
+  
+    const updatedUploadData = {
+      ...newUpload,
+      bodyPart: newUpload.bodyPart || selectedBodyPart,
+    };
+  
+    const selectedPatient = patients.find(p => p._id === newUpload.patient);
+  
+    navigate('/results', { 
+      state: { 
+        processedImagePath: newUpload.processedImgUrl, 
+        selectedUpload: updatedUploadData, 
+        patient: selectedPatient, 
+        userName: profile.name,
+        processingTime  
+      } 
+    });
   };
+  
+  
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const startTime = Date.now();
 
-    if (isAddingToExisting) {
-      setShowProcessing(true); // Set processing screen for image uploads only
-      try {
-        const formData = new FormData();
-        formData.append('patientId', uploadData.patientId);
-        formData.append('description', uploadData.description);
-        formData.append('bodyPart', selectedBodyPart);
-        formData.append('image', uploadData.image);
 
-        const response = await axios.post('/uploads', formData, { withCredentials: true });
-        const endTime = Date.now();
-        const duration = (endTime - startTime) / 1000;
-        setEstimatedTime(duration); // Update estimated time based on actual processing time
-        handleUploadResponse(response);
-      } catch (error) {
-        console.error('Error uploading:', error.response ? error.response.data : error.message);
-        toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
-        setShowProcessing(false);
-      }
-    } else {
-      // Handle new patient creation
-      try {
-        await axios.post('/patients', newPatient, { withCredentials: true });
-        toast.success('Patient created successfully!');
-        setNewPatient(initialPatientState);
-        setShowForm(false);
-        setShowBodyParts(true); // Go back to body parts selection after patient creation
-        setIsAddingToExisting(true); // Prepare for image upload
-        fetchPatients(); // Refresh the patients list
-      } catch (error) {
-        console.error('Error creating patient:', error.response ? error.response.data : error.message);
-        toast.error(error.response?.data?.error || 'Error creating patient. Please try again.');
-      }
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const startTime = Date.now();
+
+  if (isAddingToExisting) {
+    setShowProcessing(true); 
+    try {
+      const formData = new FormData();
+      formData.append('id', uploadData.id);
+      formData.append('description', uploadData.description);
+      formData.append('bodyPart', selectedBodyPart);  // Ensure bodyPart is included
+      formData.append('image', uploadData.image);
+
+    
+
+      const response = await axios.post('/uploads', formData, { withCredentials: true });
+      const endTime = Date.now();
+      const duration = (endTime - startTime) / 1000;
+      setEstimatedTime(duration);
+
+      handleUploadResponse(response, duration); 
+    } catch (error) {
+      console.error('Error uploading:', error.response ? error.response.data : error.message);
+      toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
+      setShowProcessing(false);
     }
-  };
+  } else {
+    // Handle new patient creation
+    try {
+      await axios.post('/patients', newPatient, { withCredentials: true });
+      toast.success('Patient created successfully!');
+      setNewPatient(initialPatientState);
+      setShowForm(false);
+      setShowBodyParts(true); 
+      setIsAddingToExisting(true);
+      fetchPatients(); 
+    } catch (error) {
+      console.error('Error creating patient:', error.response ? error.response.data : error.message);
+      toast.error(error.response?.data?.error || 'Error creating patient. Please try again.');
+    }
+  }
+};
+
 
   if (showProcessing) {
-    return <ProcessingScreen estimatedTime={estimatedTime} />;
+    return <ProcessingScreen processingTime={estimatedTime} />;
   }
 
   if (!profile) {
@@ -191,17 +215,17 @@ const Dashboard = () => {
           </div>
         </>
       ) : (
-        <PatientForm 
-          isAddingToExisting={isAddingToExisting}
-          uploadData={uploadData}
-          newPatient={newPatient}
-          patients={patients}
-          selectedBodyPart={selectedBodyPart}
-          handleInputChange={handleInputChange}
-          handleFileChange={handleFileChange}
-          handleSubmit={handleSubmit}
-          handleBackClick={handleBackClick}
-        />
+<PatientForm 
+  isAddingToExisting={isAddingToExisting}
+  uploadData={uploadData}
+  newPatient={newPatient}
+  patients={patients}
+  selectedBodyPart={selectedBodyPart}  // Ensure it's passed here
+  handleInputChange={handleInputChange}
+  handleFileChange={handleFileChange}
+  handleSubmit={handleSubmit}
+  handleBackClick={handleBackClick}
+/>
       )}
     </div>
   );

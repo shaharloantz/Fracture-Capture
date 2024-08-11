@@ -2,18 +2,18 @@
 node_modules/
 .env
 .DS_Store
-venv/
 
 # Backend ignores
 /server/node_modules/
 /server/dist/
 /server/.env
 /server/weights.pt
+/server/uploads/
 
 # Frontend ignores
 /client/node_modules/
 /client/build/
-
+/client/.vite/deps/
 
 # IDE-specific ignores
 .vscode/

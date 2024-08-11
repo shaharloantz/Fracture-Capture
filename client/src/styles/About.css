@@ -1,31 +1,42 @@
-
 .about-container h1 {
-    color: rgb(194, 194, 194);
-    cursor: pointer; /* Make the cursor a pointer to indicate it's clickable */
-    transition: color 0.3s; /* Smooth transition for hover effect */
-    display: flex; /* Flexbox to align text and icon */
-    justify-content: space-between; /* Space between text and icon */
-    align-items: center; /* Align items center */
-    margin-bottom: 0px; /* Remove margin at the bottom */
-    margin-top: 5px; /* Add margin at the top */
+    color: rgb(225, 225, 225);
+    cursor: pointer;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0px;
+    margin-top: 5px;
+    position: relative; /* To position the bullet */
+    padding-left: 20px; /* Space for the bullet */
 }
 
-.about-container h1:hover {
-    color: #ffffff; 
+.about-container h1:before {
+    content: '•'; /* Bullet character */
+    color: #ffffff; /* Bullet color */
+    position: absolute;
+    left: 0;
+    font-size: 0.9em;
+    line-height: 1;
 }
 
-.about-container p {
-    color: rgb(255, 255, 255);
-    font-size: 1.2em; 
+
+.about-container p, .about-container ul, .about-container li {
+    color: rgb(210, 210, 210);
+    font-size: 1.1em; 
     margin-bottom: 10px; 
 }
 
+.about-container ul {
+    list-style: none; /* Remove default bullet points */
+    padding-left: 20px; /* Indent list items */
+}
+
 .icon {
-    font-size: 0.75em; /* Adjust the size of the icon, smaller than 'xs' */
-    opacity: 0.7; /* Adjust the opacity of the icon */
-    transition: opacity 0.3s; /* Smooth transition for opacity */
+    font-size: 0.75em;
+    opacity: 0.7;
+    transition: opacity 0.3s;
 }
 
 .about-container h1:hover .icon {
-    opacity: 1; /* Change opacity on hover */
+    opacity: 1;
 }
