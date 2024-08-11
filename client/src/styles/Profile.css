@@ -68,7 +68,7 @@
     pointer-events: none; /* Allow click to pass through */
 }
 
-.edit-icon, .delete-icon ,.share-icon{
+.edit-icon, .delete-icon ,.share-icon, .delete-icon-patient {
     width: 18px;
     height: 18px;
     pointer-events: auto; /* Enable click on icons */
@@ -89,6 +89,11 @@
 .delete-icon {
     position: absolute;
     bottom: 95px;
+    left: 30px;
+}
+.delete-icon-patient {
+    position: absolute;
+    bottom: 80px;
     left: 30px;
 }
 .patient-form, .password-form {
