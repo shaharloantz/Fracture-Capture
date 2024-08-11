@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const Results = () => {
   const location = useLocation();
-  const { processedImagePath, selectedUpload, patient, userName } = location.state || {};
+  const { processedImagePath, selectedUpload, patient, userName, processingTime } = location.state || {};
   const [imageLoaded, setImageLoaded] = useState(false);
   const [patientDetails, setPatientDetails] = useState(patient);
   const [email, setEmail] = useState('');
@@ -38,9 +38,10 @@ const Results = () => {
   const downloadPDF = async () => {
     const pdf = await createPDF(selectedUpload, patientDetails, userName, imageLoaded);
     if (pdf) {
-        pdf.save(`upload_details_${selectedUpload.patientName || 'unknown'}.pdf`);
+        const patientName = patientDetails?.name || selectedUpload.patientName || 'unknown';
+        pdf.save(`upload_details_${patientName}.pdf`);
     }
-  };
+};
 
   const handleSendEmail = async () => {
     if (!email) {
@@ -66,7 +67,7 @@ const Results = () => {
           <p>No processed image available.</p>
         )}
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '30px', gap:'20vh'}}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px',marginBottom:'30px', gap:'20vh'}}>
       <img 
         src={downloadIcon} 
         alt="Download as PDF" 

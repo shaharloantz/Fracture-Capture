@@ -37,6 +37,8 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
     const imagePath = req.file.path;
 
     try {
+        const startTime = Date.now(); // Start time
+
         const { stdout, stderr } = await execPromise(`python predict.py "${imagePath}"`);
         if (stderr) {
             return res.status(500).json({ error: 'Error running prediction script' });
@@ -77,7 +79,15 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
         });
 
         await newUpload.save();
-        res.status(201).json({ newUpload, processedImagePath: newUpload.processedImgUrl });
+
+        const endTime = Date.now(); // End time
+        const processingTime = (endTime - startTime) / 1000; // Processing time in seconds
+
+        res.status(201).json({ 
+            newUpload, 
+            processedImagePath: newUpload.processedImgUrl,
+            processingTime  // Send processing time to frontend
+        });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }
@@ -195,7 +205,6 @@ router.post('/share/patient/:id', requireAuth, async (req, res) => {
     const { id } = req.params;
     const { email } = req.body;
 
-    console.log('Received request to share uploads for patient:', id);
 
     try {
         const uploads = await Upload.find({ patient: id }).exec();
@@ -205,15 +214,12 @@ router.post('/share/patient/:id', requireAuth, async (req, res) => {
             return res.status(404).json({ error: 'No uploads found for this patient' });
         }
 
-        console.log('Uploads found:', uploads);
 
         const recipientDoctor = await User.findOne({ email });
         if (!recipientDoctor) {
             console.log('Recipient doctor not found');
             return res.status(404).json({ error: 'Recipient doctor not found' });
         }
-
-        console.log('Recipient doctor found:', recipientDoctor);
 
         recipientDoctor.sharedUploads = recipientDoctor.sharedUploads || [];
         uploads.forEach(upload => {

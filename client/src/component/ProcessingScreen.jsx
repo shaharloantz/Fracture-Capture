@@ -1,22 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/ProcessingScreen.css';
 
-const ProcessingScreen = ({ estimatedTime }) => {
+const ProcessingScreen = ({ processingTime }) => {
+
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
+        if (!processingTime || processingTime <= 0) {
+            console.error("Invalid processing time:", processingTime);
+            return;
+        }
+
+        const totalTime = Math.max(processingTime, 1); // Ensure a minimum of 1 second
+        const increment = 100 / totalTime; // Calculate progress increment per second
+
         const interval = setInterval(() => {
             setProgress((prevProgress) => {
-                const newProgress = prevProgress + (100 / estimatedTime);
+                const newProgress = prevProgress + increment;
                 if (newProgress >= 100) {
                     clearInterval(interval);
+                    return 100;
                 }
                 return newProgress;
             });
-        }, 1000);
+        }, 1000); // Update every second
 
         return () => clearInterval(interval);
-    }, [estimatedTime]);
+    }, [processingTime]);
 
     return (
         <div className="processing-screen">
@@ -28,5 +38,6 @@ const ProcessingScreen = ({ estimatedTime }) => {
         </div>
     );
 };
+
 
 export default ProcessingScreen;

@@ -2,6 +2,11 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 export const createPDF = async (selectedUpload, patient, userName, imageLoaded) => {
+    /*
+    console.log('createPDF - selectedUpload:', selectedUpload);  // Debug log
+    console.log('createPDF - patient:', patient);  // Debug log
+    console.log('createPDF - userName:', userName);  // Debug log
+q*/
     if (!imageLoaded) return null;
 
     const input = document.getElementById('pdf-content');
@@ -50,7 +55,7 @@ export const createPDF = async (selectedUpload, patient, userName, imageLoaded) 
     pdf.setFont('helvetica', 'bold');
     pdf.text(`Body Part:`, xOffsetLabel, yOffset + 50);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${selectedUpload.bodyPart || 'N/A'}`, xOffsetValue, yOffset + 50);
+    pdf.text(` ${selectedUpload.bodyPart}`, xOffsetValue, yOffset + 50);
     pdf.setFont('helvetica', 'bold');
     pdf.text(`Description:`, xOffsetLabel, yOffset + 60);
     pdf.setFont('helvetica', 'normal');
@@ -72,6 +77,11 @@ export const createPDF = async (selectedUpload, patient, userName, imageLoaded) 
 };
 
 export const sendEmail = async (selectedUpload, email, imageLoaded, setIsSending, setShowEmailInput, setEmail, patient, userName) => {
+    /*
+    console.log('sendEmail - selectedUpload:', selectedUpload);  // Debug log
+    console.log('sendEmail - patient:', patient);  // Debug log
+    console.log('sendEmail - userName:', userName);  // Debug log
+*/
     if (!imageLoaded) return;
 
     setIsSending(true);
@@ -84,11 +94,12 @@ export const sendEmail = async (selectedUpload, email, imageLoaded, setIsSending
         formData.append('patientName', selectedUpload.patientName || 'unknown');
         formData.append('email', email);
 
+        /*
         console.log('Sending email with the following data:', {
             patientName: selectedUpload.patientName || 'unknown',
             email: email,
         });
-
+        */
         fetch('http://localhost:8000/uploads/send-email', {
             method: 'POST',
             body: formData,
