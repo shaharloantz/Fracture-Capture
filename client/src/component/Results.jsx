@@ -43,7 +43,6 @@ const Results = () => {
     }
 };
 
-
   const handleSendEmail = async () => {
     if (!email) {
       alert('Please enter a valid email address.');

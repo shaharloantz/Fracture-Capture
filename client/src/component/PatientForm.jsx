@@ -24,6 +24,42 @@ const PatientForm = ({
         }
     };
 
+    // Modify the validateForm to log and ensure bodyPart is correctly passed
+    const validateForm = () => {
+        if (!selectedBodyPart) {
+            alert('Please select a body part.');
+            console.log('Validation failed: No body part selected');
+            return false;
+        }
+        if (!uploadData.description) {
+            alert('Please provide a description.');
+            return false;
+        }
+        if (!uploadData.image) {
+            alert('Please upload an image.');
+            return false;
+        }
+        return true;
+    };
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        if (validateForm()) {
+            // Log the selected body part to ensure it's being passed correctly
+            
+            // Ensure that bodyPart is passed in the submission process
+            handleInputChange({ target: { name: 'bodyPart', value: selectedBodyPart } });
+    
+            /*
+            console.log('Submitting with the following data:');
+            console.log('Upload Data:', { ...uploadData, bodyPart: selectedBodyPart });
+            console.log('New Patient:', newPatient);
+            */
+            handleSubmit(e);
+        }
+    };
+    
+
     return (
         <div className="dashboard-container">
             <img 
@@ -32,7 +68,7 @@ const PatientForm = ({
                 className="back-button-icon" 
                 onClick={handleBackClick} 
             />
-            <form onSubmit={handleSubmit} className="patient-form">
+            <form onSubmit={onSubmit} className="patient-form">
                 {isAddingToExisting ? (
                     <>
                         <label>

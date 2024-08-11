@@ -180,7 +180,6 @@ export default function Profile() {
 
     const handleSharePatientUploads = async (e) => {
         e.preventDefault();
-        console.log('Sharing patient uploads', selectedSharePatient, email);
         try {
             if (email === profile.email) {
                 setMessage("You cannot share with yourself.");
@@ -198,7 +197,6 @@ export default function Profile() {
     };
 
     const handleSelectSharePatient = (id) => {
-        console.log('Selected patient for sharing:', id);
         setSelectedSharePatient(id);
         setMessage('');
         setEmail(''); // Reset email input

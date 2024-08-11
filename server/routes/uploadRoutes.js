@@ -205,7 +205,6 @@ router.post('/share/patient/:id', requireAuth, async (req, res) => {
     const { id } = req.params;
     const { email } = req.body;
 
-    console.log('Received request to share uploads for patient:', id);
 
     try {
         const uploads = await Upload.find({ patient: id }).exec();
@@ -215,15 +214,12 @@ router.post('/share/patient/:id', requireAuth, async (req, res) => {
             return res.status(404).json({ error: 'No uploads found for this patient' });
         }
 
-        console.log('Uploads found:', uploads);
 
         const recipientDoctor = await User.findOne({ email });
         if (!recipientDoctor) {
             console.log('Recipient doctor not found');
             return res.status(404).json({ error: 'Recipient doctor not found' });
         }
-
-        console.log('Recipient doctor found:', recipientDoctor);
 
         recipientDoctor.sharedUploads = recipientDoctor.sharedUploads || [];
         uploads.forEach(upload => {

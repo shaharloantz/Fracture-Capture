@@ -14,9 +14,6 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName }) =
     const pdfRef = useRef(null);
 
     useEffect(() => {
-        console.log('selectedUpload:', selectedUpload);
-        console.log('patient:', patient);
-        console.log('userName:', userName);
     }, [selectedUpload, patient, userName]);
 
     const handleImageLoad = () => {
