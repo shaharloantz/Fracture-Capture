@@ -6,8 +6,8 @@ const PatientList = ({ patients, fetchPatientUploads, handleEditPatientClick, ha
                 <div key={patient._id} className="patient-folder">
                     <img src="/src/assets/images/folderNEW.png" alt="Patient Folder" className="folder-icon" onClick={() => fetchPatientUploads(patient._id)} />
                     <div className="patient-info">
-                        <p><strong>Patient Name:</strong> {patient.name}</p>
-                        <p><strong>ID:</strong> {patient.idNumber}</p>
+                    <p><strong>Patient Name:</strong> <span className="patient-name">{patient.name}</span></p>
+                    <p><strong>ID:</strong> {patient.idNumber}</p>
                     </div>
                     <div className="icon-container">
                         <img 

@@ -265,3 +265,8 @@
     justify-content: center; /* Centers the text vertically */
     margin-top: 10px; /* Add some margin to ensure space from icons */
 }
+
+.patient-name {
+    display: block; /* Forces the name onto the next line */
+    margin-left: 10px; /* Optional: adds some indentation if desired */
+}
