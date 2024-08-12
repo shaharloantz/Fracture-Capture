@@ -20,7 +20,7 @@ const PatientUploads = ({ patientUploads, handleUploadClick, handleDeleteUploadC
                         <img 
                             src="src/assets/images/bin.png" 
                             alt="Delete" 
-                            className="delete-icon-patient" 
+                            className="delete-icon" 
                             onClick={(e) => handleDeleteUploadClick(upload._id, e)}
                         />
                     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect,useRef, useState } from 'react';
 import axios from 'axios';
 import { toast, Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +21,7 @@ const Dashboard = () => {
   const [showProcessing, setShowProcessing] = useState(false);
   const [estimatedTime, setEstimatedTime] = useState(10); // Default estimated time
   const navigate = useNavigate();
+  const controllerRef = useRef(null);
 
   useEffect(() => {
     fetchProfileData();
@@ -110,7 +111,12 @@ const Dashboard = () => {
     });
   };
   
-  
+  const handleAbort = () => {
+    if (controllerRef.current) {
+      controllerRef.current.abort(); // Abort the ongoing request
+    }
+    setShowProcessing(false); // Stop showing the processing screen
+  };
 
 
 
@@ -120,6 +126,8 @@ const handleSubmit = async (e) => {
 
   if (isAddingToExisting) {
     setShowProcessing(true); 
+    controllerRef.current = new AbortController(); // Initialize the AbortController
+    const { signal } = controllerRef.current;
     try {
       const formData = new FormData();
       formData.append('id', uploadData.id);
@@ -127,9 +135,7 @@ const handleSubmit = async (e) => {
       formData.append('bodyPart', selectedBodyPart);  // Ensure bodyPart is included
       formData.append('image', uploadData.image);
 
-    
-
-      const response = await axios.post('/uploads', formData, { withCredentials: true });
+      const response = await axios.post('/uploads', formData, { withCredentials: true, signal });
       const endTime = Date.now();
       const duration = (endTime - startTime) / 1000;
       setEstimatedTime(duration);
@@ -159,7 +165,7 @@ const handleSubmit = async (e) => {
 
 
   if (showProcessing) {
-    return <ProcessingScreen processingTime={estimatedTime} />;
+    return <ProcessingScreen processingTime={estimatedTime} onAbort={handleAbort} />;
   }
 
   if (!profile) {

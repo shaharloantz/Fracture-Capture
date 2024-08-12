@@ -3,7 +3,7 @@ import downloadIcon from '../../assets/images/download-file-icon.png';
 import sendEmailIcon from '../../assets/images/send-email-icon.png';
 import axios from 'axios';
 import { createPDF, sendEmail } from '../../utils/pdfUtils';
-
+import {toast } from 'react-hot-toast';
 const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [email, setEmail] = useState('');
@@ -78,12 +78,13 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName }) =
                     : 'No fracture detected'}
                 </span></p>
                 <img 
-                    src={`http://localhost:8000${selectedUpload.processedImgUrl}`} 
-                    alt="Processed Upload" 
-                    onLoad={handleImageLoad} 
-                    crossOrigin="anonymous"
-                    style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto', marginTop: '15px' }}
-                />
+    src={`http://localhost:8000${selectedUpload.processedImgUrl}`} 
+    alt="Processed Upload" 
+    onLoad={handleImageLoad} 
+    className="processed-image"  /* Apply consistent class here */
+    style={{ marginTop: '15px' }}  /* Additional inline styles if necessary */
+ />
+
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '30px', gap:'20vh' }}>
             <img 
@@ -104,7 +105,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName }) =
                 <form onSubmit={(e) => { 
                     e.preventDefault(); 
                     if (!email) {
-                        alert('Please enter a valid email address.');
+                        toast.error('Please enter a valid email address.');
                         return;
                     }
                     sendEmail(selectedUpload, email, imageLoaded, setIsSending, setShowEmailInput, setEmail, patient, userName); 

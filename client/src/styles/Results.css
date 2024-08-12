@@ -21,12 +21,13 @@
   }
   
   .processed-image {
+    display: block;
     max-width: 100%;
-    width: 600px; /* Set a specific width */
-    height: 600px;
+    height: auto;
     border: 1px solid #ccc; /* Optional: add border */
     margin: 0 auto; /* Center image horizontally */
-  }
+}
+
   
   .prediction-result {
     background-color: rgba(0, 40, 85, 0.7);

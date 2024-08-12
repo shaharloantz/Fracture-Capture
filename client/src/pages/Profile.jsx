@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import {toast} from 'react-hot-toast';
 import Modal from 'react-modal';
 import UserDetails from '../component/profile/UserDetails';
 import PatientList from '../component/profile/PatientList';
@@ -163,18 +164,18 @@ export default function Profile() {
     const handlePasswordSubmit = (e) => {
         e.preventDefault();
         if (passwordData.newPassword !== passwordData.confirmPassword) {
-            alert("New password and confirm password do not match");
+            toast.error("New password and confirm password do not match");
             return;
         }
         axios.post('/user/change-password', passwordData, { withCredentials: true })
             .then(response => {
-                alert(response.data.message);
+                toast.error(response.data.message);
                 setChangingPassword(false);
                 setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
             })
             .catch(error => {
                 console.error('Error changing password:', error.response ? error.response.data : error.message);
-                alert('Error changing password');
+                toast.error('Error changing password');
             });
     };
 

@@ -5,6 +5,7 @@ import downloadIcon from '../assets/images/download-file-icon.png';
 import sendEmailIcon from '../assets/images/send-email-icon.png'; // Add the send email icon
 import '../styles/Results.css';
 import axios from 'axios';
+import {toast} from 'react-hot-toast';
 
 const Results = () => {
   const location = useLocation();
@@ -45,7 +46,7 @@ const Results = () => {
 
   const handleSendEmail = async () => {
     if (!email) {
-      alert('Please enter a valid email address.');
+      toast.error('Please enter a valid email address.');
       return;
     }
     await sendEmail(selectedUpload, email, imageLoaded, setIsSending, setShowEmailInput, setEmail, patientDetails, userName);

@@ -2,9 +2,10 @@ const Patient = require('../models/Patient');
 
 const checkPatient = async (req, res, next) => {
     const { id } = req.body;
-    
+    const patientId = Number(id); // Ensure id is a number
+
     try {
-        const patient = await Patient.findOne({ id });
+        const patient = await Patient.findOne({ idNumber: patientId });
         if (!patient) {
             return res.status(404).json({ error: 'Patient not found. Please create a patient first.' });
         }
