@@ -1,7 +1,7 @@
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import {toast} from 'react-hot-toast';
-export const createPDF = async (selectedUpload, patient, userName, imageLoaded) => {
+export const createPDF = async (selectedUpload, patient, userName, imageLoaded, profileEmail) => {
     if (!imageLoaded) return null;
 
     const input = document.getElementById('pdf-content');
@@ -61,7 +61,7 @@ export const createPDF = async (selectedUpload, patient, userName, imageLoaded) 
     pdf.setFont('helvetica', 'bold');
     pdf.text(`Associated doctor:`, xOffsetLabel, yOffset);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${userName}`, xOffsetValue, yOffset);
+    pdf.text(` ${userName} (${profileEmail})`, xOffsetValue, yOffset);
     yOffset += 10;
 
     pdf.setFont('helvetica', 'bold');

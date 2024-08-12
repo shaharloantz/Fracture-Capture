@@ -106,6 +106,7 @@ const Dashboard = () => {
         selectedUpload: updatedUploadData, 
         patient: selectedPatient, 
         userName: profile.name,
+        profileEmail: profile.email,
         processingTime  
       } 
     });

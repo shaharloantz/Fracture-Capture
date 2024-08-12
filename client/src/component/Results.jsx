@@ -37,7 +37,7 @@ const Results = () => {
   };
 
   const downloadPDF = async () => {
-    const pdf = await createPDF(selectedUpload, patientDetails, userName, imageLoaded);
+    const pdf = await createPDF(selectedUpload, patientDetails, userName, imageLoaded, profileEmail);
     if (pdf) {
         const patientName = patientDetails?.name || selectedUpload.patientName || 'unknown';
         pdf.save(`upload_details_${patientName}.pdf`);
@@ -54,7 +54,7 @@ const Results = () => {
 
   return (
     <div className="results-container">
-      <h2>Prediction Results</h2>
+      <h1>Prediction Results</h1>
       <div id="pdf-content">
         {processedImagePath ? (
           <img 
