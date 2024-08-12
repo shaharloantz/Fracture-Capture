@@ -28,6 +28,20 @@ export default function Register() {
             return;
         }
 
+        // Check for at least one capital letter and one number
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+
+        if (!hasUpperCase) {
+            toast.error("Password should contain at least one capital letter!");
+            return;
+        }
+
+        if (!hasNumber) {
+            toast.error("Password should contain at least one number!");
+            return;
+        }
+
         try {
             setLoading(true);
             const { data: responseData } = await axios.post('/register', { name, email, password });
@@ -42,7 +56,7 @@ export default function Register() {
             }
         } catch (error) {
             setLoading(false);
-            console.log('Error at register page: ', error);
+            console.log('Error at register page: ', error.response ? error.response.data : error.message);
             toast.error('Registration failed. Please try again.');
         }
     };
@@ -57,9 +71,8 @@ export default function Register() {
     return (
         <div className="flex items-center justify-center min-h-screen">
             <div className="flex flex-col items-center">
-            <img src="src/assets/images/user.png" alt="Above" className="mb-4 w-32 h-32 mt-[-10rem]" /> 
-                {/* Adjust the path and size as needed */}
-                <form onSubmit={registerUser} className="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md mt-[-0rem]"> {/* Adjusted margin-top */}
+                <img src="src/assets/images/user.png" alt="Above" className="mb-4 w-32 h-32 mt-[-10rem]" />
+                <form onSubmit={registerUser} className="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md mt-[-0rem]">
                     <h2 className="text-2xl font-bold mb-6 text-white text-center">Register</h2>
                     <div className="mb-4">
                         <label htmlFor="name" className="block text-gray-300">Name</label>
@@ -87,15 +100,20 @@ export default function Register() {
                     </div>
                     <div className="mb-6">
                         <label htmlFor="password" className="block text-gray-300">Password</label>
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password"
-                            placeholder="Enter Password.." 
-                            value={data.password} 
-                            onChange={handleChange} 
-                            className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-gray-300"
-                        />
+                        <div className="relative group">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password"
+                                placeholder="Enter Password.." 
+                                value={data.password} 
+                                onChange={handleChange} 
+                                className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-gray-300"
+                            />
+                            <span className="tooltip group-hover:opacity-100">
+                                Password must be at least 6 characters, contain one capital letter, and one number.
+                            </span>
+                        </div>
                     </div>
                     <button type="submit" disabled={loading} className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-200">
                         {loading ? 'Registering...' : 'Submit'}
