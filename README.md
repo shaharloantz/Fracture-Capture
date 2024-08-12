@@ -1,12 +1,5 @@
 # FractureCapture
 
-Link to temporary model using pytorch:
-https://colab.research.google.com/drive/1clxH12Dj_zyuHxOJ13XltIx0IRX3v6rd?usp=sharing
-
-Link to another model using tensorflow:
-https://colab.research.google.com/drive/1z9zyc2pK7tFzRK4Ua6TnhWVXbh0RQlCP?usp=sharing
-
-
 
 
 ## Description
@@ -64,7 +57,7 @@ This project aims to address the shortage of skilled radiologists and the limita
    ```
 2. Navigate to the project directory:
    ```
-   cd Fractures-Captures
+   cd FractureCapture
    ```
 3. Install dependencies:
    ```
@@ -74,6 +67,15 @@ This project aims to address the shortage of skilled radiologists and the limita
    ```
    pip install -r requirements.txt
    ```
+5. Create a `.env` file in the `server` directory with the following content:
+   ```
+   MONGO_URI=<your_mongo_uri>
+   JWT_SECRET=<your_jwt_secret>
+   EMAIL=<your_email>
+   EMAIL_PASSWORD=<your_email_password>
+   SMTP_SECURE=<smtp_secure>
+   SMTP_PORT=<smtp_port>
+   SMTP_HOST=<smtp_host>
 
 ## Usage
 
