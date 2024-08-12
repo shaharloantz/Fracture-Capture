@@ -3,7 +3,7 @@ import downloadIcon from '../../assets/images/download-file-icon.png';
 import sendEmailIcon from '../../assets/images/send-email-icon.png';
 import axios from 'axios';
 import { createPDF, sendEmail } from '../../utils/pdfUtils';
-
+import {toast } from 'react-hot-toast';
 const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [email, setEmail] = useState('');
@@ -105,7 +105,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName }) =
                 <form onSubmit={(e) => { 
                     e.preventDefault(); 
                     if (!email) {
-                        alert('Please enter a valid email address.');
+                        toast.error('Please enter a valid email address.');
                         return;
                     }
                     sendEmail(selectedUpload, email, imageLoaded, setIsSending, setShowEmailInput, setEmail, patient, userName); 

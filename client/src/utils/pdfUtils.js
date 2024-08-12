@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-
+import {toast} from 'react-hot-toast';
 export const createPDF = async (selectedUpload, patient, userName, imageLoaded) => {
     if (!imageLoaded) return null;
 
@@ -126,13 +126,13 @@ export const sendEmail = async (selectedUpload, email, imageLoaded, setIsSending
             .then((response) => response.json())
             .then((data) => {
                 console.log('Success:', data);
-                alert('Email sent successfully');
+                toast.success('Email sent successfully');
                 setShowEmailInput(false);
                 setEmail('');
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert('Error sending email');
+                toast.error('Error sending email');
             })
             .finally(() => {
                 setIsSending(false);

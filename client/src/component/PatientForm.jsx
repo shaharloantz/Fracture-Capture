@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/PatientForm.css'
-
+import {toast} from 'react-hot-toast';
 const PatientForm = ({ 
     isAddingToExisting, 
     uploadData, 
@@ -35,25 +35,59 @@ const PatientForm = ({
         }
     };
 
+    const validateDateOfBirth = (dateOfBirth) => {
+        const datePattern = /^\d{4}-\d{2}-\d{2}$/; // Match YYYY-MM-DD format
+        if (!datePattern.test(dateOfBirth)) {
+            toast.error('Date of Birth must be in the format YYYY-MM-DD.');
+            return false;
+        }
+        const date = new Date(dateOfBirth);
+        if (isNaN(date.getTime())) {
+            toast.error('Invalid Date of Birth.');
+            return false;
+        }
+        
+        const currentDate = new Date();
+        const minYear = 1900; // Adjust this year as needed
+        const year = date.getFullYear();
+    
+        if (date > currentDate) {
+            toast.error('Date of Birth cannot be in the future.');
+            return false;
+        }
+        
+        if (year < minYear || year > currentDate.getFullYear()) {
+            toast.error(`Year must be between ${minYear} and ${currentDate.getFullYear()}.`);
+            return false;
+        }
+    
+        return true;
+    };
+    
     const validateForm = () => {
         if (isAddingToExisting && !selectedBodyPart) {
-            alert('Please select a body part.');
+            toast.error('Please select a body part.');
+            console.log('Validation failed: No body part selected');
             return false;
         }
         if (!isAddingToExisting && (!newPatient.name || !newPatient.dateOfBirth || !newPatient.gender || !newPatient.idNumber)) {
-            alert('Please fill in all the patient details.');
+            toast.error('Please fill in all the patient details.');
             return false;
+        }
+        if (!validateDateOfBirth(newPatient.dateOfBirth)) {
+            return false; // If date of birth is invalid, stop the validation process.
         }
         if (isAddingToExisting && !uploadData.description) {
-            alert('Please provide a description.');
+            toast.error('Please provide a description.');
             return false;
         }
-        if (isAddingToExisting && (!uploadData.image || fileError)) {
-            alert(fileError || 'Please upload an image.');
+        if (isAddingToExisting && !uploadData.image) {
+            toast.error('Please upload an image.');
             return false;
         }
         return true;
     };
+    
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -113,9 +147,17 @@ const PatientForm = ({
                             <input type="text" name="name" value={newPatient.name} onChange={handleInputChange} required />
                         </label>
                         <label>
-                            Date of Birth:
-                            <input type="date" name="dateOfBirth" value={newPatient.dateOfBirth} onChange={handleInputChange} required />
-                        </label>
+                        Date of Birth:
+                        <input 
+                            type="date" 
+                            name="dateOfBirth" 
+                            value={newPatient.dateOfBirth} 
+                            onChange={handleInputChange} 
+                            max={new Date().toISOString().split("T")[0]}  // Restrict to today's date or earlier
+                            required 
+                        />
+                         </label>
+
                         <label>
                             Gender:
                             <select name="gender" value={newPatient.gender} onChange={handleInputChange} required>
