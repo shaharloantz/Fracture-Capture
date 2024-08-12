@@ -106,6 +106,7 @@ const Dashboard = () => {
         selectedUpload: updatedUploadData, 
         patient: selectedPatient, 
         userName: profile.name,
+        profileEmail: profile.email,
         processingTime  
       } 
     });
@@ -187,11 +188,11 @@ const handleSubmit = async (e) => {
     <div className="dashboard-container">
       <Toaster />
       <div className="welcome-text">
-        <h2>Welcome back, {profile.name}!</h2>
+        <p>Welcome back, {profile.name}!</p>
         <ol>
-          <li>1) Choose the relevant part to start</li>
-          <li>2) Upload an image</li>
-          <li>3) Receive a prediction of fractures</li>
+          <li>1) Choose the relevant part to start.</li>
+          <li>2) Upload an image.</li>
+          <li>3) Receive a prediction of fractures.</li>
         </ol>
       </div>
       {!showForm && !showBodyParts ? (

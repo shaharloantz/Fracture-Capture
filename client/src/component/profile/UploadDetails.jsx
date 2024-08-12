@@ -4,7 +4,7 @@ import sendEmailIcon from '../../assets/images/send-email-icon.png';
 import axios from 'axios';
 import { createPDF, sendEmail } from '../../utils/pdfUtils';
 import {toast } from 'react-hot-toast';
-const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName }) => {
+const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName,profileEmail }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [email, setEmail] = useState('');
     const [shareEmail, setShareEmail] = useState('');
@@ -29,7 +29,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName }) =
     };
 
     const downloadPDF = async () => {
-        const pdf = await createPDF(selectedUpload, patient, userName, imageLoaded);
+        const pdf = await createPDF(selectedUpload, patient, userName, imageLoaded, profileEmail);
         if (pdf) {
             pdf.save(`upload_details_${selectedUpload.patientName || 'unknown'}.pdf`);
         }
@@ -63,13 +63,13 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName }) =
                 className="back-button-icon" 
                 onClick={handleBackClick} 
                 style={{ margin: '0 auto', marginBottom: '20px' }}
-            />
+                />
             <div id="pdf-content">
                 <p><strong>Patient Name:</strong> <span>{selectedUpload.patientName || 'N/A'}</span></p>
                 <p><strong>Patient ID:</strong> <span>{patient?.idNumber || selectedUpload.patient?.idNumber || 'N/A'}</span></p>
                 <p><strong>Gender:</strong> <span>{patient?.gender || selectedUpload.patient?.gender || 'N/A'}</span></p>
                 <p><strong>Date of Birth:</strong> <span>{new Date(patient?.dateOfBirth).toLocaleDateString()|| 'N/A'}</span></p>
-                <p><strong>Associated doctor:</strong> <span>{userName}</span></p>
+                <p><strong>Associated doctor:</strong> <span>{userName} ({profileEmail})</span></p>
                 <p><strong>Body Part:</strong> <span>{selectedUpload ? selectedUpload.bodyPart : 'N/A'}</span></p>
                 <p><strong>Description:</strong> <span>{selectedUpload ? selectedUpload.description : 'N/A'}</span></p>
                 <p><strong>Date Uploaded:</strong> <span>{selectedUpload ? new Date(selectedUpload.dateUploaded).toLocaleString() : 'N/A'}</span></p>
