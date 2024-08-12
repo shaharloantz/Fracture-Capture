@@ -9,7 +9,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import QA from './pages/QA';
 import About from './pages/About';
-import Profile from './pages/Profile';
+import PatientsResults from './pages/PatientsResults';
 import NotFoundPage from './pages/NotFound';
 import Dashboard from './pages/Dashboard';
 import ProcessingScreen from './component/ProcessingScreen';
@@ -58,8 +58,8 @@ const App = () => {
         <Route path='/reset-password' element={<ResetPassword />} />
         <Route path='/qa' element={<QA />} />
         <Route path='/about' element={<About />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/my-profile' element={<MyProfile />} />
+        <Route path='/patientsresults' element={<PatientsResults />} />
+        <Route path='/myprofile' element={<MyProfile />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path="/results" element={<Results />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />

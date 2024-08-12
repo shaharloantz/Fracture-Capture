@@ -1,7 +1,6 @@
 // src/component/Sidebar.jsx
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Bars3Icon } from '@heroicons/react/24/outline';
 
 export default function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -27,11 +26,11 @@ export default function Sidebar() {
                         <img src="/src/assets/images/dashboard-icon.png" alt="Dashboard" className="inline-block w-5 h-5 mr-2" />
                         Dashboard
                     </Link>
-                    <Link to="/profile" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={toggleSidebar}>
-                        <img src="/src/assets/images/results-icon.png" alt="Results" className="inline-block w-5 h-5 mr-2" />
+                    <Link to="/patientsresults" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={toggleSidebar}>
+                        <img src="/src/assets/images/results-icon.png" alt="Patient Results" className="inline-block w-5 h-5 mr-2" />
                         Patients Results
                     </Link>
-                    <Link to="/my-profile" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={toggleSidebar}>
+                    <Link to="/myprofile" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={toggleSidebar}>
                         <img src="/src/assets/images/myprofile-icon.png" alt="My Profile" className="inline-block w-5 h-5 mr-2" />
                         My Profile
                     </Link>
