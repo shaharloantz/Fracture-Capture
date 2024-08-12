@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/ProcessingScreen.css';
 
-const ProcessingScreen = ({ processingTime }) => {
-
+const ProcessingScreen = ({ processingTime, onAbort }) => {
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
@@ -35,9 +34,11 @@ const ProcessingScreen = ({ processingTime }) => {
             <div className="progress-bar">
                 <div className="progress" style={{ width: `${progress}%` }}></div>
             </div>
+            <button className="abort-button" onClick={onAbort}>
+                Abort
+            </button>
         </div>
     );
 };
-
 
 export default ProcessingScreen;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import {toast} from 'react-hot-toast';
 import Modal from 'react-modal';
 import UserDetails from '../component/profile/UserDetails';
 import PatientList from '../component/profile/PatientList';
@@ -9,7 +10,7 @@ import UploadDetails from '../component/profile/UploadDetails';
 import ChangePasswordForm from '../component/profile/ChangePasswordForm';
 import EditPatientForm from '../component/profile/EditPatientForm';
 import SharedPatientUploads from '../component/profile/sharedPatientUploads';
-import '../styles/Profile.css';
+import '../styles/PatientsResults.css';
 Modal.setAppElement('#root'); // Ensure this is the id of your root element
 
 export default function Profile() {
@@ -163,18 +164,18 @@ export default function Profile() {
     const handlePasswordSubmit = (e) => {
         e.preventDefault();
         if (passwordData.newPassword !== passwordData.confirmPassword) {
-            alert("New password and confirm password do not match");
+            toast.error("New password and confirm password do not match");
             return;
         }
         axios.post('/user/change-password', passwordData, { withCredentials: true })
             .then(response => {
-                alert(response.data.message);
+                toast.error(response.data.message);
                 setChangingPassword(false);
                 setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
             })
             .catch(error => {
                 console.error('Error changing password:', error.response ? error.response.data : error.message);
-                alert('Error changing password');
+                toast.error('Error changing password');
             });
     };
 
@@ -226,15 +227,7 @@ export default function Profile() {
 
     return (
         <div className="profile-container">
-            <UserDetails profile={profile} toggleChangingPassword={() => setChangingPassword(!changingPassword)} />
-            {changingPassword && (
-                <ChangePasswordForm
-                    passwordData={passwordData}
-                    handlePasswordChange={handlePasswordChange}
-                    handlePasswordSubmit={handlePasswordSubmit}
-                    setChangingPassword={setChangingPassword}
-                />
-            )}
+            <h1>Results Page</h1>
             {editingPatient ? (
                 <EditPatientForm
                     editingPatient={editingPatient}

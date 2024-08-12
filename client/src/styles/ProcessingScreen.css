@@ -68,3 +68,19 @@
     0% { background-position: 0 0; }
     100% { background-position: 50px 50px; }
 }
+
+.abort-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #e74c3c; /* Red color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.abort-button:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}

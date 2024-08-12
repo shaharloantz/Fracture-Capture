@@ -5,11 +5,9 @@ const PatientList = ({ patients, fetchPatientUploads, handleEditPatientClick, ha
             {patients.length > 0 ? patients.map(patient => (
                 <div key={patient._id} className="patient-folder">
                     <img src="/src/assets/images/folderNEW.png" alt="Patient Folder" className="folder-icon" onClick={() => fetchPatientUploads(patient._id)} />
-                    <div className="patient-info">
-                        <p><strong>Patient Name:</strong> {patient.name}</p>
-                        <p><strong>ID:</strong> {patient.idNumber}</p>
-                    </div>
+                    <p><strong>ID:</strong> {patient.idNumber}</p>
                     <div className="icon-container">
+                    <p><strong><span className="patient-name">{patient.name}</span></strong> </p>
                         <img 
                             src="src/assets/images/edit-text.png" 
                             alt="Edit" 
@@ -30,6 +28,7 @@ const PatientList = ({ patients, fetchPatientUploads, handleEditPatientClick, ha
                         />
                         
                     </div>
+                    
                 </div>
             )) : (
                 <p>No patients found.</p>

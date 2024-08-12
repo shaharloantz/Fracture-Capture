@@ -6,22 +6,7 @@
     padding: 20px;
     color: white;
 }
-.user-details {
-    text-align: center;
-    margin-bottom: 20px;
-}
-.user-details button {
-    padding: 10px;
-    margin: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #0044cc;
-    color: white;
-    cursor: pointer;
-}
-.user-details button:hover {
-    background-color: #003399;
-}
+
 .patient-history, .patient-uploads, .upload-details {
     width: 100%;
     max-width: 800px;
@@ -38,7 +23,6 @@
 .patient-folder, .upload-folder {
     position: relative;
     width: 150px;
-    height: 150px;
     border: none;
     background: none;
     display: flex;  
@@ -50,9 +34,7 @@
 .folder-icon {
     width: 100px;
     height: 100px;
-    margin-bottom: 10px;
 }
-
 
 .patient-info, .upload-info {
     text-align: center;
@@ -68,9 +50,10 @@
     pointer-events: none; /* Allow click to pass through */
 }
 
-.edit-icon, .delete-icon ,.share-icon{
+.edit-icon, .delete-icon ,.share-icon, .delete-icon-patient {
     width: 18px;
     height: 18px;
+
     pointer-events: auto; /* Enable click on icons */
 }
 .edit-icon {
@@ -80,6 +63,7 @@
 }
 
 .share-icon{
+    top: 65px;
     position: absolute;
     bottom: 95px;
     margin-left: 60px;
@@ -88,9 +72,11 @@
 
 .delete-icon {
     position: absolute;
+    top: 65px;
     bottom: 95px;
     left: 30px;
 }
+
 .patient-form, .password-form {
     background-color: rgba(0, 40, 85, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.5);
@@ -109,19 +95,11 @@
 }
 .patient-form input,
 .patient-form select,
-.password-form input {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0 10px 0;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-}
+
 .patient-form select option {
     color: black;
 }
-.patient-form button, .password-form button {
+.patient-form button {
     padding: 10px;
     margin: 10px 5px;
     border: none;
@@ -130,13 +108,13 @@
     color: white;
     cursor: pointer;
 }
-.patient-form button[type="button"], .password-form button[type="button"] {
+.patient-form button[type="button"][type="button"] {
     background-color: #ff5555;
 }
-.patient-form button:hover, .password-form button:hover {
+.patient-form button:hover:hover {
     background-color: #003399;
 }
-.patient-form button[type="button"]:hover, .password-form button[type="button"]:hover {
+.patient-form button[type="button"]:hover[type="button"]:hover {
     background-color: #cc4444;
 }
 .back-button-icon{
@@ -241,7 +219,6 @@
 .patient-folder {
     position: relative;
     width: 150px;
-    height: 180px; /* Set a consistent height */
     border: none;
     background: none;
     display: flex;
@@ -259,4 +236,11 @@
     flex-direction: column;
     justify-content: center; /* Centers the text vertically */
     margin-top: 10px; /* Add some margin to ensure space from icons */
+}
+
+.patient-name {
+    display: block; /* Forces the name onto the next line */
+    margin-left: 32px; /* Optional: adds some indentation if desired */
+    margin-bottom: 40px;
+    font-size: 14px;
 }
