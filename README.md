@@ -76,6 +76,7 @@ This project aims to address the shortage of skilled radiologists and the limita
    SMTP_SECURE=<smtp_secure>
    SMTP_PORT=<smtp_port>
    SMTP_HOST=<smtp_host>
+6. Ensure you have the file `weights.pt` in the `server` directory.
 
 ## Usage
 
