@@ -16,6 +16,7 @@ import ProcessingScreen from './component/ProcessingScreen';
 import Results from './component/Results';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import MyProfile from './pages/MyProfile';
 
 import { Toaster } from 'react-hot-toast';
 import './styles/App.css';
@@ -58,6 +59,7 @@ const App = () => {
         <Route path='/qa' element={<QA />} />
         <Route path='/about' element={<About />} />
         <Route path='/profile' element={<Profile />} />
+        <Route path='/my-profile' element={<MyProfile />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path="/results" element={<Results />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />

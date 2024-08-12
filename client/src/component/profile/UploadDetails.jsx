@@ -68,7 +68,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName }) =
                 <p><strong>Patient Name:</strong> <span>{selectedUpload.patientName || 'N/A'}</span></p>
                 <p><strong>Patient ID:</strong> <span>{patient?.idNumber || selectedUpload.patient?.idNumber || 'N/A'}</span></p>
                 <p><strong>Gender:</strong> <span>{patient?.gender || selectedUpload.patient?.gender || 'N/A'}</span></p>
-                <p><strong>Date of Birth:</strong> <span>{new Date(patient?.dateOfBirth).toLocaleString().substring(0,9) || 'N/A'}</span></p>
+                <p><strong>Date of Birth:</strong> <span>{new Date(patient?.dateOfBirth).toLocaleDateString()|| 'N/A'}</span></p>
                 <p><strong>Associated doctor:</strong> <span>{userName}</span></p>
                 <p><strong>Body Part:</strong> <span>{selectedUpload ? selectedUpload.bodyPart : 'N/A'}</span></p>
                 <p><strong>Description:</strong> <span>{selectedUpload ? selectedUpload.description : 'N/A'}</span></p>

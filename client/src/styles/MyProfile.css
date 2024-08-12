@@ -1,0 +1,70 @@
+.my-profile-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: white;
+}
+.user-details {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.user-details button {
+    padding: 10px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0044cc;
+    color: white;
+    cursor: pointer;
+}
+.user-details button:hover {
+    background-color: #003399;
+}
+
+.password-form {
+    background-color: rgba(0, 40, 85, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    width: 300px;
+}
+.password-form h2 {
+    text-align: center;
+}
+ .password-form label {
+    display: block;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.password-form input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 10px 0;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+ .password-form button {
+    padding: 10px;
+    margin: 10px 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0044cc;
+    color: white;
+    cursor: pointer;
+}
+ .password-form button[type="button"] {
+    background-color: #ff5555;
+}
+ .password-form button:hover {
+    background-color: #003399;
+}
+ .password-form button[type="button"]:hover {
+    background-color: #cc4444;
+}

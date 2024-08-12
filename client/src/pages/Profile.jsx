@@ -10,7 +10,7 @@ import UploadDetails from '../component/profile/UploadDetails';
 import ChangePasswordForm from '../component/profile/ChangePasswordForm';
 import EditPatientForm from '../component/profile/EditPatientForm';
 import SharedPatientUploads from '../component/profile/sharedPatientUploads';
-import '../styles/Profile.css';
+import '../styles/PatientsResults.css';
 Modal.setAppElement('#root'); // Ensure this is the id of your root element
 
 export default function Profile() {
@@ -227,15 +227,7 @@ export default function Profile() {
 
     return (
         <div className="profile-container">
-            <UserDetails profile={profile} toggleChangingPassword={() => setChangingPassword(!changingPassword)} />
-            {changingPassword && (
-                <ChangePasswordForm
-                    passwordData={passwordData}
-                    handlePasswordChange={handlePasswordChange}
-                    handlePasswordSubmit={handlePasswordSubmit}
-                    setChangingPassword={setChangingPassword}
-                />
-            )}
+            <h1>Results Page</h1>
             {editingPatient ? (
                 <EditPatientForm
                     editingPatient={editingPatient}
