@@ -78,12 +78,13 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName }) =
                     : 'No fracture detected'}
                 </span></p>
                 <img 
-                    src={`http://localhost:8000${selectedUpload.processedImgUrl}`} 
-                    alt="Processed Upload" 
-                    onLoad={handleImageLoad} 
-                    crossOrigin="anonymous"
-                    style={{ display: 'block', margin: '0 auto', maxWidth: '100%', height: 'auto', marginTop: '15px' }}
-                />
+    src={`http://localhost:8000${selectedUpload.processedImgUrl}`} 
+    alt="Processed Upload" 
+    onLoad={handleImageLoad} 
+    className="processed-image"  /* Apply consistent class here */
+    style={{ marginTop: '15px' }}  /* Additional inline styles if necessary */
+ />
+
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '30px', gap:'20vh' }}>
             <img 
