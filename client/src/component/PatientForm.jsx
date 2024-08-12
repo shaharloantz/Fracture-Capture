@@ -66,27 +66,27 @@ const PatientForm = ({
     
     const validateForm = () => {
         if (isAddingToExisting && !selectedBodyPart) {
-            toast.error('Please select a body part.');
+            alert('Please select a body part.');
             console.log('Validation failed: No body part selected');
             return false;
         }
-        if (!isAddingToExisting && (!newPatient.name || !newPatient.dateOfBirth || !newPatient.gender || !newPatient.idNumber)) {
-            toast.error('Please fill in all the patient details.');
-            return false;
-        }
-        if (!validateDateOfBirth(newPatient.dateOfBirth)) {
-            return false; // If date of birth is invalid, stop the validation process.
+        if (!isAddingToExisting) { // Only check these fields if creating a new patient
+            if (!newPatient.name || !newPatient.dateOfBirth || !newPatient.gender || !newPatient.idNumber) {
+                alert('Please fill in all the patient details.');
+                return false;
+            }
         }
         if (isAddingToExisting && !uploadData.description) {
-            toast.error('Please provide a description.');
+            alert('Please provide a description.');
             return false;
         }
         if (isAddingToExisting && !uploadData.image) {
-            toast.error('Please upload an image.');
+            alert('Please upload an image.');
             return false;
         }
         return true;
     };
+    
     
 
     const onSubmit = (e) => {

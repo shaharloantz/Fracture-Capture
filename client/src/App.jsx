@@ -9,13 +9,14 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import QA from './pages/QA';
 import About from './pages/About';
-import Profile from './pages/Profile';
+import PatientsResults from './pages/PatientsResults';
 import NotFoundPage from './pages/NotFound';
 import Dashboard from './pages/Dashboard';
 import ProcessingScreen from './component/ProcessingScreen';
 import Results from './component/Results';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import MyProfile from './pages/MyProfile';
 
 import { Toaster } from 'react-hot-toast';
 import './styles/App.css';
@@ -57,7 +58,8 @@ const App = () => {
         <Route path='/reset-password' element={<ResetPassword />} />
         <Route path='/qa' element={<QA />} />
         <Route path='/about' element={<About />} />
-        <Route path='/profile' element={<Profile />} />
+        <Route path='/patientsresults' element={<PatientsResults />} />
+        <Route path='/myprofile' element={<MyProfile />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path="/results" element={<Results />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
