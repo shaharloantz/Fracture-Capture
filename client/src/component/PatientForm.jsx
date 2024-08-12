@@ -100,7 +100,7 @@ const PatientForm = ({
     };
 
     return (
-        <div className="dashboard-container">
+        <>
             <img 
                 src="src/assets/images/undo.png" 
                 alt="Back" 
@@ -177,7 +177,7 @@ const PatientForm = ({
                     <button type="button" onClick={handleBackClick}>Cancel</button>
                 </div>
             </form>
-        </div>
+        </>
     );
 };
 

@@ -1,6 +1,5 @@
 .about-container h1 {
     color: rgb(225, 225, 225);
-    cursor: pointer;
     transition: color 0.3s;
     display: flex;
     align-items: center;
