@@ -39,7 +39,7 @@ const EditPatientForm = ({ editingPatient, handleEditPatientChange, handleEditPa
         <label>
             ID Number:
             <input
-                type="text"
+                type="number"
                 name="idNumber"
                 value={editingPatient.idNumber}
                 onChange={handleEditPatientChange}

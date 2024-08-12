@@ -126,7 +126,7 @@ const PatientForm = ({
                         </label>
                         <label>
                             ID Number:
-                            <input type="text" name="idNumber" value={newPatient.idNumber} onChange={handleInputChange} required />
+                            <input type="number" name="idNumber" value={newPatient.idNumber} onChange={handleInputChange} required />
                         </label>
                     </>
                 )}
