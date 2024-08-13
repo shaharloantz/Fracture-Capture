@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const Patient = require('./models/Patient');
 const nodemailer = require('nodemailer');
+const bodyParser = require('body-parser');
 
 mongoose.connect(process.env.MONGO_URI, {})
     .then(async () => {
@@ -56,6 +57,38 @@ app.use('/', require('./routes/authRoutes'));
 app.use('/user', require('./routes/userRoutes'));
 app.use('/uploads', require('./routes/uploadRoutes'));
 app.use('/patients', require('./routes/patientRoutes'));
+
+
+// Email
+app.use(bodyParser.json());
+
+app.post('/send-email', async (req, res) => {
+    const { from_name, from_email, message, reply_to } = req.body;
+
+    // Check that the recipient email is defined
+    if (!process.env.RECEIVER_EMAIL) {
+        return res.status(500).json({ success: false, error: 'Receiver email is not defined' });
+    }
+
+    const mailOptions = {
+        from: from_email, // Sender's email
+        to: process.env.RECEIVER_EMAIL, // Recipient's email address
+        subject: `Message from ${from_name} (${from_email})`, // Subject with sender's name and email
+        text: `You have a new message from ${from_name} (${from_email}):
+
+        ${message}`, // Body with sender's name and email
+        replyTo: reply_to,
+    };
+
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        res.json({ success: true, result: info.response });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`Server is running on port ${port}`));
