@@ -58,6 +58,7 @@ body, html {
   .items-grid {
       grid-template-columns: repeat(3, 1fr); /* 3 columns on larger screens */
   }
+  
 }
 .item {
   display: flex;
@@ -79,6 +80,9 @@ body, html {
 .item p {
   margin: 10px 0 0 0;
 }
+.item:hover {
+  transform: translateY(-5px); /* Slightly lift the item on hover */
+  background-color: rgba(0, 40, 85, 0.9); /* Change background color on hover */}
 
 .box {
   width: 100%; /* Make boxes take full width on mobile */
