@@ -9,7 +9,7 @@ import {toast} from 'react-hot-toast';
 
 const Results = () => {
   const location = useLocation();
-  const { processedImagePath, selectedUpload, patient, userName, processingTime } = location.state || {};
+  const { processedImagePath, selectedUpload, patient, userName, profileEmail } = location.state || {};
   const [imageLoaded, setImageLoaded] = useState(false);
   const [patientDetails, setPatientDetails] = useState(patient);
   const [email, setEmail] = useState('');

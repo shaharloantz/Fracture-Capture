@@ -1,3 +1,14 @@
+.patient-form {
+    background-color: rgba(0, 40, 85, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    width: 90%; /* Change to 90% for better mobile responsiveness */
+    max-width: 400px; /* Ensure it doesn’t get too wide on large screens */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
 .upload-image-label {
     cursor: pointer;
     display: flex;
@@ -11,7 +22,7 @@
     width: 50px; /* Adjust the size as needed */
     height: auto;
     cursor: pointer;
-    transition: transform 0.2s ease-in-out; /* Smooth transition for hover effect */
+    transition: transform 0.2s ease-in-out;
     margin-left: auto;
     margin-right: auto;
 }
@@ -22,67 +33,31 @@
 
 .button-container {
     display: flex;
-    justify-content: center; /* Center the buttons horizontally */
-    width: 100%; /* Ensure the container takes the full width */
-    gap: 10px; /* Add some space between the buttons */
-    margin-top: 10px; /* Add some space above the buttons */
+    flex-direction: column; /* Stack buttons vertically on smaller screens */
+    gap: 10px; /* Space between buttons */
+    margin-top: 10px;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .button-container {
+        flex-direction: row; /* Switch to row on larger screens */
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .patient-form {
+        width: 100%; /* Make sure it uses all available space on small screens */
+    }
 }
 
 .file-name {
-    color: #ffffff; /* Change color to white */
+    color: #ffffff;
     font-size: 1em;
     margin-top: 10px;
     background-color: rgba(255, 255, 255, 0.1);
     padding: 5px;
     border-radius: 5px;
     text-align: center;
-}
-
-.items-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgba(0, 40, 85, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.2s ease; /* Smooth transition for hover effects */
-}
-
-.item img {
-    width: 120px;
-    height: 120px;
-}
-
-.item p {
-    margin: 10px 0 0 0;
-}
-
-.item:hover {
-    transform: translateY(-5px); /* Slightly lift the item on hover */
-    background-color: rgba(0, 40, 85, 0.9); /* Change background color on hover */
-}
-
-.file-name {
-    color: #ffffff; /* Change color to white */
-    font-size: 1em;
-    margin-top: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 5px;
-    border-radius: 5px;
-    text-align: center;
-    width: 100%; /* Ensure it takes up the full width of its container */
-    white-space: nowrap; /* Prevents the text from wrapping to the next line */
-    overflow: hidden; /* Hide overflow text */
-    text-overflow: ellipsis; /* Show ellipsis (...) when text overflows */
-    box-sizing: border-box; /* Ensure padding is included in the width */
 }
