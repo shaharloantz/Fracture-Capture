@@ -16,22 +16,20 @@ const PatientForm = ({
     const [fileError, setFileError] = useState('');  // For storing file format error messages
 
     const onFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const fileType = file.type;
-            const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-
-            if (validTypes.includes(fileType)) {
-                handleFileChange(e);
-                setSelectedFileName(file.name);
-                setFileError('');  // Clear any previous errors
-            } else {
-                setSelectedFileName('');
-                setFileError('Please upload a valid image file (PNG, JPG, or JPEG)');
-            }
+        const files = Array.from(e.target.files); // Convert the FileList to an array
+        const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    
+        // Filter files based on valid types
+        const validFiles = files.filter(file => validTypes.includes(file.type));
+    
+        if (validFiles.length > 0) {
+            handleFileChange(validFiles); // Pass the array of valid files
+            const fileNames = validFiles.map(file => file.name).join(', ');
+            setSelectedFileName(fileNames); // Display the names of selected files
+            setFileError(''); // Clear any previous errors
         } else {
             setSelectedFileName('');
-            setFileError('');
+            setFileError('Please upload only valid image files (PNG, JPG, or JPEG)');
         }
     };
 
@@ -64,6 +62,7 @@ const PatientForm = ({
         return true;
     };
     
+
     const validateForm = () => {
         if (isAddingToExisting && !selectedBodyPart) {
             alert('Please select a body part.');
@@ -80,7 +79,7 @@ const PatientForm = ({
             alert('Please provide a description.');
             return false;
         }
-        if (isAddingToExisting && !uploadData.image) {
+        if (isAddingToExisting && uploadData.images.length === 0) {
             alert('Please upload an image.');
             return false;
         }
@@ -131,7 +130,7 @@ const PatientForm = ({
                         </label>
                         <label>
                             Upload Image (PNG, JPG, JPEG):
-                            <input type="file" name="image" onChange={onFileChange} id="file-upload" style={{ display: 'none' }} required />
+                            <input type="file" name="image" multiple onChange={onFileChange} id="file-upload" style={{ display: 'none' }} required />
                             <label htmlFor="file-upload" className="upload-image-label">
                                 <img src="src/assets/images/upload-file.png" alt="Upload" className="upload-button-icon" />
                             </label>

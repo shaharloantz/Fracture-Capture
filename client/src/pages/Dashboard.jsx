@@ -79,9 +79,8 @@ const Dashboard = () => {
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setUploadData({ ...uploadData, image: file });
+  const handleFileChange = (files) => {
+    setUploadData({ ...uploadData, images: files });
   };
 
   const handleBackClick = () => {
@@ -121,48 +120,55 @@ const Dashboard = () => {
 
 
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const startTime = Date.now();
-
-  if (isAddingToExisting) {
-    setShowProcessing(true); 
-    controllerRef.current = new AbortController(); // Initialize the AbortController
-    const { signal } = controllerRef.current;
-    try {
-      const formData = new FormData();
-      formData.append('id', uploadData.id);
-      formData.append('description', uploadData.description);
-      formData.append('bodyPart', selectedBodyPart);  // Ensure bodyPart is included
-      formData.append('image', uploadData.image);
-
-      const response = await axios.post('/uploads', formData, { withCredentials: true, signal });
-      const endTime = Date.now();
-      const duration = (endTime - startTime) / 1000;
-      setEstimatedTime(duration);
-
-      handleUploadResponse(response, duration); 
-    } catch (error) {
-      console.error('Error uploading:', error.response ? error.response.data : error.message);
-      toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
-      setShowProcessing(false);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const startTime = Date.now();
+  
+    if (isAddingToExisting) {
+      setShowProcessing(true); 
+      controllerRef.current = new AbortController(); // Initialize the AbortController
+      const { signal } = controllerRef.current;
+  
+      try {
+        const formData = new FormData();
+        formData.append('id', uploadData.id);
+        formData.append('description', uploadData.description);
+        formData.append('bodyPart', selectedBodyPart); // Ensure bodyPart is included
+        
+        // Append all selected files to formData
+        uploadData.images.forEach((file) => {
+          formData.append('images', file);
+        });
+  
+        const response = await axios.post('/uploads', formData, { withCredentials: true, signal });
+        const endTime = Date.now();
+        const duration = (endTime - startTime) / 1000;
+        setEstimatedTime(duration);
+  
+        handleUploadResponse(response, duration); 
+      } catch (error) {
+        console.error('Error uploading:', error.response ? error.response.data : error.message);
+        toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
+        setShowProcessing(false);
+      }
+    } else {
+      // Handle new patient creation
+      try {
+        await axios.post('/patients', newPatient, { withCredentials: true });
+        toast.success('Patient created successfully!');
+        setNewPatient(initialPatientState);
+        setShowForm(false);
+        setShowBodyParts(true); 
+        setIsAddingToExisting(true);
+        fetchPatients(); 
+      } catch (error) {
+        console.error('Error creating patient:', error.response ? error.response.data : error.message);
+        toast.error(error.response?.data?.error || 'Error creating patient. Please try again.');
+      }
     }
-  } else {
-    // Handle new patient creation
-    try {
-      await axios.post('/patients', newPatient, { withCredentials: true });
-      toast.success('Patient created successfully!');
-      setNewPatient(initialPatientState);
-      setShowForm(false);
-      setShowBodyParts(true); 
-      setIsAddingToExisting(true);
-      fetchPatients(); 
-    } catch (error) {
-      console.error('Error creating patient:', error.response ? error.response.data : error.message);
-      toast.error(error.response?.data?.error || 'Error creating patient. Please try again.');
-    }
-  }
-};
+  };
+  
+  
 
 
   if (showProcessing) {
