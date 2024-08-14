@@ -18,6 +18,8 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import MyProfile from './pages/MyProfile';
 import ContactUs from './pages/ContactUs';
+import AdminPanel from './pages/AdminPanel';
+
 
 import { Toaster } from 'react-hot-toast';
 import './styles/App.css';
@@ -66,6 +68,7 @@ const App = () => {
         <Route path="/terms-of-service" element={<TermsOfService />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/admin" element={<AdminPanel />} />
         <Route path='*' element={<NotFoundPage />} />
         {/* Testing the loader animation at route -> <Route path='/processing' element={<ProcessingScreen />} />  --> */}
       </Route>

@@ -1,41 +1,178 @@
-.about-container h1 {
-    color: rgb(225, 225, 225);
-    transition: color 0.3s;
+.about-header {
+    background-image: url('/path-to-your-banner-image.jpg');
+    background-size: cover;
+    color: white;
+    text-align: center;
+    padding: 50px;
+}
+
+.about-header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.about-header p {
+    font-size: 1.2em;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.mission-vision {
+    padding: 40px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.mission-vision h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.mission-vision p {
+    font-size: 1.1em;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.technology {
+    padding: 60px;
+    text-align: center;
+      color: white;
+}
+.technology h2{
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.technology p{
+    font-size: 1.1em;
+}
+
+.technology-highlights {
     display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.tech-item {
+    max-width: 300px;
+    text-align: center;
+}
+
+.tech-item img {
+    width: 150px; /* Adjust the width to your preference */
+    height: auto; /* Maintains the aspect ratio */
+    border-radius: 100%; /* Optional: make the image circular */
+}
+
+.tech-item h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.tech-item p {
+    font-size: 1em;
+    color: #ffffff;
+}
+
+.supporting-professionals {
+    padding: 40px;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.supporting-professionals h2{
+        font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.supporting-professionals p {
+    font-size: 1.1em;
+}
+
+.professionals-highlights {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.meet-the-team{
+    padding: 40px;
+    text-align: center;
+    color: white;
+}
+.meet-the-team h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.the-team {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    color: white;
+}
+
+.meet-the-team .dana img,
+.meet-the-team .zigel img,
+.meet-the-team .jonathan img,
+.meet-the-team .shachar img,
+.meet-the-team .tal img,
+.meet-the-team .or img {
+    width: 150px; /* Adjust the width to your preference */
+    height: auto; /* Maintains the aspect ratio */
+    border-radius: 50%; /* Optional: make the image circular */
+}
+
+
+.highlight-item {
+    max-width: 300px;
+    text-align: left;
+}
+
+.highlight-item h3 {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}
+
+.highlight-item p {
+    font-size: 1em;
+    color: #666;
+}
+
+.call-to-action {
+    padding: 50px;
+    background-color: #0044cc;
+    color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 0px;
-    margin-top: 5px;
-    position: relative; /* To position the bullet */
-    padding-left: 20px; /* Space for the bullet */
+    justify-content: center;
 }
 
-.about-container h1:before {
-    content: '•'; /* Bullet character */
-    color: #ffffff; /* Bullet color */
-    position: absolute;
-    left: 0;
-    font-size: 0.9em;
-    line-height: 1;
+.call-to-action h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
 }
 
-
-.about-container p, .about-container ul, .about-container li {
-    color: rgb(210, 210, 210);
-    font-size: 1.1em; 
-    margin-bottom: 10px; 
+.call-to-action p {
+    font-size: 1.2em;
+    margin-bottom: 40px; /* Add margin here to increase spacing before the button */
 }
 
-.about-container ul {
-    list-style: none; /* Remove default bullet points */
-    padding-left: 20px; /* Indent list items */
+.cta-button {
+    background-color: #ffcc00;
+    color: #0044cc;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1.2em;
+    margin-top: 20px; /* Add margin here to move the button further down */
+    display: inline-block;
 }
 
-.icon {
-    font-size: 0.75em;
-    opacity: 0.7;
-    transition: opacity 0.3s;
-}
-
-.about-container h1:hover .icon {
-    opacity: 1;
+.cta-button:hover {
+    background-color: #ffaa00;
 }
