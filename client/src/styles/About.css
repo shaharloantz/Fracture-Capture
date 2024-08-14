@@ -21,6 +21,7 @@
     padding: 40px;
     background-color: #f9f9f9;
     text-align: center;
+    opacity: 95%;
 }
 
 .mission-vision h2 {
@@ -39,6 +40,7 @@
     padding: 60px;
     text-align: center;
       color: white;
+    
 }
 .technology h2{
     font-size: 2em;
@@ -80,6 +82,8 @@
     padding: 40px;
     background-color: #ffffff;
     text-align: center;
+    opacity: 95%;
+
 }
 
 .supporting-professionals h2{
@@ -143,7 +147,7 @@
 
 .call-to-action {
     padding: 50px;
-    background-color: #0044cc;
+    background-color: #032e84;
     color: white;
     text-align: center;
     display: flex;
