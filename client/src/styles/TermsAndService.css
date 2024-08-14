@@ -1,4 +1,3 @@
-/* Common styles for both Terms of Service and Privacy Policy pages */
 .page-container {
     display: flex;
     flex-direction: column;
@@ -6,48 +5,94 @@
     justify-content: flex-start;
     min-height: 100vh;
     padding: 40px 20px;
-    color: #ffffff;
-    text-align: left;
+    color: #333333;
     font-family: Arial, sans-serif;
 }
 
 .page-container h1 {
     color: #ff8c00;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     font-size: 36px;
     text-align: center;
+    width: 100%;
 }
 
-.page-container h2 {
+.section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+    width: 100%;
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.section h2 {
     color: #ff8c00;
-    margin-bottom: 15px;
     font-size: 28px;
+    margin: 0;
+    text-align: left;
+    margin-bottom: 10px;
 }
 
-.page-container p {
-    color: #dcdcdc;
-    margin-bottom: 20px;
+.section .divider {
+    width: 100%;
+    height: 4px;
+    background-color: #ff8c00;
+    margin: 20px 0; 
+}
+
+.content-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.content-item {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.content-item h3 {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.content-item p {
+    color: white; 
     font-size: 18px;
     line-height: 1.6;
 }
 
-.page-container ul {
-    color: #dcdcdc;
-    list-style-type: none;
-    padding: 0;
-    margin: 20px 0;
-}
-
-.page-container ul li {
-    margin-bottom: 10px;
-    font-size: 18px;
-}
-
 .page-container a {
     color: #ff8c00;
-    text-decoration: none;
+    text-decoration: none; 
+    transition: color 0.3s ease; 
 }
 
+/* Link hover effect */
 .page-container a:hover {
-    text-decoration: underline;
+    color: #ffffff; 
+    background-color: transparent; 
+    text-decoration: none; 
+}
+
+/* Additional styles for responsiveness */
+@media (max-width: 768px) {
+    .section {
+        flex-direction: column;
+    }
+
+    .content-wrapper {
+        flex-direction: column;
+        padding-left: 0;
+    }
+
+    .content-item {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
 }
