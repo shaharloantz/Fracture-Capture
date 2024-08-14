@@ -1,13 +1,35 @@
-
 .home-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 75vh; /* Full viewport height */
-  }
+}
   
-  .main-content {
+.main-content {
     text-align: center;
-  }
-  
+}
+
+.play-button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 10px;
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.play-button:hover {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  transform: scale(1.1);
+}
+
+.play-button img.start-icon {
+  width: 70px;
+  height: 70px;
+  display: block; 
+}
+

@@ -52,7 +52,7 @@ export default function Sidebar() {
                         Q&A
                     </Link>
                     {isAdmin && (
-                        <Link to="/admin" className="block px-4 py-2 text-gray-400 hover:bg-gray-700" onClick={toggleSidebar}>
+                        <Link to="/admin" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={toggleSidebar}>
                             <img src="/src/assets/images/admin-icon.png" alt="Admin Panel" className="inline-block w-6 h-6 mr-2" />
                             Admin Panel
                         </Link>

@@ -1,6 +1,7 @@
 section{
   margin-bottom: 30px;
 }
+
 .header {
   padding-top: 30px;
     text-align: center;
@@ -8,16 +9,17 @@ section{
     border-bottom: 1px solid #fff;
     margin-bottom: 35px;
     background-color:  #012044;
-  }
+}
   
-  .logo {
-    width: 40px;
-    height: 40px;
-    background: url('/src/assets/images/fracture.png') no-repeat center center;
-    background-size: contain;
-    margin: 0 auto;
-  }
-  .clickable {
-    cursor: pointer;
-  }
+.logo {
+  width: 40px;
+  height: 40px;
+  background: url('/src/assets/images/fracture.png') no-repeat center center;
+  background-size: contain;
+  margin: 0 auto;
+}
+
+.clickable {
+  cursor: pointer;
+}
   
