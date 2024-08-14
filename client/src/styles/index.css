@@ -17,12 +17,12 @@ body {
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #5c7cff;
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #535bf2;
+  color: #5c7cff;
 }
 
 button {
@@ -38,7 +38,7 @@ button {
 }
 
 button:hover, button:focus, button:focus-visible {
-  border-color: #646cff;
+  border-color: #5c7cff;
   outline: 4px auto -webkit-focus-ring-color;
 }
 
@@ -48,11 +48,10 @@ button:hover, button:focus, button:focus-visible {
       background-color: #ffffff;
   }
   a:hover, button {
-      color: #747bff;
+      color: #5c7cff;
       background-color: #f9f9f9;
   }
 }
-
 
 .main-content {
   text-align: center;
@@ -80,6 +79,7 @@ h1 {
 .start-icon {
   width: 80px; /* Smaller size for the start/play icon */
 }
+
 .sidebar {
   position: fixed;
   right: 0;
@@ -91,7 +91,7 @@ h1 {
   background-color: #fff;
   padding: 15px;
   box-shadow: -2px 0 5px rgba(0,0,0,0.5);
-  z-index: 99;
+  z-index: 40;
 }
 
 .sidebar.open {
@@ -127,4 +127,31 @@ h1 {
 
 .sidebar-link:hover {
   background-color: #f0f0f0;
+}
+
+.sticky-nav {
+  position: static;
+  top: 0;
+  right: 0;
+  background-color: #012044;
+  z-index: 50;
+  padding: 1rem;
+  box-shadow: none;
+  border: none;
+  margin: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0 10px;
+  border-bottom: none;
+}
+
+.nav-links a:hover {
+  color: #5c7cff;
+  background-color: transparent; 
+  text-decoration: none; 
 }
