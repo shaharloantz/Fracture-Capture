@@ -6,43 +6,97 @@ const About = () => {
     return (
         <div className="about-container">
             <Sidebar />
-            <h1>About Us</h1>
-            <ul>
-                <li>Our web application is designed to revolutionize fracture diagnosis in the medical field.</li>
-                <li>Bone fractures are a frequent occurrence due to falls, accidents, and other traumatic events, affecting various demographics, including infants, the elderly, and young individuals.</li>
-            </ul>
+            <div className="about-header"> 
+                <h1>Empowering Fracture Diagnosis with Cutting-Edge Technology</h1>
+                <p>We want to revolutionize how fractures are diagnosed, to bring precision and speed to improve patient care.</p>
+            </div>
+            <section className="mission-vision">
+                <h2>Our Mission</h2>
+                <p>We are dedicated to transforming the medical field by streamlining fracture diagnosis through a highly trained model and image processing technology. Our mission is to improve diagnostic accuracy and speed to ensure better patient outcomes worldwide.</p>
+                <h2>Our Vision</h2>
+                <p>Our vision is a world where healthcare professionals are empowered with tools that make accurate fracture detection swift and accessible, leading to better healthcare for all.</p>
+            </section>
 
-            <h1>Addressing Diagnostic Challenges</h1>
-            <ul>
-                <li>Diagnosing fractures traditionally relies on medical imaging techniques such as X-rays, CT scans, MRIs, and ultrasound.</li>
-                <li>However, interpreting these images can be intricate and time-consuming, requiring specialized knowledge from experienced radiologists.</li>
-                <li>The shortage of skilled radiologists further compounds this challenge, leading to delays in diagnosis and treatment that impact patient outcomes.</li>
-            </ul>
+            <section className="technology">
+                <h2>Advanced Technology</h2>
+                <p>We utilize state-of-the-art deep learning algorithms trained on diverse datasets to accurately identify fractures across different bone types and anatomical regions.</p>
+                <div className="technology-highlights">
+                </div>
+            </section>
 
-            <h1>Introducing Advanced Technology</h1>
-            <ul>
-                <li>To combat these challenges, we propose the development of a sophisticated web application.</li>
-                <li>Our application will harness cutting-edge image processing and deep learning algorithms to analyze X-ray images with precision.</li>
-                <li>By training our algorithms on a diverse dataset of bone fractures, the system will excel in accurately detecting fractures across different anatomical regions and bone types.</li>
-            </ul>
+            <section className="supporting-professionals">
+                <h2>Supporting Medical Professionals</h2>
+                <p>Our application is a vital tool for doctors, radiologists, and medical students, helping them to quickly and accurately diagnose fractures, thus enhancing patient care and treatment planning.</p>
+                <div className="professionals-highlights">
+                    <div className="highlight-item">
+                        <h3>For Doctors</h3>
+                        <p>Streamline diagnosis and improve patient outcomes with our precise imaging analysis.</p>
+                    </div>
+                    <div className="highlight-item">
+                        <h3>For Students</h3>
+                        <p>Learn from detailed analysis and real-world cases to enhance your medical education.</p>
+                    </div>
+                </div>
+            </section>
 
-            <h1>Advantages Over Traditional Methods</h1>
-            <ul>
-                <li>Unlike conventional methods that often target specific anatomical areas or fracture types, our application will provide a comprehensive solution.</li>
-                <li>It aims to identify and localize fractures in both upper and lower limbs, offering versatility that current CAD systems lack.</li>
-            </ul>
+            <section className='meet-the-team'>
+                <h2> Meet The Team </h2>
+                    <div className='the-team'>
+                        <div className='dana'>
+                        <a href="https://www.linkedin.com/in/dana-hafif-ab3b70153/" target="_blank" rel="noopener noreferrer">
+                             <img src="/src\assets\images\dana.jpg"/>
+                        </a>
+                            <h3>Dana Hafif</h3>
+                            <p></p>
+                        </div>
 
-            <h1>Supporting Medical Professionals</h1>
-            <ul>
-                <li>Our primary audience includes doctors, medical students, and healthcare professionals dedicated to improving patient care through advanced technology.</li>
-                <li>The application is designed to streamline fracture diagnosis, enhance diagnostic accuracy, and expedite treatment planning.</li>
-            </ul>
+                        <div className='zigel'>
+                        <a href="https://www.linkedin.com/in/tal-lovton-499268257/" target="_blank" rel="noopener noreferrer">
+                            <img src="/src\assets\images\zigel.jpg"/>  
+                        </a>  
+                            <h3>Tal Zigel</h3>
+                            <p></p>
+                        </div>
 
-            <h1>Vision for the Future</h1>
-            <ul>
-                <li>Our vision is to empower medical professionals worldwide with a robust tool that enhances fracture detection capabilities.</li>
-                <li>By bridging the gap between imaging technology and clinical practice, we aim to improve healthcare outcomes and patient experiences.</li>
-            </ul>
+                        <div className='shachar'>
+                        <a href="https://www.linkedin.com/in/shahar-loantz/" target="_blank" rel="noopener noreferrer">
+                            <img src="/src\assets\images\shahar.jpg"/>    
+                        </a>
+                            <h3>Shachar Loacker</h3>
+                            <p></p>
+                        </div>
+
+                        <div className='jonathan'>
+                        <a href="https://www.linkedin.com/in/jonathan-cwengel-77953626b/" target="_blank" rel="noopener noreferrer">
+                        <img src="/src\assets\images\handsome.jpg"/>
+                        </a>
+                        <h3>Jonathan Cwengel</h3>
+                        <p></p>
+                        </div>
+
+                        <div className='tal'>
+                        <a href="https://www.linkedin.com/in/tal-zigelnik/" target="_blank" rel="noopener noreferrer">
+                        <img src="/src\assets\images\tal.jpg"/>
+                        </a>
+                        <h3>Tal Loveton</h3>
+                        <p></p>
+                        </div>
+
+                        <div className='or'>
+                        <a href="https://www.linkedin.com/in/or-shimon-51811826a/" target="_blank" rel="noopener noreferrer">
+                        <img src="/src\assets\images\myN.jpg"/>
+                        </a>
+                        <h3>Or Shimon</h3>
+                        <p></p>
+                        </div>
+                    </div>
+            </section>
+
+            <section className="call-to-action">
+                <h2>Join Us in Revolutionizing Healthcare</h2>
+                <p>Contact us to learn more about how our technology can assist your medical practice, or to inquire about partnerships and collaborations.</p>
+                <a href="/Contact-Us" className="cta-button">Get in Touch</a>
+            </section>
         </div>
     );
 };
