@@ -1,11 +1,24 @@
-// src/component/Sidebar.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const toggleSidebar = () => setIsOpen(!isOpen);
+
+    useEffect(() => {
+        axios.get('/user/profile', { withCredentials: true })
+            .then(response => {
+                if (response.data.isAdmin) {
+                    setIsAdmin(true);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user profile:', error.response ? error.response.data : error.message);
+            });
+    }, []);
 
     return (
         <>
@@ -34,6 +47,12 @@ export default function Sidebar() {
                         <img src="/src/assets/images/myprofile-icon.png" alt="My Profile" className="inline-block w-5 h-5 mr-2" />
                         My Profile
                     </Link>
+                    {isAdmin && (
+                        <Link to="/admin" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={toggleSidebar}>
+                            <img src="/src/assets/images/admin-icon.png" alt="Admin Panel" className="inline-block w-5 h-5 mr-2" />
+                            Admin Panel
+                        </Link>
+                    )}
                     <Link to="/qa" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={toggleSidebar}>
                         <img src="/src/assets/images/qa-icon.png" alt="Q&A" className="inline-block w-5 h-5 mr-2" />
                         Q&A

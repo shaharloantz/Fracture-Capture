@@ -21,6 +21,7 @@ router.get('/profile', requireAuth, async (req, res) => {
     }
 });
 
+
 router.post('/change-password', requireAuth, async (req, res) => {
     const { currentPassword, newPassword } = req.body;
 
@@ -86,5 +87,22 @@ router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+// admin only privilages
+router.get('/all-users', requireAuth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user || !user.isAdmin) {
+            return res.status(403).json({ error: 'Access denied' });
+        }
+
+        const users = await User.find().select('-password').lean();
+        res.json(users);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 
 module.exports = router;
