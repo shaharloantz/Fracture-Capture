@@ -14,6 +14,7 @@
 .sort-options {
     margin-bottom: 20px;
     text-align: center;
+    color: black;
 }
 
 /* Style the label in the sort options */
@@ -42,19 +43,28 @@ th {
 
 /* Set specific widths for columns */
 th:nth-child(4), td:nth-child(4) {
-    width: 10%; /* Adjust this percentage to make the column thinner */
+    width: 12%; /* Adjust this percentage to make the column thinner */
     max-width: 100px; /* Set a maximum width for the column */
 }
-
+th:nth-child(5), td:nth-child(5) {
+    width: 12%; /* Adjust this percentage to make the column thinner */
+    max-width: 100px; /* Set a maximum width for the column */
+}
 td {
     text-align: center;
 }
 
-.admin-edit {
-    width: 16px; /* Adjust size as needed */
-    height: 16px;
+/* Container for action icons */
+.action-icons {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* Adjust spacing between icons */
+}
+
+.admin-edit, .admin-delete {
+    width: 20px; /* Adjust size as needed */
+    height: 20px;
     cursor: pointer;
-    margin-left: 10px; /* Add some spacing between the email and the icon */
     vertical-align: middle; /* Align the icon with the text */
 }
 
@@ -135,7 +145,6 @@ td {
         border: none;
         border-bottom: 1px solid #ddd;
     }
-
     /* Remove the last border */
     td:last-child {
         border-bottom: none;
@@ -164,6 +173,16 @@ td {
         width: 100%;
         margin-bottom: 10px;
     }
+    
+    .edit-form input {
+        font-size: 1.2em; /* Make the input fields larger */
+        width: 100%; /* Adjust input width */
+    }
+
+    .edit-form button {
+        padding: 10px 30px; /* Increase button padding */
+        font-size: 1.1em; /* Increase button font size */
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -171,5 +190,15 @@ td {
     td {
         padding: 8px;
         font-size: 12px;
+    }
+
+    .edit-form input {
+        font-size: 1.2em; /* Make the input fields larger */
+        width: 100%; /* Adjust input width */
+    }
+
+    .edit-form button {
+        padding: 10px 20px; /* Adjust button padding */
+        font-size: 1.1em; /* Increase button font size */
     }
 }

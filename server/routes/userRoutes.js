@@ -88,7 +88,7 @@ router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {
     }
 });
 
-// admin only privilages
+///////////////////// admin only privilages /////////////////////////
 router.get('/all-users', requireAuth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
@@ -126,6 +126,24 @@ router.put('/update/:userId', requireAuth, async (req, res) => {
         res.status(200).json({ message: 'User updated successfully' });
     } catch (error) {
         console.error('Error updating user:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// delete user by admin
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        // Delete all patients related to this user
+        await Patient.deleteMany({ createdByUser: userId });
+
+        // Delete the user
+        await User.findByIdAndDelete(userId);
+
+        res.json({ message: 'User and associated data deleted successfully.' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });

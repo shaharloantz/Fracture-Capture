@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../styles/AdminPanel.css'; // Adjust the path if necessary
+import {toast} from 'react-hot-toast';
 
 const AdminPanel = () => {
     const [users, setUsers] = useState([]);
@@ -36,6 +37,44 @@ const AdminPanel = () => {
     const handleCancelClick = () => {
         setEditingUserId(null); // Close the editing mode
     };
+
+    const handleDeleteClick = (userId) => {
+        toast(
+          (t) => (
+            <span>
+              Are you sure you want to delete this user, his patients and all of its data?
+              <div style={{ marginTop: '10px' }}>
+                <button
+                  onClick={() => confirmDelete(userId, t.id)}
+                  style={{ marginRight: '10px', padding: '5px 10px', backgroundColor: 'orange', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  style={{ padding: '5px 10px', backgroundColor: '#ccc', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  No
+                </button>
+              </div>
+            </span>
+          ),
+          { duration: 5000 } // Duration can be adjusted as needed
+        );
+      };
+    
+      const confirmDelete = async (userId, toastId) => {
+        try {
+          await axios.delete(`/user/delete/${userId}`, { withCredentials: true });
+          setUsers(users.filter(user => user._id !== userId)); // Update state to remove the user from the list
+          toast.dismiss(toastId); // Close the toast
+          toast.success('User deleted successfully!');
+        } catch (error) {
+          toast.dismiss(toastId); // Close the toast
+          toast.error('Error deleting user.');
+        }
+      };
+    
     
 
     const handleInputChange = (e) => {
@@ -70,11 +109,11 @@ const AdminPanel = () => {
 
     return (
         <div className="admin-panel">
-            <h2>Admin Panel</h2>
+            <h1 style={{textAlign:'center'}}>Admin Panel</h1>
             <div className="sort-options">
                 <label htmlFor="sort">Sort by: </label>
                 <select id="sort" value={sortOption} onChange={handleSortChange}>
-                    <option value="isAdmin">Group (Admin/Regular)</option>
+                    <option value="isAdmin">Group</option>
                     <option value="name">Name (A-Z)</option>
                     <option value="email">Email (A-Z)</option>
                     <option value="numberOfPatients">Number of Patients</option>
@@ -88,6 +127,7 @@ const AdminPanel = () => {
                             <th>Name</th>
                             <th>Email</th>
                             <th>Number of Patients</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,54 +136,64 @@ const AdminPanel = () => {
                                 <tr key={user._id}>
                                     <td>{user.isAdmin ? 'Admin' : 'Regular'}</td>
                                     <td>{user.name}</td>
-                                    <td>
-                                        {user.email} 
-                                        {!user.isAdmin && (
-                                        <img 
-                                            src="/src/assets/images/pen.png" 
-                                            alt="Edit" 
-                                            className="admin-edit" 
-                                            onClick={() => handleEditClick(user)} 
-                                        />
-                                        )}
-                                    </td>
+                                    <td>{user.email}</td>
                                     <td>{user.numberOfPatients}</td>
-                                </tr>
-                                                 {editingUserId === user._id && (
-                                                <tr key={`edit-${user._id}`} className="edit-row">
-                                                    <td colSpan="4">
-                                                        <div className="edit-form">
-                                                            <div className="form-row">
-                                                                <label>
-                                                                    Name: 
-                                                                    <input 
-                                                                        type="text" 
-                                                                        name="name" 
-                                                                        value={editedUserData.name} 
-                                                                        onChange={handleInputChange} 
-                                                                        style={{color:'black'}}
-                                                                    />
-                                                                </label>
-                                                                <label>
-                                                                    Email: 
-                                                                    <input 
-                                                                        type="email" 
-                                                                        name="email" 
-                                                                        value={editedUserData.email} 
-                                                                        onChange={handleInputChange} 
-                                                                        style={{color:'black'}}
-                                                                    />
-                                                                </label>
-                                                            </div>
-                                                            <div className="button-row">
-                                                                <button onClick={handleSaveClick}>Save</button>
-                                                                <button onClick={handleCancelClick}>Cancel</button>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                    <td>
+                                        <div className="action-icons">
+                                            {!user.isAdmin && (
+                                                <>
+                                                    <img 
+                                                        src="/src/assets/images/pen.png" 
+                                                        alt="Edit" 
+                                                        className="admin-edit" 
+                                                        onClick={() => handleEditClick(user)} 
+                                                    />
+                                                    <img 
+                                                        src="/src/assets/images/delete.png" 
+                                                        alt="Delete" 
+                                                        className="admin-delete" 
+                                                        onClick={() => handleDeleteClick(user._id)} 
+                                                    />
+                                                </>
                                             )}
+                                        </div>
+                                    </td>
 
+                                </tr>
+                                {editingUserId === user._id && (
+                                    <tr key={`edit-${user._id}`} className="edit-row">
+                                        <td colSpan="5">
+                                            <div className="edit-form">
+                                                <div className="form-row">
+                                                    <label>
+                                                        Name: 
+                                                        <input 
+                                                            type="text" 
+                                                            name="name" 
+                                                            value={editedUserData.name} 
+                                                            onChange={handleInputChange} 
+                                                            style={{color:'black'}}
+                                                        />
+                                                    </label>
+                                                    <label>
+                                                        Email: 
+                                                        <input 
+                                                            type="email" 
+                                                            name="email" 
+                                                            value={editedUserData.email} 
+                                                            onChange={handleInputChange} 
+                                                            style={{color:'black'}}
+                                                        />
+                                                    </label>
+                                                </div>
+                                                <div className="button-row">
+                                                    <button onClick={handleSaveClick}>Save</button>
+                                                    <button onClick={handleCancelClick}>Cancel</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                )}
                             </>
                         ))}
                     </tbody>
