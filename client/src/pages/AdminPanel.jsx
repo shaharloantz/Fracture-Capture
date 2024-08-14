@@ -8,7 +8,9 @@ const AdminPanel = () => {
     const [sortOption, setSortOption] = useState('isAdmin'); // Default sort by isAdmin
     const [editingUserId, setEditingUserId] = useState(null); // Track the user being edited
     const [editedUserData, setEditedUserData] = useState({ name: '', email: '' });
-
+    const totalUsers = users.length;
+    const totalPatients = users.reduce((acc, user) => acc + user.numberOfPatients, 0);
+    
     useEffect(() => {
         axios.get('/user/all-users', { withCredentials: true })
             .then(response => {
@@ -201,6 +203,10 @@ const AdminPanel = () => {
             ) : (
                 <p>No users found.</p>
             )}
+                        <div className="totals">
+                <p>Total Users: {totalUsers}</p>
+                <p>Total Patients: {totalPatients}</p>
+            </div>
         </div>
     );
 };

@@ -202,3 +202,13 @@ td {
         font-size: 1.1em; /* Increase button font size */
     }
 }
+.totals {
+    margin-top: 30px;
+    text-align: center;
+    color: white; /* Adjust this color based on your theme */
+}
+
+.totals p {
+    margin: 5px 0;
+    font-size: 18px; /* Adjust the font size based on your design */
+}
