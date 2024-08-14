@@ -21,6 +21,7 @@ router.get('/profile', requireAuth, async (req, res) => {
     }
 });
 
+
 router.post('/change-password', requireAuth, async (req, res) => {
     const { currentPassword, newPassword } = req.body;
 
@@ -87,4 +88,63 @@ router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {
     }
 });
 
+///////////////////// admin only privilages /////////////////////////
+router.get('/all-users', requireAuth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user || !user.isAdmin) {
+            return res.status(403).json({ error: 'Access denied' });
+        }
+
+        const users = await User.find().select('-password').lean();
+        res.json(users);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// edit user by admin
+router.put('/update/:userId', requireAuth, async (req, res) => {
+    const { userId } = req.params;
+    const { name, email } = req.body;
+
+    try {
+        // Find the user by ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Update the user's name and email
+        user.name = name;
+        user.email = email;
+
+        // Save the updated user
+        await user.save();
+
+        res.status(200).json({ message: 'User updated successfully' });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// delete user by admin
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        // Delete all patients related to this user
+        await Patient.deleteMany({ createdByUser: userId });
+
+        // Delete the user
+        await User.findByIdAndDelete(userId);
+
+        res.json({ message: 'User and associated data deleted successfully.' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 module.exports = router;
