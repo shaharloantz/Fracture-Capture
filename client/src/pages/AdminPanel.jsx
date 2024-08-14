@@ -40,15 +40,15 @@ const AdminPanel = () => {
         setEditingUserId(null); // Close the editing mode
     };
 
-    const handleDeleteClick = (userId) => {
+    const handleDeleteClick = (user) => {
         toast(
           (t) => (
             <span>
-              Are you sure you want to delete this user, his patients and all of its data?
-              <div style={{ marginTop: '10px' }}>
+              Are you sure you want to delete <strong>{user.name}</strong>, his patients and all of its data? 
+              <div style={{ marginTop: '10px' ,display: 'flex', justifyContent: 'center'}}>
                 <button
-                  onClick={() => confirmDelete(userId, t.id)}
-                  style={{ marginRight: '10px', padding: '5px 10px', backgroundColor: 'orange', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                  onClick={() => confirmDelete(user._id, t.id)}
+                  style={{ marginRight: '10px', padding: '5px 10px', backgroundColor: 'orange', border: 'none', borderRadius: '4px', cursor: 'pointer'}}
                 >
                   Yes
                 </button>
@@ -154,7 +154,7 @@ const AdminPanel = () => {
                                                         src="/src/assets/images/delete.png" 
                                                         alt="Delete" 
                                                         className="admin-delete" 
-                                                        onClick={() => handleDeleteClick(user._id)} 
+                                                        onClick={() => handleDeleteClick(user)} 
                                                     />
                                                 </>
                                             )}
