@@ -40,6 +40,14 @@
     text-align: center;
       color: white;
 }
+.technology h2{
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.technology p{
+    font-size: 1.1em;
+}
 
 .technology-highlights {
     display: flex;
@@ -74,6 +82,15 @@
     text-align: center;
 }
 
+.supporting-professionals h2{
+        font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.supporting-professionals p {
+    font-size: 1.1em;
+}
+
 .professionals-highlights {
     display: flex;
     justify-content: space-around;
@@ -82,18 +99,19 @@
 
 .meet-the-team{
     padding: 40px;
-    background-color: #ff74df;
     text-align: center;
+    color: white;
 }
 .meet-the-team h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
+    font-size: 2em;
+    margin-bottom: 20px;
 }
 
 .the-team {
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
+    color: white;
 }
 
 .meet-the-team .dana img,

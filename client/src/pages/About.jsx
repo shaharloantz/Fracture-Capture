@@ -21,16 +21,6 @@ const About = () => {
                 <h2>Advanced Technology</h2>
                 <p>We utilize state-of-the-art deep learning algorithms trained on diverse datasets to accurately identify fractures across different bone types and anatomical regions.</p>
                 <div className="technology-highlights">
-                    <div className="tech-item">
-                        <img src="/src\assets\images\AIPRECISION.webp" alt="AI Precision"/>
-                        <h3>AI Precision</h3>
-                        <p>Our AI models are designed to detect subtle fractures that are often missed by the human eye.</p>
-                    </div>
-                    <div className="tech-item">
-                        <img src="/src\assets\images\Comprehensive Analysis.webp" alt="Comprehensive Analysis"/>
-                        <h3>Comprehensive Analysis</h3>
-                        <p>Our system analyzes images of both upper and lower limbs, providing a complete diagnostic solution.</p>
-                    </div>
                 </div>
             </section>
 
@@ -96,7 +86,7 @@ const About = () => {
                         <a href="https://www.linkedin.com/in/or-shimon-51811826a/" target="_blank" rel="noopener noreferrer">
                         <img src="/src\assets\images\myN.jpg"/>
                         </a>
-                        <h3>Black Mamba</h3>
+                        <h3>Or Shimon</h3>
                         <p></p>
                         </div>
                     </div>
