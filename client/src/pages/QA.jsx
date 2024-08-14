@@ -33,7 +33,9 @@ const filteredQA = questionsAndAnswers.filter(item =>
 );
 
 return (
-    <div className="qa-container">
+<div className="qa-container">
+    <div className="qa-content">
+        <h2>Q&A</h2>
         <input
             type="text"
             placeholder="Search..."
@@ -41,21 +43,19 @@ return (
             onChange={(e) => setSearchTerm(e.target.value)}
             className="qa-search-bar"
         />
-        <div className="qa-content">
-            <h2>Q&A</h2>
-            {filteredQA.map((item, index) => (
-                <React.Fragment key={index}>
-                    {index % 2 === 0 && <h3 className="subtitle">{subtitles[Math.floor(index / 2)]}</h3>}
-                    <div className="qa-item">
-                        <div className="question" onClick={() => handleToggle(index)}>
-                            <span className="toggle-icon">{expandedIndex === index ? '-' : '+'}</span>
-                            {item.q}
-                        </div>
-                        {expandedIndex === index && <div className="answer">{item.a}</div>}
+        {filteredQA.map((item, index) => (
+            <React.Fragment key={index}>
+                {index % 2 === 0 && <h3 className="subtitle">{subtitles[Math.floor(index / 2)]}</h3>}
+                <div className="qa-item">
+                    <div className="question" onClick={() => handleToggle(index)}>
+                        <span className="toggle-icon">{expandedIndex === index ? '-' : '+'}</span>
+                        {item.q}
                     </div>
-                </React.Fragment>
-            ))}
-        </div>
+                    {expandedIndex === index && <div className="answer">{item.a}</div>}
+                </div>
+            </React.Fragment>
+        ))}
+    </div>
         <section className="get-in-touch">
                 <h2>Still have questions?</h2>
                 <p>Reach out to us, and we'll be happy to assist you in finding the answers you need.</p>

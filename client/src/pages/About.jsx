@@ -54,7 +54,7 @@ const About = () => {
                         <a href="https://www.linkedin.com/in/tal-lovton-499268257/" target="_blank" rel="noopener noreferrer">
                             <img src="/src\assets\images\zigel.jpg"/>  
                         </a>  
-                            <h3>Tal Zigel</h3>
+                            <h3>Tal Zigelnik</h3>
                             <p></p>
                         </div>
 

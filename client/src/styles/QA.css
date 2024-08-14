@@ -50,8 +50,9 @@ body {
   margin-right: 10px;
 }
 
+
 .qa-search-bar {
-  width: 100%;
+  width: 100%; /* Make the search bar full width within the qa-content */
   padding: 10px;
   margin-bottom: 20px;
   border-radius: 5px;
