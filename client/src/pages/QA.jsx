@@ -23,27 +23,45 @@ const QA = () => {
 
   const handleToggle = (index) => {
     setExpandedIndex(expandedIndex === index ? null : index);
-  };
-
-  return (
-    <div className="qa-container">
-      <div className="qa-content">
-        <h2>Q&A</h2>
-        {questionsAndAnswers.map((item, index) => (
-          <React.Fragment key={index}>
-            {index % 2 === 0 && <h3 className="subtitle">{subtitles[Math.floor(index / 2)]}</h3>}
-            <div className="qa-item">
-              <div className="question" onClick={() => handleToggle(index)}>
-                <span className="toggle-icon">{expandedIndex === index ? '-' : '+'}</span>
-                {item.q}
-              </div>
-              {expandedIndex === index && <div className="answer">{item.a}</div>}
-            </div>
-          </React.Fragment>
-        ))}
-      </div>
-    </div>
-  );
 };
+
+const [searchTerm, setSearchTerm] = useState('');
+
+const filteredQA = questionsAndAnswers.filter(item =>
+    item.q.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.a.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
+return (
+<div className="qa-container">
+    <div className="qa-content">
+        <h2>Q&A</h2>
+        <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="qa-search-bar"
+        />
+        {filteredQA.map((item, index) => (
+            <React.Fragment key={index}>
+                {index % 2 === 0 && <h3 className="subtitle">{subtitles[Math.floor(index / 2)]}</h3>}
+                <div className="qa-item">
+                    <div className="question" onClick={() => handleToggle(index)}>
+                        <span className="toggle-icon">{expandedIndex === index ? '-' : '+'}</span>
+                        {item.q}
+                    </div>
+                    {expandedIndex === index && <div className="answer">{item.a}</div>}
+                </div>
+            </React.Fragment>
+        ))}
+    </div>
+        <section className="get-in-touch">
+                <h2>Still have questions?</h2>
+                <p>Reach out to us, and we'll be happy to assist you in finding the answers you need.</p>
+                <a href="/Contact-Us" className="git-button">Get in Touch</a>
+        </section>
+    </div>
+);};
 
 export default QA;

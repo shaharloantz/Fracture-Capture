@@ -32,8 +32,8 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
     };
 
     return (
-        <nav className="absolute top-0 right-0 mt-4 mr-8">
-            <div className="flex space-x-4">
+        <nav className="sticky-nav">
+            <div className="nav-links">
                 {navigation.map((item) => (
                     <Link
                         key={item.name}
@@ -44,10 +44,10 @@ export default function Navbar({ isAuthenticated, handleLogout }) {
                             'text-m font-medium'
                         )}
                     >
-                        {item.name}
+                    {item.name}
                     </Link>
                 ))}
-            </div>
+             </div>
         </nav>
     );
 }

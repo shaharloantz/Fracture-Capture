@@ -51,14 +51,23 @@ body {
 }
 
 
+.qa-search-bar {
+  width: 100%; /* Make the search bar full width within the qa-content */
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background-color: #003366;
+  color: white;
+  font-size: 1em;
+}
+
 
 .qa-content {
-  width: 100%;
-  max-width: 600px;
-  padding: 20px;
-  text-align: left; /* Ensure text is left-aligned */
-  font-size: 1.2em; /* Increase the base font size */
-  
+  width: 100%; /* Ensures it takes the full width of the container */
+  max-width: 850px; /* Increase max-width to stretch the content more */
+  padding: 25px 20px;
+  text-align: left;
 }
 
 .qa-content h2 {
@@ -70,26 +79,26 @@ body {
 }
 
 .subtitle {
-  font-size: 1.2em;
+  font-size: 1.3em;
   border-bottom: 1px solid #fff;
   padding-bottom: 5px;
-  margin: 20px 0;
+  margin: 30px 0 20px;
   text-align: left; /* Ensure subtitles are left-aligned */
   font-size: 1.4em; /* Increase the font size of subtitles */
 
 }
 
 .qa-item {
-  margin: 20px 0;
+  margin: 25px 0;
   text-align: left; /* Ensure items are left-aligned */
   font-size: 1.2em; /* Increase the font size of Q&A items */
 
 }
 
 .question {
-  font-size: 1.2em; /* Increase the font size of questions */
+  font-size: 1em; /* Increase the font size of questions */
   margin: 0;
-  padding: 10px;
+  padding: 8px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 5px;
   background-color: rgba(0, 40, 85, 0.7);
@@ -99,18 +108,20 @@ body {
   align-items: center;
   width: 100%; /* Ensure full width */
   text-align: left; /* Ensure text is left-aligned */
+  background-color: rgba(0, 40, 85, 0.8); /* Darker for questions */
 }
 
 .answer {
-  font-size: 1.2em; /* Increase the font size of answers */
+  font-size: 1em; /* Increase the font size of answers */
   margin: 0;
-  padding: 10px;
+  padding: 8px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 5px;
   background-color: rgba(0, 40, 85, 0.5);
-  margin-top: 10px;
+  margin-top: 5px;
   width: 100%; /* Ensure full width */
   text-align: left; /* Ensure text is left-aligned */
+  background-color: rgba(0, 56, 121, 0.6); /* Lighter for answers */
 }
 
 .toggle-icon {
@@ -118,6 +129,50 @@ body {
   font-weight: bold;
   font-size: 1.2em;
 }
+
+.qa-content,
+.subtitle,
+.qa-item,
+.question,
+.answer {
+  line-height: 1.5; /* Increase line height for better readability */
+}
+
+.get-in-touch {
+  padding: 50px;
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.get-in-touch h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.get-in-touch p {
+  font-size: 1.2em;
+  margin-bottom: 40px; /* Add margin here to increase spacing before the button */
+}
+
+.git-button {
+  background-color: #ffcc00;
+  color: #0044cc;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 1.2em;
+  margin-top: 20px; /* Add margin here to move the button further down */
+  display: inline-block;
+}
+
+.git-button:hover {
+  background-color: #ffaa00;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
