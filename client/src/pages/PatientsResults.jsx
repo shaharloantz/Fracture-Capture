@@ -43,25 +43,40 @@ export default function Profile() {
         axios.get(`/uploads/${id}`, { withCredentials: true })
             .then(response => {
                 setPatientUploads(response.data);
+                // Ensure that you have patient data in the profile
                 const patient = profile.patients.find(p => p._id === id);
-                setSelectedPatient(patient);
+                if (patient) {
+                    setSelectedPatient(patient);
+                } else {
+                    console.error('Patient not found in profile');
+                }
                 setSelectedUpload(null);
             })
             .catch(error => {
                 console.error('Error fetching patient uploads:', error.response ? error.response.data : error.message);
             });
     };
-
+    
     const fetchSharedPatientDetails = async (upload) => {
         try {
-            const response = await axios.get(`/patients/${upload.patient}`, { withCredentials: true });
-            const patient = response.data;
-            setSelectedUpload(upload);
-            setSelectedPatient(patient);
+            if (upload.patient && typeof upload.patient === 'object') {
+                // If patient data is already populated
+                setSelectedUpload(upload);
+                setSelectedPatient(upload.patient);
+            } else if (upload.patient && typeof upload.patient === 'string') {
+                // If patient data is not populated and only the ID is available
+                const response = await axios.get(`/patients/${upload.patient}`, { withCredentials: true });
+                const patient = response.data;
+                setSelectedUpload(upload);
+                setSelectedPatient(patient);
+            } else {
+                console.error('No patient ID found in the upload');
+            }
         } catch (error) {
             console.error('Error fetching patient details:', error.response ? error.response.data : error.message);
         }
     };
+    
     
 
     const formatDate = (dateString) => {

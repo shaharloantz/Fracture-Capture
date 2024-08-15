@@ -55,7 +55,7 @@ router.get('/shared-uploads', requireAuth, async (req, res) => {
             path: 'sharedUploads',
             populate: {
                 path: 'patient', // Populate the patient field within sharedUploads
-                model: 'Patient' // Ensure you specify the model
+                model: 'Patient'
             }
         });
         if (!user) {

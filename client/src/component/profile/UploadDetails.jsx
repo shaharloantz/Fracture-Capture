@@ -6,7 +6,7 @@ import { createPDF, sendEmail } from '../../utils/pdfUtils';
 import { toast } from 'react-hot-toast';
 
 const UploadDetails = ({ selectedUpload, handleBackClick, patient }) => {
-    console.log(patient);
+    console.log(selectedUpload);
     const [imageLoaded, setImageLoaded] = useState(false);
     const [createdByUser, setCreatedByUser] = useState({});
     const [email, setEmail] = useState('');
@@ -83,7 +83,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient }) => {
                     <p><strong>Patient Name:</strong> <span>{selectedUpload.patientName || 'N/A'}</span></p>
                     <p><strong>Patient ID:</strong> <span>{patient?.idNumber || selectedUpload.patient?.idNumber || 'N/A'}</span></p>
                     <p><strong>Gender:</strong> <span>{patient?.gender || selectedUpload.patient?.gender || 'N/A'}</span></p>
-                    <p><strong>Date of Birth:</strong> <span>{new Date(patient?.dateOfBirth).toLocaleDateString() || 'N/A'}</span></p>
+                    <p><strong>Date of Birth:</strong> <span>{new Date(patient?.dateOfBirth || selectedUpload.patient?.dateOfBirth).toLocaleDateString() || 'N/A'}</span></p>
                     <p><strong>Associated doctor:</strong> <span>{createdByUser.name} ({createdByUser.email})</span></p>
                     <p><strong>Body Part:</strong> <span>{selectedUpload.bodyPart}</span></p>
                     <p><strong>Description:</strong> <span>{selectedUpload.description}</span></p>

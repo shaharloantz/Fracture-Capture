@@ -3,7 +3,7 @@ import html2canvas from 'html2canvas';
 import {toast} from 'react-hot-toast';
 export const createPDF = async (selectedUpload, patient, userName, imageLoaded, profileEmail) => {
     if (!imageLoaded) return null;
-
+    console.log(selectedUpload.patient?.email)
     const input = document.getElementById('pdf-content');
     
     // Capture the image using html2canvas
@@ -37,7 +37,7 @@ export const createPDF = async (selectedUpload, patient, userName, imageLoaded, 
     pdf.setFont('helvetica', 'bold');
     pdf.text(`Patient Name:`, xOffsetLabel, yOffset);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${patient?.name || 'N/A'}`, xOffsetValue, yOffset);
+    pdf.text(` ${patient?.name || selectedUpload.patient?.name || 'N/A'}`, xOffsetValue, yOffset);
     yOffset += 10;
 
     pdf.setFont('helvetica', 'bold');
@@ -55,7 +55,7 @@ export const createPDF = async (selectedUpload, patient, userName, imageLoaded, 
     pdf.setFont('helvetica', 'bold');
     pdf.text(`Date of Birth:`, xOffsetLabel, yOffset);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${new Date(patient?.dateOfBirth).toLocaleDateString() || 'N/A'}`, xOffsetValue, yOffset);
+    pdf.text(` ${new Date(patient?.dateOfBirth || selectedUpload.patient?.dateOfBirth).toLocaleDateString() || 'N/A'}`, xOffsetValue, yOffset);
     yOffset += 10;
 
     pdf.setFont('helvetica', 'bold');

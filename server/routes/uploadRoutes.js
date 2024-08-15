@@ -68,6 +68,7 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
             patient: id,
             patientName: patient.name,
             description,
+            dateOfBirth: patient.dateOfBirth,
             bodyPart,
             imgId: req.file.filename,
             imgUrl: `/uploads/${req.file.filename}`,
@@ -190,9 +191,12 @@ router.post('/share', requireAuth, async (req, res) => {
             return res.status(404).json({ error: 'Recipient doctor not found' });
         }
 
-        // Add shared upload to recipient's profile
+        // Add shared upload to recipient's profile with patient details
         recipientDoctor.sharedUploads = recipientDoctor.sharedUploads || [];
-        recipientDoctor.sharedUploads.push(uploadId);
+        if (!recipientDoctor.sharedUploads.some((sharedUpload) => sharedUpload.toString() === upload._id.toString())) {
+            recipientDoctor.sharedUploads.push(upload._id);
+        }
+
         await recipientDoctor.save();
 
         res.status(200).json({ message: 'Upload details shared successfully' });
@@ -201,6 +205,8 @@ router.post('/share', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
+
+
 router.post('/share/patient/:id', requireAuth, async (req, res) => {
     const { id } = req.params;
     const { email } = req.body;
