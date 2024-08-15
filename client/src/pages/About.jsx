@@ -51,7 +51,7 @@ const About = () => {
                         </div>
 
                         <div className='zigel'>
-                        <a href="https://www.linkedin.com/in/tal-lovton-499268257/" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.linkedin.com/in/tal-zigelnik/" target="_blank" rel="noopener noreferrer">
                             <img src="/src\assets\images\zigel.jpg"/>  
                         </a>  
                             <h3>Tal Zigelnik</h3>
@@ -75,7 +75,7 @@ const About = () => {
                         </div>
 
                         <div className='tal'>
-                        <a href="https://www.linkedin.com/in/tal-zigelnik/" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.linkedin.com/in/tal-lovton-499268257/" target="_blank" rel="noopener noreferrer">
                         <img src="/src\assets\images\tal.jpg"/>
                         </a>
                         <h3>Tal Loveton</h3>
