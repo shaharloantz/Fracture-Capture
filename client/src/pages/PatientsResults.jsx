@@ -91,37 +91,123 @@ export default function Profile() {
 
     const handleDeleteUploadClick = (uploadId, e) => {
         e.stopPropagation();
-        if (window.confirm("Are you sure you want to delete this upload?")) {
-            axios.delete(`/uploads/${uploadId}`, { withCredentials: true })
-                .then(response => {
-                    setPatientUploads(uploads => uploads.filter(upload => upload._id !== uploadId));
-                    setSharedUploads(uploads => uploads.filter(upload => upload._id !== uploadId));
-                })
-                .catch(error => {
-                    console.error('Error deleting upload:', error.response ? error.response.data : error.message);
-                });
-        }
+        toast(
+            (t) => (
+                <span>
+                    Are you sure you want to delete this upload?
+                    <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                        <button
+                            onClick={() => {
+                                confirmDeleteUpload(uploadId, t.id);
+                            }}
+                            style={{
+                                padding: '5px 10px',
+                                backgroundColor: 'orange',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: 'pointer',
+                                color: 'white',
+                            }}
+                        >
+                            Yes
+                        </button>
+                        <button
+                            onClick={() => toast.dismiss(t.id)}
+                            style={{
+                                padding: '5px 10px',
+                                backgroundColor: '#ccc',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: 'pointer',
+                                color: 'black',
+                            }}
+                        >
+                            No
+                        </button>
+                    </div>
+                </span>
+            ),
+            { duration: 5000 }
+        );
     };
+    
+    const confirmDeleteUpload = (uploadId, toastId) => {
+        axios.delete(`/uploads/${uploadId}`, { withCredentials: true })
+            .then(response => {
+                setPatientUploads(uploads => uploads.filter(upload => upload._id !== uploadId));
+                setSharedUploads(uploads => uploads.filter(upload => upload._id !== uploadId));
+                toast.dismiss(toastId); // Dismiss the confirmation toast
+                toast.success('Upload deleted successfully.');
+            })
+            .catch(error => {
+                console.error('Error deleting upload:', error.response ? error.response.data : error.message);
+                toast.error('Failed to delete upload.');
+            });
+    };
+    
 
     const handleDeletePatientClick = (id, e) => {
         e.stopPropagation();
-        if (window.confirm("Are you sure you want to delete this patient and all of its uploads?")) {
-            axios.delete(`/patients/${id}`, { withCredentials: true })
-                .then(response => {
-                    setProfile(profile => ({
-                        ...profile,
-                        patients: profile.patients.filter(patient => patient._id !== id)
-                    }));
-                    if (selectedPatient && selectedPatient._id === id) {
-                        setSelectedPatient(null);
-                        setPatientUploads([]);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error deleting patient:', error.response ? error.response.data : error.message);
-                });
-        }
+        toast(
+            (t) => (
+                <span>
+                    Are you sure you want to delete this patient and all of its uploads?
+                    <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                        <button
+                            onClick={() => {
+                                confirmDeletePatient(id, t.id);
+                            }}
+                            style={{
+                                padding: '5px 10px',
+                                backgroundColor: 'orange',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: 'pointer',
+                                color: 'white',
+                            }}
+                        >
+                            Yes
+                        </button>
+                        <button
+                            onClick={() => toast.dismiss(t.id)}
+                            style={{
+                                padding: '5px 10px',
+                                backgroundColor: '#ccc',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: 'pointer',
+                                color: 'black',
+                            }}
+                        >
+                            No
+                        </button>
+                    </div>
+                </span>
+            ),
+            { duration: 5000 }
+        );
     };
+    
+    const confirmDeletePatient = (id, toastId) => {
+        axios.delete(`/patients/${id}`, { withCredentials: true })
+            .then(response => {
+                setProfile(profile => ({
+                    ...profile,
+                    patients: profile.patients.filter(patient => patient._id !== id)
+                }));
+                if (selectedPatient && selectedPatient._id === id) {
+                    setSelectedPatient(null);
+                    setPatientUploads([]);
+                }
+                toast.dismiss(toastId); // Dismiss the confirmation toast
+                toast.success('Patient deleted successfully.');
+            })
+            .catch(error => {
+                console.error('Error deleting patient:', error.response ? error.response.data : error.message);
+                toast.error('Failed to delete patient.');
+            });
+    };
+    
 
     const handleEditPatientClick = (patient, e) => {
         e.stopPropagation();
