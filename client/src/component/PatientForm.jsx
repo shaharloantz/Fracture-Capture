@@ -7,6 +7,7 @@ const PatientForm = ({
     newPatient, 
     patients, 
     selectedBodyPart, 
+    selectedPatient,
     handleInputChange, 
     handleFileChange, 
     handleSubmit, 
@@ -112,7 +113,7 @@ const PatientForm = ({
                     <>
                         <label>
                             Patient:
-                            <select name="id" value={uploadData.id} onChange={handleInputChange} required>
+                            <select name="id" value={uploadData.id || selectedPatient} onChange={handleInputChange} required>
                                 <option value="">Select a patient</option>
                                 {patients.map(patient => (
                                     <option key={patient._id} value={patient._id}>

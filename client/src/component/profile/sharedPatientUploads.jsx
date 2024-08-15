@@ -3,7 +3,7 @@ import React from 'react';
 const SharedPatientUploads = ({ sharedUploads, handleUploadClick, handleDeleteUploadClick, handleRemoveSharedUpload, formatDate }) => (
     <>
     <div className="shared-uploads-container">
-    <h2 className='sharedUploadsHeader'>Shared Uploads</h2>
+    <h1 className='sharedUploadsHeader'>Shared Uploads</h1>
         <div className="upload-folders">
             {sharedUploads.length > 0 ? sharedUploads.map(upload => (
                 <div key={upload._id} className="upload-folder">
