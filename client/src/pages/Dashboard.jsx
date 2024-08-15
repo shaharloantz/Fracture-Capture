@@ -52,11 +52,17 @@ const Dashboard = () => {
   
 
   const handleAddPatientClick = () => {
+    if (patients.length === 0) {
+        toast.error('You have not created any patients yet. Please create a new patient first.');
+        return;
+    }
+    
     setIsAddingToExisting(true);
     fetchPatients();
     setUploadData(initialUploadState);
     setShowBodyParts(true);
-  };
+};
+
 
   const fetchPatients = () => {
     axios.get('/user/profile', { withCredentials: true })
