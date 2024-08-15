@@ -22,7 +22,6 @@ export default function Profile() {
     const [message, setMessage] = useState('');
     const [selectedSharePatient, setSelectedSharePatient] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [passwordData, setPasswordData] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -63,6 +62,7 @@ export default function Profile() {
             console.error('Error fetching patient details:', error.response ? error.response.data : error.message);
         }
     };
+    
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -236,29 +236,6 @@ export default function Profile() {
             })
             .catch(error => {
                 console.error('Error updating patient:', error.response ? error.response.data : error.message);
-            });
-    };
-
-    const handlePasswordChange = (e) => {
-        const { name, value } = e.target;
-        setPasswordData({ ...passwordData, [name]: value });
-    };
-
-    const handlePasswordSubmit = (e) => {
-        e.preventDefault();
-        if (passwordData.newPassword !== passwordData.confirmPassword) {
-            toast.error("New password and confirm password do not match");
-            return;
-        }
-        axios.post('/user/change-password', passwordData, { withCredentials: true })
-            .then(response => {
-                toast.error(response.data.message);
-                setChangingPassword(false);
-                setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
-            })
-            .catch(error => {
-                console.error('Error changing password:', error.response ? error.response.data : error.message);
-                toast.error('Error changing password');
             });
     };
 
