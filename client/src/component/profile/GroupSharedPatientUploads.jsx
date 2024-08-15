@@ -12,7 +12,7 @@ const GroupedSharedPatientUploads = ({ sharedUploads, handleUploadClick, handleD
 
     return (
         <div className="shared-patient-uploads">
-            <h2 className="sharedUploadsHeader">Shared Uploads</h2>
+            <h1 className="sharedUploadsHeader">Shared Uploads</h1>
             {Object.keys(groupedUploads).length > 0 ? (
                 Object.keys(groupedUploads).map(id => (
                     <div key={id} className="shared-patient-folder">

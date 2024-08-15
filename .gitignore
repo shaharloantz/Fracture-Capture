@@ -14,7 +14,7 @@ node_modules/
 /client/node_modules/
 /client/build/
 /client/.vite/deps/
-
+/client/dist/
 # IDE-specific ignores
 .vscode/
 .idea/

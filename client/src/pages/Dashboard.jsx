@@ -41,16 +41,28 @@ const Dashboard = () => {
 
   const handleItemClick = (item) => {
     setSelectedBodyPart(item.title);
-    setShowForm(true);
-    setShowBodyParts(false);
+    if (isAddingToExisting && selectedPatient) {
+      setShowForm(true);
+      setShowBodyParts(false);
+    } else {
+      setShowForm(true);
+      setShowBodyParts(false);
+    }
   };
+  
 
   const handleAddPatientClick = () => {
+    if (patients.length === 0) {
+        toast.error('You have not created any patients yet. Please create a new patient first.');
+        return;
+    }
+    
     setIsAddingToExisting(true);
     fetchPatients();
     setUploadData(initialUploadState);
     setShowBodyParts(true);
-  };
+};
+
 
   const fetchPatients = () => {
     axios.get('/user/profile', { withCredentials: true })
@@ -150,12 +162,16 @@ const handleSubmit = async (e) => {
   } else {
     // Handle new patient creation
     try {
-      await axios.post('/patients', newPatient, { withCredentials: true });
+      const response = await axios.post('/patients', newPatient, { withCredentials: true });
+      const createdPatient = response.data; // Assume the server returns the created patient object
+
       toast.success('Patient created successfully!');
+      setPatients([...patients, createdPatient]);
       setNewPatient(initialPatientState);
+      setSelectedPatient(createdPatient._id);
+      setIsAddingToExisting(true);
       setShowForm(false);
       setShowBodyParts(true); 
-      setIsAddingToExisting(true);
       fetchPatients(); 
     } catch (error) {
       console.error('Error creating patient:', error.response ? error.response.data : error.message);
@@ -224,6 +240,7 @@ const handleSubmit = async (e) => {
       ) : (
 <PatientForm 
   isAddingToExisting={isAddingToExisting}
+  selectedPatient={selectedPatient}
   uploadData={uploadData}
   newPatient={newPatient}
   patients={patients}

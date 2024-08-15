@@ -56,14 +56,15 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName,prof
     }
 
     return (
-        <div className="upload-details">
-            <img 
+        <>
+        <img 
                 src="/src/assets/images/undo.png" 
                 alt="Back to Patients" 
                 className="back-button-icon" 
                 onClick={handleBackClick} 
                 style={{ margin: '0 auto', marginBottom: '20px' }}
                 />
+        <div className="upload-details">
             <div id="pdf-content">
                 <p><strong>Patient Name:</strong> <span>{selectedUpload.patientName || 'N/A'}</span></p>
                 <p><strong>Patient ID:</strong> <span>{patient?.idNumber || selectedUpload.patient?.idNumber || 'N/A'}</span></p>
@@ -139,6 +140,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient, userName,prof
             </form>
             {message && <p>{message}</p>}
         </div>
+        </>
     );
 };
 
