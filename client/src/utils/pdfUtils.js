@@ -1,9 +1,13 @@
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import {toast} from 'react-hot-toast';
-export const createPDF = async (selectedUpload, patient, userName, imageLoaded, profileEmail) => {
+export const createPDF = async (selectedUpload, patient, createdByUser, imageLoaded) => {
     if (!imageLoaded) return null;
-    console.log(selectedUpload.patient?.email)
+
+    const { name, email } = createdByUser;
+    console.log('createdByUser:', createdByUser); // Debugging line
+
+
     const input = document.getElementById('pdf-content');
     
     // Capture the image using html2canvas
@@ -61,7 +65,7 @@ export const createPDF = async (selectedUpload, patient, userName, imageLoaded, 
     pdf.setFont('helvetica', 'bold');
     pdf.text(`Associated doctor:`, xOffsetLabel, yOffset);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${userName} (${profileEmail})`, xOffsetValue, yOffset);
+    pdf.text(` ${name} (${email})`, xOffsetValue, yOffset);
     yOffset += 10;
 
     pdf.setFont('helvetica', 'bold');
@@ -95,17 +99,12 @@ export const createPDF = async (selectedUpload, patient, userName, imageLoaded, 
 };
 
 
-export const sendEmail = async (selectedUpload, email, imageLoaded, setIsSending, setShowEmailInput, setEmail, patient, userName) => {
-    /*
-    console.log('sendEmail - selectedUpload:', selectedUpload);  // Debug log
-    console.log('sendEmail - patient:', patient);  // Debug log
-    console.log('sendEmail - userName:', userName);  // Debug log
-*/
+export const sendEmail = async (selectedUpload, email, imageLoaded, setIsSending, setShowEmailInput, setEmail, patient, createdByUser) => {
     if (!imageLoaded) return;
 
     setIsSending(true);
 
-    const pdf = await createPDF(selectedUpload, patient, userName, imageLoaded);
+    const pdf = await createPDF(selectedUpload, patient, createdByUser, imageLoaded);
     if (pdf) {
         const pdfBlob = pdf.output('blob');
         const formData = new FormData();
@@ -113,12 +112,6 @@ export const sendEmail = async (selectedUpload, email, imageLoaded, setIsSending
         formData.append('patientName', selectedUpload.patientName || 'unknown');
         formData.append('email', email);
 
-        /*
-        console.log('Sending email with the following data:', {
-            patientName: selectedUpload.patientName || 'unknown',
-            email: email,
-        });
-        */
         fetch('http://localhost:8000/uploads/send-email', {
             method: 'POST',
             body: formData,

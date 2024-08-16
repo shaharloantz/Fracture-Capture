@@ -43,7 +43,8 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient }) => {
     };
 
     const downloadPDF = async () => {
-        const pdf = await createPDF(selectedUpload, patient, createdByUser.name, imageLoaded, createdByUser.email);
+        console.log('created by user:' , createdByUser);
+        const pdf = await createPDF(selectedUpload, patient,createdByUser , imageLoaded);
         if (pdf) {
             pdf.save(`upload_details_${selectedUpload.patientName || 'unknown'}.pdf`);
         }
@@ -122,7 +123,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient }) => {
                             toast.error('Please enter a valid email address.');
                             return;
                         }
-                        sendEmail(selectedUpload, email, imageLoaded, setIsSending, setShowEmailInput, setEmail, patient, createdByUser.name); 
+                        sendEmail(selectedUpload, email, imageLoaded, setIsSending, setShowEmailInput, setEmail, patient, createdByUser); 
                     }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
                         <input
                             type="email"
