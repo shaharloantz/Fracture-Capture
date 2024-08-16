@@ -54,7 +54,8 @@ router.get('/shared-uploads', requireAuth, async (req, res) => {
         const user = await User.findById(req.user.id).populate({
             path: 'sharedUploads',
             populate: {
-                path: 'patient'
+                path: 'patient', // Populate the patient field within sharedUploads
+                model: 'Patient'
             }
         });
         if (!user) {
@@ -66,6 +67,8 @@ router.get('/shared-uploads', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
+
+
 
 // Route to remove a shared upload for a specific user
 router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {
@@ -84,6 +87,19 @@ router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {
         res.status(200).json({ message: 'Shared upload removed successfully' });
     } catch (error) {
         console.error('Error removing shared upload:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+// Get user by ID
+router.get('/:id', requireAuth, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id).select('-password').lean();
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json(user);
+    } catch (error) {
+        console.error('Error fetching user:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
