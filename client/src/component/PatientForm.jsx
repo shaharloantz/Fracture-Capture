@@ -199,7 +199,7 @@ const PatientForm = ({
                                 name="name"
                                 value={newPatient.name}
                                 onChange={handleInputChange}
-                                maxLength={20}
+                                maxLength={30}
                                 required
                             />
                         </label>

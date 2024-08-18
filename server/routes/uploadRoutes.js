@@ -39,8 +39,12 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
     try {
         const startTime = Date.now(); // Start time
 
+        // Logging request data for debugging
+        console.log('Request Data:', { id, description, bodyPart, imagePath });
+
         const { stdout, stderr } = await execPromise(`python predict.py "${imagePath}"`);
         if (stderr) {
+            console.error('Prediction script error:', stderr);
             return res.status(500).json({ error: 'Error running prediction script' });
         }
 
@@ -53,6 +57,7 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
                 throw new Error("No JSON found in stdout");
             }
         } catch (parseError) {
+            console.error('Error parsing prediction output:', parseError);
             return res.status(500).json({ error: 'Error parsing prediction output' });
         }
 
@@ -61,6 +66,7 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
 
         const patient = await Patient.findById(id);
         if (!patient) {
+            console.error('Patient not found for ID:', id);
             return res.status(404).json({ error: 'Patient not found' });
         }
 
@@ -90,10 +96,10 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
             processingTime  // Send processing time to frontend
         });
     } catch (error) {
+        console.error('Error uploading:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
 
 
 // Endpoint to fetch uploads for a specific patient
