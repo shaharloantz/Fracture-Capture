@@ -36,8 +36,10 @@ const Results = () => {
   const [email, setEmail] = useState('');
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [createdByUser, setCreatedByUser] = useState({});
 
   useEffect(() => {
+    fetchCreatedByUser(selectedUpload.createdByUser);
     if (!patient && selectedUpload?.id) {
       axios.get(`/patients/${selectedUpload.id}`)
         .then(response => {
@@ -46,6 +48,7 @@ const Results = () => {
         .catch(error => {
           console.error('Error fetching patient details:', error);
         });
+
     }
   }, [patient, selectedUpload]);
 
@@ -56,9 +59,16 @@ const Results = () => {
   const handleImageError = () => {
     console.error('Failed to load the processed image from:', processedImagePath);
   };
-
+  const fetchCreatedByUser = async (userId) => {
+    try {
+        const response = await axios.get(`/user/${userId}`, { withCredentials: true });
+        setCreatedByUser(response.data);
+    } catch (error) {
+        console.error('Error fetching created by user:', error.response ? error.response.data : error.message);
+    }
+};
   const downloadPDF = async () => {
-    const pdf = await createPDF(selectedUpload, patientDetails, userName, imageLoaded, profileEmail);
+    const pdf = await createPDF(selectedUpload, patientDetails, createdByUser, imageLoaded);
     if (pdf) {
         const patientName = patientDetails?.name || selectedUpload.patientName || 'unknown';
         pdf.save(`upload_details_${patientName}.pdf`);
@@ -70,7 +80,7 @@ const Results = () => {
       toast.error('Please enter a valid email address.');
       return;
     }
-    await sendEmail(selectedUpload, email, imageLoaded, setIsSending, setShowEmailInput, setEmail, patientDetails, userName);
+    await sendEmail(selectedUpload, email, imageLoaded, setIsSending, setShowEmailInput, setEmail, patientDetails, createdByUser);
   };
 
   return (

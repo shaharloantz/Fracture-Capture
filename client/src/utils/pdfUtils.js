@@ -8,9 +8,6 @@ export const createPDF = async (selectedUpload, patient, createdByUser, imageLoa
     if (!imageLoaded) return null;
 
     const { name, email } = createdByUser;
-    console.log('createdByUser:', createdByUser); // Debugging line
-
-
     const input = document.getElementById('pdf-content');
     
     // Capture the image using html2canvas
@@ -80,8 +77,9 @@ export const createPDF = async (selectedUpload, patient, createdByUser, imageLoa
     pdf.setFont('helvetica', 'bold');
     pdf.text(`Description:`, xOffsetLabel, yOffset);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${selectedUpload.description || 'N/A'}`, xOffsetValue, yOffset);
-    yOffset += 10;
+    const descriptionText = pdf.splitTextToSize(selectedUpload.description || 'N/A', 140);  // Adjust 140 based on the desired width
+    pdf.text(descriptionText, xOffsetValue, yOffset);
+    yOffset += descriptionText.length * 6;  // Adjust line height
 
     pdf.setFont('helvetica', 'bold');
     pdf.text(`Date Uploaded:`, xOffsetLabel, yOffset);

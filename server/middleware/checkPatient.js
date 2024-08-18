@@ -2,7 +2,7 @@ const Patient = require('../models/Patient');
 
 const checkPatient = async (req, res, next) => {
     const { id } = req.body;
-    const patientId = Number(id); // Ensure id is a number
+    const patientId = id; // Ensure id is a string
 
     try {
         const patient = await Patient.findOne({ idNumber: patientId });

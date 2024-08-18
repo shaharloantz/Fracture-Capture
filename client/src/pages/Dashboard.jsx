@@ -164,8 +164,9 @@ const handleSubmit = async (e) => {
     controllerRef.current = new AbortController(); // Initialize the AbortController
     const { signal } = controllerRef.current;
     try {
+
       const formData = new FormData();
-      formData.append('id', uploadData.id);
+      formData.append('id', selectedPatient);
       formData.append('description', uploadData.description);
       formData.append('bodyPart', selectedBodyPart);  // Ensure bodyPart is included
       formData.append('image', uploadData.image);
