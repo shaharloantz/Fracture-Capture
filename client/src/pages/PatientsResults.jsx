@@ -157,7 +157,7 @@ export default function Profile() {
                     </div>
                 </span>
             ),
-            { duration: 5000 }
+            { duration: 3000 }
         );
     };
     
@@ -214,7 +214,7 @@ export default function Profile() {
                     </div>
                 </span>
             ),
-            { duration: 5000 }
+            { duration: 3000 }
         );
     };
     
