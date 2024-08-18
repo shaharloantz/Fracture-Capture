@@ -8,7 +8,6 @@ export const createPDF = async (selectedUpload, patient, createdByUser, imageLoa
     if (!imageLoaded) return null;
 
     const { name, email } = createdByUser;
-    console.log('createdByUser:', createdByUser); // Debugging line
 
 
     const input = document.getElementById('pdf-content');

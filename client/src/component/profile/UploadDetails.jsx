@@ -74,7 +74,6 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient }) => {
     };
 
     const downloadPDF = async () => {
-        console.log('created by user:' , createdByUser);
         const pdf = await createPDF(selectedUpload, patient,createdByUser , imageLoaded);
         if (pdf) {
             pdf.save(`upload_details_${selectedUpload.patientName || 'unknown'}.pdf`);
