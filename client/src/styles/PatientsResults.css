@@ -240,7 +240,11 @@
 
 .patient-name {
     display: block;
-    margin-left: 32px; 
+    margin-left: 32px;
     margin-bottom: 40px;
     font-size: 14px;
+    white-space: nowrap;      /* Prevent the text from wrapping to the next line */
+    overflow: hidden;         /* Hide any overflowing text */
+    text-overflow: ellipsis;  /* Add ellipses (...) at the end of the truncated text */
+    max-width: 90px;         /* Set a maximum width for the container */
 }
