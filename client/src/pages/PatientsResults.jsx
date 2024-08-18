@@ -13,6 +13,7 @@ Modal.setAppElement('#root'); // Ensure this is the id of your root element
 
 export default function Profile() {
     const [profile, setProfile] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [patientUploads, setPatientUploads] = useState([]);
     const [sharedUploads, setSharedUploads] = useState([]);
@@ -23,6 +24,16 @@ export default function Profile() {
     const [selectedSharePatient, setSelectedSharePatient] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
+
+    
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const filteredPatients = profile.patients.filter(patient =>
+        patient.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        patient._id.includes(searchQuery)
+    );
 
     useEffect(() => {
         axios.get('/user/profile', { withCredentials: true })
@@ -328,8 +339,17 @@ export default function Profile() {
                 />
             ) : (
                 <>
+                    {/* Add the search bar here */}
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                        placeholder="Search patients..."
+                        className="search-bar"
+                    />
+    
                     <PatientList
-                        patients={profile.patients}
+                        patients={filteredPatients}  // Use the filtered list of patients here
                         fetchPatientUploads={fetchPatientUploads}
                         handleEditPatientClick={handleEditPatientClick}
                         handleDeletePatientClick={handleDeletePatientClick}

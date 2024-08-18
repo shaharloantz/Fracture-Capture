@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 40px 20px; /* Increased padding */
     color: white;
 }
 
@@ -13,12 +13,10 @@
     text-align: center;
 }
 .patient-folders, .upload-folders {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 50px; /* Increased gap for better spacing */
+    margin-top: 40px;
 }
 .patient-folder, .upload-folder {
     position: relative;
@@ -31,6 +29,38 @@
     justify-content: center;
     cursor: pointer;
 }
+
+.patient-folder:hover, .upload-folder:hover {
+    transform: scale(1.05); /* Slightly enlarge folder on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+}
+
+.icon-container::before {
+    content: attr(data-tooltip); /* Tooltip text from data attribute */
+    position: absolute;
+    bottom: 120%; /* Position above the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+}
+
+.icon-container:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+.edit-icon:hover, .delete-icon:hover, .share-icon:hover {
+    cursor: pointer; /* Pointer cursor for interactive icons */
+}
+
 .folder-icon {
     width: 100px;
     height: 100px;
@@ -50,6 +80,18 @@
     pointer-events: none; /* Allow click to pass through */
 }
 
+.search-bar {
+    width: 100%;
+    max-width: 500px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: white;  /* Set background to white */
+    color: black;  /* Set text color to black */
+}
 .edit-icon, .delete-icon ,.share-icon, .delete-icon-patient {
     width: 18px;
     height: 18px;
