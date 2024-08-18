@@ -1,4 +1,3 @@
-/* Ensure the html and body elements take full height */
 html, body {
   height: 100%;
   margin: 0;
@@ -10,14 +9,13 @@ html, body {
   height: 100%;
 }
 
-/* Prevent scrolling for the register page */
 .register-page {
   margin-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 10vh;
-  background: linear-gradient(to right, #4e54c8, #8f94fb); /* Your gradient background */
+  background: linear-gradient(to right, #4e54c8, #8f94fb); 
   font-family: 'Arial', sans-serif;
 }
 
@@ -33,7 +31,6 @@ html, body {
   text-decoration: underline;
 }
 
-/* Tooltip styles */
 .relative {
   position: relative;
 }
@@ -47,7 +44,7 @@ html, body {
   text-align: center;
   padding: 5px;
   border-radius: 4px;
-  bottom: 125%; /* Position above the input */
+  bottom: 125%; 
   left: 50%;
   transform: translateX(-50%);
   width: 200px;

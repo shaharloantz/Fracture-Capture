@@ -55,17 +55,17 @@ button:hover, button:focus, button:focus-visible {
 
 .main-content {
   text-align: center;
-  position: relative; /* Needed for proper centering if the sidebar is positioned absolutely */
+  position: relative;
 }
 
 h1 {
   color: #ffffff;
-  font-size: 2.5rem; /* Adjust based on your preference */
+  font-size: 2.5rem; 
   margin-bottom: 30px;
 }
 
 .fracture-icon {
-  width: 200px; /* Larger size for the main icon */
+  width: 200px; 
   margin-bottom: 20px;
 }
 
@@ -73,11 +73,11 @@ h1 {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0; /* Remove padding for visual consistency */
+  padding: 0; 
 }
 
 .start-icon {
-  width: 80px; /* Smaller size for the start/play icon */
+  width: 80px; 
 }
 
 .sidebar {

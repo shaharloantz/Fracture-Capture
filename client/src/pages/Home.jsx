@@ -1,21 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../component/Sidebar";
-import '../styles/Home.css'; // Ensure this path is correct
+import '../styles/Home.css'; 
 
 export default function Home() {
     const navigate = useNavigate();
 
-    useEffect(() => {
-        // Add overflow hidden to body
-
-        // Cleanup function to remove overflow hidden
-        return () => {
-        };
-    }, []);
-
     const handlePlayClick = () => {
-        navigate('/dashboard'); // Navigate to upload page
+        navigate('/dashboard'); 
     };
 
     return (

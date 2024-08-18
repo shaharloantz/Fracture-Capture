@@ -1,5 +1,3 @@
-/* MainLayout.css */
-
 .main-layout-container {
   display: flex;
   flex-direction: column;
@@ -13,7 +11,7 @@
 
 .flex-grow {
   flex-grow: 1;
-  padding-bottom: 20px; /* To ensure content doesn't overlap footer */
+  padding-bottom: 20px; 
 }
 
 .dashboard-header {

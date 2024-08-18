@@ -1,29 +1,24 @@
-/* General styles for the admin panel */
 .admin-panel {
     padding: 20px;
     color: white;
 }
 
-/* Center the title */
 .admin-panel h2 {
     text-align: center;
     margin-bottom: 20px;
 }
 
-/* Sort options container */
 .sort-options {
     margin-bottom: 20px;
     text-align: center;
     color: black;
 }
 
-/* Style the label in the sort options */
 .sort-options label {
     margin-right: 10px;
     color: white;
 }
 
-/* Table Styles for Larger Screens */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -36,39 +31,37 @@ table, th, td {
 }
 
 th {
-    background-color: orange; /* Adjust based on your app's theme */
+    background-color: orange; 
     color: black;
     text-align: center;
 }
 
-/* Set specific widths for columns */
 th:nth-child(4), td:nth-child(4) {
-    width: 12%; /* Adjust this percentage to make the column thinner */
-    max-width: 100px; /* Set a maximum width for the column */
+    width: 12%; 
+    max-width: 100px;
 }
 th:nth-child(5), td:nth-child(5) {
-    width: 12%; /* Adjust this percentage to make the column thinner */
-    max-width: 100px; /* Set a maximum width for the column */
+    width: 12%; 
+    max-width: 100px;
 }
 td {
     text-align: center;
 }
 
-/* Container for action icons */
 .action-icons {
     display: flex;
     justify-content: center;
-    gap: 30px; /* Adjust spacing between icons */
+    gap: 30px; 
 }
 
 .admin-edit, .admin-delete {
-    width: 20px; /* Adjust size as needed */
+    width: 20px;
     height: 20px;
     cursor: pointer;
-    vertical-align: middle; /* Align the icon with the text */
+    vertical-align: middle; 
 }
 
-/* Edit form styles */
+
 .edit-row {
     background-color: #c7c7c7d4;
 }
@@ -94,7 +87,6 @@ td {
     box-sizing: border-box;
 }
 
-/* Style the buttons */
 .edit-form .button-row {
     display: flex;
     justify-content: center;
@@ -114,19 +106,15 @@ td {
     background-color: #ffb84d;
 }
 
-/* Responsive Styles */
 @media screen and (max-width: 768px) {
-    /* Hide the table on smaller screens and use a card layout instead */
     table, thead, tbody, th, td, tr {
         display: block;
     }
 
-    /* Remove table borders */
     table {
         border: none;
     }
 
-    /* Adjust table rows to look like cards */
     tr {
         margin-bottom: 15px;
         border: 1px solid #ddd;
@@ -134,7 +122,6 @@ td {
         padding: 10px;
     }
 
-    /* Each table cell will take full width */
     td {
         text-align: left;
         padding: 10px;
@@ -145,12 +132,10 @@ td {
         border: none;
         border-bottom: 1px solid #ddd;
     }
-    /* Remove the last border */
     td:last-child {
         border-bottom: none;
     }
 
-    /* Add label before each cell's content */
     td:before {
         content: attr(data-label);
         font-weight: bold;
@@ -159,10 +144,9 @@ td {
     }
 
     th {
-        display: none; /* Hide the table headers */
+        display: none; 
     }
 
-    /* Stack sort options vertically */
     .sort-options {
         display: flex;
         flex-direction: column;
@@ -175,40 +159,40 @@ td {
     }
     
     .edit-form input {
-        font-size: 1.2em; /* Make the input fields larger */
-        width: 100%; /* Adjust input width */
+        font-size: 1.2em; 
+        width: 100%; 
     }
 
     .edit-form button {
-        padding: 10px 30px; /* Increase button padding */
-        font-size: 1.1em; /* Increase button font size */
+        padding: 10px 30px; 
+        font-size: 1.1em; 
     }
 }
 
 @media screen and (max-width: 480px) {
-    /* Further reduce padding and font size for very small screens */
+   
     td {
         padding: 8px;
         font-size: 12px;
     }
 
     .edit-form input {
-        font-size: 1.2em; /* Make the input fields larger */
-        width: 100%; /* Adjust input width */
+        font-size: 1.2em;
+        width: 100%; 
     }
 
     .edit-form button {
-        padding: 10px 20px; /* Adjust button padding */
-        font-size: 1.1em; /* Increase button font size */
+        padding: 10px 20px;
+        font-size: 1.1em; 
     }
 }
 .totals {
     margin-top: 30px;
     text-align: center;
-    color: white; /* Adjust this color based on your theme */
+    color: white; 
 }
 
 .totals p {
     margin: 5px 0;
-    font-size: 18px; /* Adjust the font size based on your design */
+    font-size: 18px; 
 }

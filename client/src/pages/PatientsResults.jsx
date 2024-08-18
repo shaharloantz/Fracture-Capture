@@ -1,3 +1,18 @@
+/**
+ * This component is the main profile and results management page for the application.
+ * It handles the following functionalities:
+ * - Fetching and displaying the logged-in user's profile, including their patients and uploads.
+ * - Allowing the user to view, edit, and delete patient information and associated uploads.
+ * - Enabling sharing of patient uploads with other doctors.
+ * - Handling the selection of a patient or upload, and navigating between different views like 
+ *   patient details, upload details, and shared uploads.
+ * - Displaying modal dialogs for sharing patient uploads.
+ * - Providing UI for editing patient information and handling form submissions.
+ * - Utilizing various sub-components like `PatientList`, `PatientUploads`, `UploadDetails`, 
+ *   `EditPatientForm`, and `SharedPatientUploads` to manage different parts of the profile 
+ *   and results page.
+ */
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +24,7 @@ import UploadDetails from '../component/profile/UploadDetails';
 import EditPatientForm from '../component/profile/EditPatientForm';
 import SharedPatientUploads from '../component/profile/sharedPatientUploads';
 import '../styles/PatientsResults.css';
-Modal.setAppElement('#root'); // Ensure this is the id of your root element
+Modal.setAppElement('#root');
 
 export default function Profile() {
     const [profile, setProfile] = useState(null);

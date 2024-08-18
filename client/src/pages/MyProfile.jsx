@@ -1,4 +1,18 @@
-// src/pages/ProfileDetails.jsx
+/**
+ * MyProfile Component
+ * 
+ * This component handles the display of the user's profile information and provides functionality for changing the user's password.
+ * 
+ * 1. **Password Change Functionality:** 
+ *    - Allows the user to toggle the visibility of the password change form.
+ *    - Validates the new password against the confirmation before submission.
+ *    - Submits the password change request to the backend, and handles success or error feedback via toast notifications.
+ * 
+ * 2. **Display of Profile Information:**
+ *    - Fetches and displays the user's profile details on component mount.
+ *    - If the profile data cannot be retrieved, the user is redirected to the login page.
+ */
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';

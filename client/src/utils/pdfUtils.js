@@ -1,3 +1,6 @@
+/*
+ *  This module provides utility functions to create PDF documents from HTML content and send them via email.
+ */
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import {toast} from 'react-hot-toast';

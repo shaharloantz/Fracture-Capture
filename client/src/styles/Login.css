@@ -1,17 +1,15 @@
-/* Ensure the html and body elements take full height */
 html, body {
     height: 100%;
     margin: 0;
     overflow: hidden;
   }
 
-  /* Prevent scrolling for the register page */
   .register-page {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(to right, #4e54c8, #8f94fb); /* Your gradient background */
+    background: linear-gradient(to right, #4e54c8, #8f94fb);
     font-family: 'Arial', sans-serif;
   }
   .text-white {

@@ -1,3 +1,8 @@
+"""
+    This script performs object detection on an input image using a pre-trained YOLO model.
+    It loads the model weights, performs predictions, and extracts bounding boxes and confidence scores.
+    The results can be further processed or visualized as needed.
+"""
 import sys
 import json
 import os
