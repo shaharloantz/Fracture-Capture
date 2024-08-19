@@ -36,6 +36,26 @@ router.post('/', requireAuth, async (req, res) => {
     }
 });
 
+/// Endpoint to delete a patient and all of its uploads
+const deleteFile = (filePath) => {
+    return new Promise((resolve, reject) => {
+        fs.access(filePath, fs.constants.F_OK, (err) => {
+            if (err) {
+                console.warn(`File not found: ${filePath}, skipping deletion.`);
+                return resolve();
+            }
+
+            fs.unlink(filePath, (unlinkErr) => {
+                if (unlinkErr) {
+                    console.error(`Error deleting file: ${filePath}`, unlinkErr);
+                    return reject(unlinkErr);
+                }
+                console.log(`Deleted file: ${filePath}`);
+                resolve();
+            });
+        });
+    });
+};
 // Endpoint to delete a patient and all of its uploads
 router.delete('/:id', requireAuth, async (req, res) => {
     try {
@@ -71,13 +91,14 @@ router.delete('/:id', requireAuth, async (req, res) => {
 
         // Delete all uploads associated with the patient
         await Upload.deleteMany({ patient: req.params.id });
-        // Delete the patient
-        await Patient.findByIdAndDelete(req.params.id);
 
         // Decrease the user's patient count
-        const user = await User.findById(req.user.id);
+        const user = await User.findById(patient.createdByUser);
         user.numberOfPatients -= 1;
         await user.save();
+
+        // Delete the patient
+        await Patient.findByIdAndDelete(req.params.id);
 
         res.json({ message: 'Patient and all related uploads deleted successfully' });
     } catch (error) {
@@ -85,6 +106,7 @@ router.delete('/:id', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+///
 
 // Endpoint to update a patient's details
 router.put('/:id', requireAuth, async (req, res) => {
