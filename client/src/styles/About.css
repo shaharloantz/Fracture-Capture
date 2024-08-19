@@ -63,9 +63,9 @@
 }
 
 .tech-item img {
-    width: 150px; /* Adjust the width to your preference */
-    height: auto; /* Maintains the aspect ratio */
-    border-radius: 100%; /* Optional: make the image circular */
+    width: 150px; 
+    height: auto; 
+    border-radius: 100%; 
 }
 
 .tech-item h3 {
@@ -124,9 +124,9 @@
 .meet-the-team .shachar img,
 .meet-the-team .tal img,
 .meet-the-team .or img {
-    width: 150px; /* Adjust the width to your preference */
-    height: auto; /* Maintains the aspect ratio */
-    border-radius: 50%; /* Optional: make the image circular */
+    width: 150px; 
+    height: auto; 
+    border-radius: 50%;
 }
 
 
@@ -163,7 +163,7 @@
 
 .call-to-action p {
     font-size: 1.2em;
-    margin-bottom: 40px; /* Add margin here to increase spacing before the button */
+    margin-bottom: 40px; 
 }
 
 .cta-button {
@@ -173,7 +173,7 @@
     border-radius: 5px;
     text-decoration: none;
     font-size: 1.2em;
-    margin-top: 20px; /* Add margin here to move the button further down */
+    margin-top: 20px; 
     display: inline-block;
 }
 

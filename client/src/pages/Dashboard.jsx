@@ -1,3 +1,25 @@
+/**
+ * This file defines the `Dashboard` component, which serves as the main interface for managing patient data and 
+ * uploading medical images for fracture detection. The component includes functionality for creating new patients, 
+ * selecting existing patients, and uploading images for processing. The component's state and logic are structured 
+ * as follows:
+ *
+ * - `initialPatientState` and `initialUploadState` define the initial states for new patients and image uploads.
+ * - The component uses several state variables to manage the user's profile, form visibility, patient data, 
+ *   and upload progress.
+ * - `useEffect` is used to fetch the user's profile data when the component mounts.
+ * - Various functions handle user interactions, such as selecting body parts, creating patients, uploading images, 
+ *   and handling form input.
+ * - The `handleSubmit` function manages the submission of new patient data and image uploads, handling both new 
+ *   patients and existing patients.
+ * - Conditional rendering is used to display different views based on the user's actions, such as showing the form 
+ *   for a new patient, selecting a body part, or displaying the processing screen.
+ * - After a successful upload, the user is redirected to the results page, where they can view the processed images 
+ *   and predictions.
+ *
+ * The component is designed to provide a user-friendly interface for managing patient records and uploading medical 
+ * images for analysis, with smooth transitions between different states and clear feedback for the user.
+ */
 import React, { useEffect,useRef, useState } from 'react';
 import axios from 'axios';
 import { toast, Toaster } from 'react-hot-toast';
@@ -19,7 +41,7 @@ const Dashboard = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [selectedBodyPart, setSelectedBodyPart] = useState('');
   const [showProcessing, setShowProcessing] = useState(false);
-  const [estimatedTime, setEstimatedTime] = useState(10); // Default estimated time
+  const [estimatedTime, setEstimatedTime] = useState(10); 
   const navigate = useNavigate();
   const controllerRef = useRef(null);
 
@@ -142,8 +164,9 @@ const handleSubmit = async (e) => {
     controllerRef.current = new AbortController(); // Initialize the AbortController
     const { signal } = controllerRef.current;
     try {
+
       const formData = new FormData();
-      formData.append('id', uploadData.id);
+      formData.append('id', selectedPatient);
       formData.append('description', uploadData.description);
       formData.append('bodyPart', selectedBodyPart);  // Ensure bodyPart is included
       formData.append('image', uploadData.image);
@@ -244,7 +267,7 @@ const handleSubmit = async (e) => {
   uploadData={uploadData}
   newPatient={newPatient}
   patients={patients}
-  selectedBodyPart={selectedBodyPart}  // Ensure it's passed here
+  selectedBodyPart={selectedBodyPart}  
   handleInputChange={handleInputChange}
   handleFileChange={handleFileChange}
   handleSubmit={handleSubmit}

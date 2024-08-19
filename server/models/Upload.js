@@ -10,8 +10,8 @@ const uploadSchema = new mongoose.Schema({
     processedImgUrl: { type: String, default: null },
     dateUploaded: { type: Date, default: Date.now },
     prediction: {
-        boxes: [{ type: [Number], required: true }],  // Array of box coordinates
-        confidences: [{ type: Number, required: true }]  // Array of confidence scores
+        boxes: [{ type: [Number], required: true }],
+        confidences: [{ type: Number, required: true }]
     },
     patient: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: true },
     createdByUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }

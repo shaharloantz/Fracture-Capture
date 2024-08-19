@@ -1,3 +1,17 @@
+/**
+ * This file sets up the main application routes and layout for the React application.
+ * It imports necessary components and pages, and configures the routing using react-router-dom.
+ * 
+ * Key functionalities:
+ * - Importing React and necessary hooks (useState, useEffect).
+ * - Importing routing components from react-router-dom.
+ * - Importing various page components and layouts.
+ * - Importing third-party libraries like react-hot-toast for notifications.
+ * - Importing global styles and axios for HTTP requests.
+ * 
+ * The main purpose of this file is to define the structure and navigation of the application.
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
 

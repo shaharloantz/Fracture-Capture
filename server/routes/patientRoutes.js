@@ -35,6 +35,7 @@ router.post('/', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 // Endpoint to delete a patient and all of its uploads
 router.delete('/:id', requireAuth, async (req, res) => {
     try {

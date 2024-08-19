@@ -4,9 +4,9 @@
     border-radius: 10px;
     padding: 20px;
     margin: 20px 0;
-    width: 90%; /* Change to 90% for better mobile responsiveness */
-    max-width: 400px; /* Ensure it doesn’t get too wide on large screens */
-    box-sizing: border-box; /* Include padding in width calculation */
+    width: 90%; 
+    max-width: 400px; 
+    box-sizing: border-box; 
 }
 
 .upload-image-label {
@@ -19,7 +19,7 @@
 }
 
 .upload-button-icon {
-    width: 50px; /* Adjust the size as needed */
+    width: 50px; 
     height: auto;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
@@ -28,27 +28,27 @@
 }
 
 .upload-button-icon:hover {
-    transform: scale(1.1); /* Slightly increase the size on hover */
+    transform: scale(1.1);
 }
 
 .button-container {
     display: flex;
-    flex-direction: column; /* Stack buttons vertically on smaller screens */
-    gap: 10px; /* Space between buttons */
+    flex-direction: column; 
+    gap: 10px; 
     margin-top: 10px;
     width: 100%;
 }
 
 @media (min-width: 768px) {
     .button-container {
-        flex-direction: row; /* Switch to row on larger screens */
+        flex-direction: row; 
         justify-content: center;
     }
 }
 
 @media (max-width: 768px) {
     .patient-form {
-        width: 100%; /* Make sure it uses all available space on small screens */
+        width: 100%; 
     }
 }
 

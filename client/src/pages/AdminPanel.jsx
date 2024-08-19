@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../styles/AdminPanel.css'; // Adjust the path if necessary
+import '../styles/AdminPanel.css';
 import {toast} from 'react-hot-toast';
 
 const AdminPanel = () => {
     const [users, setUsers] = useState([]);
-    const [sortOption, setSortOption] = useState('isAdmin'); // Default sort by isAdmin
-    const [editingUserId, setEditingUserId] = useState(null); // Track the user being edited
+    const [sortOption, setSortOption] = useState('isAdmin'); 
+    const [editingUserId, setEditingUserId] = useState(null); 
     const [editedUserData, setEditedUserData] = useState({ name: '', email: '' });
     const totalUsers = users.length;
     const totalPatients = users.reduce((acc, user) => acc + user.numberOfPatients, 0);
@@ -61,7 +61,7 @@ const AdminPanel = () => {
               </div>
             </span>
           ),
-          { duration: 5000 } // Duration can be adjusted as needed
+          { duration: 5000 } 
         );
       };
     
@@ -69,10 +69,10 @@ const AdminPanel = () => {
         try {
           await axios.delete(`/user/delete/${userId}`, { withCredentials: true });
           setUsers(users.filter(user => user._id !== userId)); // Update state to remove the user from the list
-          toast.dismiss(toastId); // Close the toast
+          toast.dismiss(toastId); 
           toast.success('User deleted successfully!');
         } catch (error) {
-          toast.dismiss(toastId); // Close the toast
+          toast.dismiss(toastId); 
           toast.error('Error deleting user.');
         }
       };
@@ -88,7 +88,7 @@ const AdminPanel = () => {
         try {
             await axios.put(`/user/update/${editingUserId}`, editedUserData, { withCredentials: true });
             setUsers(users.map(user => user._id === editingUserId ? { ...user, ...editedUserData } : user));
-            setEditingUserId(null); // Close the edit mode
+            setEditingUserId(null); 
         } catch (error) {
             console.error('Error updating user:', error.response ? error.response.data : error.message);
         }

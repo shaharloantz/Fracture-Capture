@@ -6,6 +6,7 @@ const Patient = require('../models/Patient');
 
 const router = express.Router();
 
+// Endpoint to get user profile
 router.get('/profile', requireAuth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password').lean();
@@ -21,7 +22,7 @@ router.get('/profile', requireAuth, async (req, res) => {
     }
 });
 
-
+// Endpoint to change user password
 router.post('/change-password', requireAuth, async (req, res) => {
     const { currentPassword, newPassword } = req.body;
 
@@ -69,7 +70,6 @@ router.get('/shared-uploads', requireAuth, async (req, res) => {
 });
 
 
-
 // Route to remove a shared upload for a specific user
 router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {
     const { uploadId } = req.params;
@@ -90,6 +90,7 @@ router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 // Get user by ID
 router.get('/:id', requireAuth, async (req, res) => {
     try {

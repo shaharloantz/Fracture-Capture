@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// Define the user schema
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -8,11 +7,9 @@ const userSchema = new mongoose.Schema({
     resetToken: { type: String, required: false }, 
     numberOfPatients: { type: Number, default: 0 },
     sharedUploads: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Upload' }],
-    isAdmin: { type: Boolean, default: false } // New isAdmin field
+    isAdmin: { type: Boolean, default: false } 
 }, { timestamps: true });
 
-// Create the User model
 const User = mongoose.model('User', userSchema);
 
-// Export the User model
 module.exports = User;

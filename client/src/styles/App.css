@@ -1,8 +1,7 @@
-/* Basic body and overall styling */
 body {
     margin: 0;
     font-family: 'Arial', sans-serif;
-    height: 100vh; /* Full viewport height */
+    height: 100vh; 
     display: flex;
     flex-direction: column;
     align-items: center;

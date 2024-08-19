@@ -1,4 +1,3 @@
-/* Apply box-sizing to all elements */
 *,
 *::before,
 *::after {
@@ -9,7 +8,7 @@ html {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  overflow-y: auto; /* Allow vertical scrolling */
+  overflow-y: auto; 
 }
 
 body {
@@ -17,13 +16,13 @@ body {
   padding: 0;
   min-height: 100%;
   background: #002855;
-  direction: ltr; /* Ensure left-to-right direction */
-  font-family: 'Calibri', sans-serif; /* Change font to Calibri */
-  overflow-y: auto; /* Ensure body can scroll */
+  direction: ltr; 
+  font-family: 'Calibri', sans-serif; 
+  overflow-y: auto;
 }
 
 .qa-container {
-  min-height: 100vh; /* Ensure it takes at least the full viewport height */
+  min-height: 100vh; 
   background-color: #002855;
   color: white;
   margin: 0;
@@ -32,8 +31,6 @@ body {
   flex-direction: column;
   align-items: center;
 }
-
-
 
 .menu-logo {
   font-size: 24px;
@@ -52,7 +49,7 @@ body {
 
 
 .qa-search-bar {
-  width: 100%; /* Make the search bar full width within the qa-content */
+  width: 100%;
   padding: 10px;
   margin-bottom: 20px;
   border-radius: 5px;
@@ -64,8 +61,8 @@ body {
 
 
 .qa-content {
-  width: 100%; /* Ensures it takes the full width of the container */
-  max-width: 850px; /* Increase max-width to stretch the content more */
+  width: 100%; 
+  max-width: 850px; 
   padding: 25px 20px;
   text-align: left;
 }
@@ -75,7 +72,7 @@ body {
   display: inline-block;
   padding-bottom: 10px;
   margin-bottom: 20px;
-  font-size: 1.5em; /* Increase the font size of h2 elements */
+  font-size: 1.5em; 
 }
 
 .subtitle {
@@ -83,20 +80,20 @@ body {
   border-bottom: 1px solid #fff;
   padding-bottom: 5px;
   margin: 30px 0 20px;
-  text-align: left; /* Ensure subtitles are left-aligned */
-  font-size: 1.4em; /* Increase the font size of subtitles */
+  text-align: left; 
+  font-size: 1.4em; 
 
 }
 
 .qa-item {
   margin: 25px 0;
-  text-align: left; /* Ensure items are left-aligned */
-  font-size: 1.2em; /* Increase the font size of Q&A items */
+  text-align: left; 
+  font-size: 1.2em; 
 
 }
 
 .question {
-  font-size: 1em; /* Increase the font size of questions */
+  font-size: 1em; 
   margin: 0;
   padding: 8px;
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -104,24 +101,24 @@ body {
   background-color: rgba(0, 40, 85, 0.7);
   cursor: pointer;
   display: flex;
-  justify-content: flex-start; /* Align content to the start */
+  justify-content: flex-start; 
   align-items: center;
-  width: 100%; /* Ensure full width */
-  text-align: left; /* Ensure text is left-aligned */
-  background-color: rgba(0, 40, 85, 0.8); /* Darker for questions */
+  width: 100%; 
+  text-align: left; 
+  background-color: rgba(0, 40, 85, 0.8); 
 }
 
 .answer {
-  font-size: 1em; /* Increase the font size of answers */
+  font-size: 1em; 
   margin: 0;
   padding: 8px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 5px;
   background-color: rgba(0, 40, 85, 0.5);
   margin-top: 5px;
-  width: 100%; /* Ensure full width */
-  text-align: left; /* Ensure text is left-aligned */
-  background-color: rgba(0, 56, 121, 0.6); /* Lighter for answers */
+  width: 100%; 
+  text-align: left; 
+  background-color: rgba(0, 56, 121, 0.6); 
 }
 
 .toggle-icon {
@@ -135,7 +132,7 @@ body {
 .qa-item,
 .question,
 .answer {
-  line-height: 1.5; /* Increase line height for better readability */
+  line-height: 1.5; 
 }
 
 .get-in-touch {
@@ -155,7 +152,7 @@ body {
 
 .get-in-touch p {
   font-size: 1.2em;
-  margin-bottom: 40px; /* Add margin here to increase spacing before the button */
+  margin-bottom: 40px; 
 }
 
 .git-button {
@@ -165,7 +162,7 @@ body {
   border-radius: 5px;
   text-decoration: none;
   font-size: 1.2em;
-  margin-top: 20px; /* Add margin here to move the button further down */
+  margin-top: 20px; 
   display: inline-block;
 }
 

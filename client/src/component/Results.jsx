@@ -1,8 +1,29 @@
+/**
+ * This React component is responsible for displaying the results of a medical image processing task.
+ * It allows the user to view the processed image, download the results as a PDF, and send the results via email.
+ * 
+ * Key functionalities:
+ * - Displays a processed medical image along with relevant patient details.
+ * - Provides options to download the result as a PDF or send it via email.
+ * - Dynamically fetches and displays patient details if they are not already provided.
+ * - Handles the loading and error states for the image and network requests.
+ * 
+ * Hooks:
+ * - useLocation: Used to retrieve state passed via navigation (e.g., processed image path, patient data).
+ * - useState: Manages local state for image loading, patient details, email input, and sending status.
+ * - useEffect: Fetches patient details from the server if they are not available in the initial state.
+ * 
+ * External dependencies:
+ * - axios: For making HTTP requests to fetch patient data.
+ * - react-hot-toast: For displaying notifications to the user.
+ * - jsPDF (via createPDF): For generating PDF files.
+ * - react-router-dom: For navigation and retrieving location state.
+ */
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { createPDF, sendEmail } from '../utils/pdfUtils';  // Import sendEmail from pdfUtils
+import { createPDF, sendEmail } from '../utils/pdfUtils';  
 import downloadIcon from '../assets/images/download-file-icon.png'; 
-import sendEmailIcon from '../assets/images/send-email-icon.png'; // Add the send email icon
+import sendEmailIcon from '../assets/images/send-email-icon.png'; 
 import '../styles/Results.css';
 import axios from 'axios';
 import {toast} from 'react-hot-toast';
@@ -15,8 +36,10 @@ const Results = () => {
   const [email, setEmail] = useState('');
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [createdByUser, setCreatedByUser] = useState({});
 
   useEffect(() => {
+    fetchCreatedByUser(selectedUpload.createdByUser);
     if (!patient && selectedUpload?.id) {
       axios.get(`/patients/${selectedUpload.id}`)
         .then(response => {
@@ -25,6 +48,7 @@ const Results = () => {
         .catch(error => {
           console.error('Error fetching patient details:', error);
         });
+
     }
   }, [patient, selectedUpload]);
 
@@ -35,9 +59,16 @@ const Results = () => {
   const handleImageError = () => {
     console.error('Failed to load the processed image from:', processedImagePath);
   };
-
+  const fetchCreatedByUser = async (userId) => {
+    try {
+        const response = await axios.get(`/user/${userId}`, { withCredentials: true });
+        setCreatedByUser(response.data);
+    } catch (error) {
+        console.error('Error fetching created by user:', error.response ? error.response.data : error.message);
+    }
+};
   const downloadPDF = async () => {
-    const pdf = await createPDF(selectedUpload, patientDetails, userName, imageLoaded, profileEmail);
+    const pdf = await createPDF(selectedUpload, patientDetails, createdByUser, imageLoaded);
     if (pdf) {
         const patientName = patientDetails?.name || selectedUpload.patientName || 'unknown';
         pdf.save(`upload_details_${patientName}.pdf`);
@@ -49,7 +80,7 @@ const Results = () => {
       toast.error('Please enter a valid email address.');
       return;
     }
-    await sendEmail(selectedUpload, email, imageLoaded, setIsSending, setShowEmailInput, setEmail, patientDetails, userName);
+    await sendEmail(selectedUpload, email, imageLoaded, setIsSending, setShowEmailInput, setEmail, patientDetails, createdByUser);
   };
 
   return (

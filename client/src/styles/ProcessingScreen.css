@@ -13,12 +13,12 @@
 }
 
 .spinner {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
     border-radius: 50%;
     width: 120px;
     height: 120px;
-    animation: spin 1.5s linear infinite; /* Slightly faster spin for smoother feel */
+    animation: spin 1.5s linear infinite;
 }
 
 @keyframes spin {
@@ -31,23 +31,23 @@
 }
 
 .progress-bar {
-    width: 40%; /* Increased width for better visibility */
-    height: 30px; /* Increased height for better visibility */
-    background-color: #e0e0e0; /* Light grey background */
+    width: 40%;
+    height: 30px;
+    background-color: #e0e0e0;
     margin-top: 60px;
-    border-radius: 25px; /* More rounded corners */
+    border-radius: 25px;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     position: relative;
 }
 
 .progress {
     height: 100%;
-    background: linear-gradient(90deg, #3498db, #2980b9); /* Gradient color */
+    background: linear-gradient(90deg, #3498db, #2980b9);
     width: 0%;
-    transition: width 0.5s ease-in-out; /* Smooth transition effect */
-    border-radius: 25px; /* Match the border radius of the progress bar */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+    transition: width 0.5s ease-in-out;
+    border-radius: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     position: relative;
     overflow: hidden;
 }
@@ -74,7 +74,7 @@
     padding: 10px 20px;
     font-size: 1rem;
     color: #ffffff;
-    background-color: #e74c3c; /* Red color */
+    background-color: #e74c3c;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -82,5 +82,5 @@
 }
 
 .abort-button:hover {
-    background-color: #c0392b; /* Darker red on hover */
+    background-color: #c0392b;
 }

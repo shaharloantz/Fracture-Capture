@@ -242,11 +242,11 @@
 }
 
 .upload-details input[type="email"] {
-    color: black; /* Ensure text is black */
-    background-color: white; /* Ensure background is white */
+    color: black; 
+    background-color: white; 
 }
 .upload-details button {
-    background-color: #0044cc; /* Consistent button color */
+    background-color: #0044cc; 
     color: white;
     cursor: pointer;
     padding: 10px 20px;
@@ -266,23 +266,27 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between; /* Distribute content evenly within the folder */
+    justify-content: space-between; 
     cursor: pointer;
 }
 
 .patient-info {
     text-align: center;
     color: white;
-    flex-grow: 1; /* Allows text to expand evenly */
+    flex-grow: 1; 
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centers the text vertically */
-    margin-top: 10px; /* Add some margin to ensure space from icons */
+    justify-content: center; 
+    margin-top: 10px; 
 }
 
 .patient-name {
-    display: block; /* Forces the name onto the next line */
-    margin-left: 32px; /* Optional: adds some indentation if desired */
+    display: block;
+    margin-left: 32px;
     margin-bottom: 40px;
     font-size: 14px;
+    white-space: nowrap;      /* Prevent the text from wrapping to the next line */
+    overflow: hidden;         /* Hide any overflowing text */
+    text-overflow: ellipsis;  /* Add ellipses (...) at the end of the truncated text */
+    max-width: 90px;         /* Set a maximum width for the container */
 }

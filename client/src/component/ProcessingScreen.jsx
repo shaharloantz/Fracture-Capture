@@ -1,3 +1,11 @@
+/**
+  ProcessingScreen Component
+
+ * This component is responsible for displaying a processing screen during image processing or any other 
+ * long-running task. It includes a visual progress bar and a spinner to indicate that a process is 
+ * ongoing. The progress bar is animated to fill up over the time specified by the `processingTime` prop.
+ 
+ */
 import React, { useState, useEffect } from 'react';
 import '../styles/ProcessingScreen.css';
 
@@ -10,8 +18,8 @@ const ProcessingScreen = ({ processingTime, onAbort }) => {
             return;
         }
 
-        const totalTime = Math.max(processingTime, 1); // Ensure a minimum of 1 second
-        const increment = 100 / totalTime; // Calculate progress increment per second
+        const totalTime = Math.max(processingTime, 1); 
+        const increment = 100 / totalTime; 
 
         const interval = setInterval(() => {
             setProgress((prevProgress) => {
@@ -22,7 +30,7 @@ const ProcessingScreen = ({ processingTime, onAbort }) => {
                 }
                 return newProgress;
             });
-        }, 1000); // Update every second
+        }, 1000); 
 
         return () => clearInterval(interval);
     }, [processingTime]);
