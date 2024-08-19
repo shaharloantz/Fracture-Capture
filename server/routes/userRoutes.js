@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const requireAuth = require('../middleware/authMiddleware');
 const User = require('../models/User');
 const Patient = require('../models/Patient');
+const mongoose = require('mongoose');
 
 const router = express.Router();
 
@@ -91,21 +92,9 @@ router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {
     }
 });
 
-// Get user by ID
-router.get('/:id', requireAuth, async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id).select('-password').lean();
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-        res.json(user);
-    } catch (error) {
-        console.error('Error fetching user:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
 
-///////////////////// admin only privilages /////////////////////////
+
+// Route to get all users (Admin only)
 router.get('/all-users', requireAuth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
@@ -121,6 +110,23 @@ router.get('/all-users', requireAuth, async (req, res) => {
     }
 });
 
+// Get user by ID (after all static routes)
+router.get('/:id', requireAuth, async (req, res) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ error: 'Invalid user ID' });
+    }
+
+    try {
+        const user = await User.findById(req.params.id).select('-password').lean();
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json(user);
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 // edit user by admin
 router.put('/update/:userId', requireAuth, async (req, res) => {
     const { userId } = req.params;
