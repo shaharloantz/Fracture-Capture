@@ -8,7 +8,9 @@ const Footer = () => {
       <div className="footer-content">
         <p>&copy; 2024 FractureCapture. All rights reserved.</p>
         <p>
-          <Link to="/terms-of-service">Terms of Service</Link> | <Link to="/privacy-policy">Privacy Policy</Link> | <Link to="/Contact-Us">Contact Us</Link>
+          <Link onClick={()=>scroll.scrollToTop()}to="/terms-of-service">Terms of Service</Link> | 
+          <Link onClick={()=>scroll.scrollToTop()} to="/privacy-policy">Privacy Policy</Link> | 
+          <Link onClick={()=>scroll.scrollToTop()} to="/Contact-Us">Contact Us</Link>
         </p>
         <p> ט.ל.ח</p>
       </div>

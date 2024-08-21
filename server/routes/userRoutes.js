@@ -3,6 +3,11 @@ const bcrypt = require('bcryptjs');
 const requireAuth = require('../middleware/authMiddleware');
 const User = require('../models/User');
 const Patient = require('../models/Patient');
+const Upload = require('../models/Upload');
+const path = require('path');
+const fs = require('fs');
+
+const mongoose = require('mongoose');
 
 const router = express.Router();
 
@@ -91,21 +96,9 @@ router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {
     }
 });
 
-// Get user by ID
-router.get('/:id', requireAuth, async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id).select('-password').lean();
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-        res.json(user);
-    } catch (error) {
-        console.error('Error fetching user:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
 
-///////////////////// admin only privilages /////////////////////////
+
+// Route to get all users (Admin only)
 router.get('/all-users', requireAuth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
@@ -121,6 +114,23 @@ router.get('/all-users', requireAuth, async (req, res) => {
     }
 });
 
+// Get user by ID (after all static routes)
+router.get('/:id', requireAuth, async (req, res) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({ error: 'Invalid user ID' });
+    }
+
+    try {
+        const user = await User.findById(req.params.id).select('-password').lean();
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json(user);
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 // edit user by admin
 router.put('/update/:userId', requireAuth, async (req, res) => {
     const { userId } = req.params;
@@ -148,20 +158,58 @@ router.put('/update/:userId', requireAuth, async (req, res) => {
 });
 
 // delete user by admin
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:id', requireAuth, async (req, res) => {
     try {
         const userId = req.params.id;
 
-        // Delete all patients related to this user
+        // Find all patients created by the user
+        const patients = await Patient.find({ createdByUser: userId });
+
+        for (const patient of patients) {
+            // Find all uploads associated with each patient
+            const uploads = await Upload.find({ patient: patient._id });
+
+            // Delete each associated upload file
+            for (const upload of uploads) {
+                const filePaths = [
+                    path.join(__dirname, '../uploads', upload.imgId),
+                    path.join(__dirname, '../uploads', upload.processedImgId)
+                ];
+
+                // Delete the files using the deleteFile function
+                await Promise.all(filePaths.map(deleteFile));
+            }
+
+            // Delete all uploads from the database for this patient
+            await Upload.deleteMany({ patient: patient._id });
+        }
+
+        // Delete all patients created by the user
         await Patient.deleteMany({ createdByUser: userId });
 
-        // Delete the user
+        // Finally, delete the user
         await User.findByIdAndDelete(userId);
 
-        res.json({ message: 'User and associated data deleted successfully.' });
+        res.json({ message: 'User, their patients, and all associated uploads deleted successfully.' });
     } catch (error) {
         console.error('Error deleting user:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+
+// Function to delete a file and return a promise
+const deleteFile = (filePath) => {
+    return new Promise((resolve, reject) => {
+        fs.unlink(filePath, (err) => {
+            if (err && err.code !== 'ENOENT') {
+                // If error is not "file not found"
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+};
+
 module.exports = router;

@@ -7,7 +7,9 @@ export default function Sidebar() {
     const [isAdmin, setIsAdmin] = useState(false);
 
     const toggleSidebar = () => setIsOpen(!isOpen);
-
+    const scrollingTop = () => {scroll.scrollToTop()
+        toggleSidebar()
+    };
     useEffect(() => {
         axios.get('/user/profile', { withCredentials: true })
             .then(response => {
@@ -31,7 +33,7 @@ export default function Sidebar() {
             </button>
             <div className={`fixed inset-y-0 left-0 bg-gray-800 text-white transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-40 w-64`}>
                 <div className="py-4 mt-16">
-                    <Link to="/about" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={toggleSidebar}>
+                    <Link to="/about" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={scrollingTop}>
                         <img src="/src/assets/images/info-icon.png" alt="About" className="inline-block w-6 h-6 mr-2" />
                         About
                     </Link>
@@ -47,7 +49,7 @@ export default function Sidebar() {
                         <img src="/src/assets/images/myprofile-icon.png" alt="My Profile" className="inline-block w-6 h-6 mr-2" />
                         My Profile
                     </Link>
-                    <Link to="/qa" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={toggleSidebar}>
+                    <Link to="/qa" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={scrollingTop}>
                         <img src="/src/assets/images/qa-icon.png" alt="Q&A" className="inline-block w-6 h-6 mr-2" />
                         Q&A
                     </Link>

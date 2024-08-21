@@ -141,7 +141,7 @@ const AdminPanel = () => {
                                     <td>{user.email}</td>
                                     <td>{user.numberOfPatients}</td>
                                     <td>
-                                        <div className="action-icons">
+                                        <div className="action-icons"> 
                                             {!user.isAdmin && (
                                                 <>
                                                     <img 
@@ -158,6 +158,7 @@ const AdminPanel = () => {
                                                     />
                                                 </>
                                             )}
+                                            {user.isAdmin && (<>-</>)}
                                         </div>
                                     </td>
 
