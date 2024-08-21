@@ -42,6 +42,21 @@ export default function Register() {
             return;
         }
 
+         // Email validations
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+        const emailParts = email.split('@');
+        if (
+            !emailRegex.test(email) ||
+            emailParts.length !== 2 ||
+            emailParts[1].includes('..') || // no double dots in the domain
+            emailParts[1].split('.').length > 3 || // limit to a maximum of 3 parts in the domain
+            emailParts[0].length > 30 || // local part length should be less than or equal to 30 characters
+            emailParts[1].length > 20 // domain part length should be less than or equal to 20 characters
+        ) {
+            toast.error("Please enter a valid email address!");
+            return;
+        }
+
         try {
             setLoading(true);
             const { data: responseData } = await axios.post('/register', { name, email, password });
@@ -82,6 +97,7 @@ export default function Register() {
                             name="name"
                             placeholder="Enter Name.." 
                             value={data.name} 
+                            maxLength={30}
                             onChange={handleChange} 
                             className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-gray-300"
                         />
@@ -94,6 +110,7 @@ export default function Register() {
                             name="email"
                             placeholder="Enter Email.." 
                             value={data.email} 
+                            maxLength={50}
                             onChange={handleChange} 
                             className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-gray-300"
                         />
