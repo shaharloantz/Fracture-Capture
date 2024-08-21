@@ -52,6 +52,7 @@ const Dashboard = () => {
   const fetchProfileData = () => {
     axios.get('/user/profile', { withCredentials: true })
       .then(response => {
+        console.log('Patients data:', response.data.patients); // Log profile data
         setProfile(response.data);
         setPatients(response.data.patients);
       })
@@ -133,6 +134,7 @@ const Dashboard = () => {
     };
   
     const selectedPatient = patients.find(p => p._id === newUpload.patient);
+
   
     navigate('/results', { 
       state: { 
@@ -155,54 +157,66 @@ const Dashboard = () => {
 
 
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const startTime = Date.now();
-
-  if (isAddingToExisting) {
-    setShowProcessing(true); 
-    controllerRef.current = new AbortController(); // Initialize the AbortController
-    const { signal } = controllerRef.current;
-    try {
-
-      const formData = new FormData();
-      formData.append('id', selectedPatient);
-      formData.append('description', uploadData.description);
-      formData.append('bodyPart', selectedBodyPart);  // Ensure bodyPart is included
-      formData.append('image', uploadData.image);
-
-      const response = await axios.post('/uploads', formData, { withCredentials: true, signal });
-      const endTime = Date.now();
-      const duration = (endTime - startTime) / 1000;
-      setEstimatedTime(duration);
-
-      handleUploadResponse(response, duration); 
-    } catch (error) {
-      console.error('Error uploading:', error.response ? error.response.data : error.message);
-      toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
-      setShowProcessing(false);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const startTime = Date.now();
+  
+    if (isAddingToExisting) {
+      setShowProcessing(true); 
+      controllerRef.current = new AbortController(); // Initialize the AbortController
+      const { signal } = controllerRef.current;
+  
+      try {
+        console.log('Submitting upload for existing patient:', {
+          selectedPatient, // Check if this is null
+          uploadData,
+          selectedBodyPart,
+        });
+  
+        if (!selectedPatient) {
+          toast.error('No patient selected. Please select a patient.');
+          setShowProcessing(false);
+          return;
+        }
+  
+        const formData = new FormData();
+        formData.append('id', selectedPatient);
+        formData.append('description', uploadData.description);
+        formData.append('bodyPart', selectedBodyPart);  // Ensure bodyPart is included
+        formData.append('image', uploadData.image);
+  
+        const response = await axios.post('/uploads', formData, { withCredentials: true, signal });
+        const endTime = Date.now();
+        const duration = (endTime - startTime) / 1000;
+        setEstimatedTime(duration);
+  
+        handleUploadResponse(response, duration); 
+      } catch (error) {
+        console.error('Error uploading:', error.response ? error.response.data : error.message);
+        toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
+        setShowProcessing(false);
+      }
+    } else {
+      // Handle new patient creation
+      try {
+        const response = await axios.post('/patients', newPatient, { withCredentials: true });
+        const createdPatient = response.data; // Assume the server returns the created patient object
+  
+        toast.success('Patient created successfully!');
+        setPatients([...patients, createdPatient]);
+        setNewPatient(initialPatientState);
+        setSelectedPatient(createdPatient._id); // Ensure this is set correctly
+        setIsAddingToExisting(true);
+        setShowForm(false);
+        setShowBodyParts(true); 
+        fetchPatients(); 
+      } catch (error) {
+        console.error('Error creating patient:', error.response ? error.response.data : error.message);
+        toast.error(error.response?.data?.error || 'Error creating patient. Please try again.');
+      }
     }
-  } else {
-    // Handle new patient creation
-    try {
-      const response = await axios.post('/patients', newPatient, { withCredentials: true });
-      const createdPatient = response.data; // Assume the server returns the created patient object
-
-      toast.success('Patient created successfully!');
-      setPatients([...patients, createdPatient]);
-      setNewPatient(initialPatientState);
-      setSelectedPatient(createdPatient._id);
-      setIsAddingToExisting(true);
-      setShowForm(false);
-      setShowBodyParts(true); 
-      fetchPatients(); 
-    } catch (error) {
-      console.error('Error creating patient:', error.response ? error.response.data : error.message);
-      toast.error(error.response?.data?.error || 'Error creating patient. Please try again.');
-    }
-  }
-};
-
+  };
+  
 
   if (showProcessing) {
     return <ProcessingScreen processingTime={estimatedTime} onAbort={handleAbort} />;
@@ -263,16 +277,18 @@ const handleSubmit = async (e) => {
       ) : (
 <PatientForm 
   isAddingToExisting={isAddingToExisting}
-  selectedPatient={selectedPatient}
   uploadData={uploadData}
   newPatient={newPatient}
   patients={patients}
   selectedBodyPart={selectedBodyPart}  
+  selectedPatient={selectedPatient}
+  setSelectedPatient={setSelectedPatient}  
   handleInputChange={handleInputChange}
   handleFileChange={handleFileChange}
   handleSubmit={handleSubmit}
   handleBackClick={handleBackClick}
 />
+
       )}
     </div>
   );
