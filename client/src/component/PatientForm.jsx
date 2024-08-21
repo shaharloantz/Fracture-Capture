@@ -1,3 +1,18 @@
+/*
+ * PatientForm Component
+ *
+ * This component is responsible for handling both the creation of a new patient and the addition of an upload to an existing patient.
+ * It includes form validation, file selection, and manages the state of patient details and uploads. The form adapts based on whether 
+ * the user is adding an upload to an existing patient or creating a new patient profile.
+ *
+ * Key Features:
+ * 1. Validation of patient details and file types.
+ * 2. Handles form submission and input changes.
+ * 3. Manages file selection, ensuring only valid image types (PNG, JPG, JPEG) are uploaded.
+ * 4. Displays appropriate input fields depending on whether a new patient is being created or an existing patient's upload is being added.
+ * 5. Provides feedback for form errors and displays the selected file name.
+ */
+
 import React, { useState } from 'react';
 import '../styles/PatientForm.css';
 import { toast } from 'react-hot-toast';
