@@ -103,15 +103,26 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
 
 
 // Endpoint to fetch uploads for a specific patient
+const mongoose = require('mongoose');
+
+// Ensure `id` is a valid ObjectId before querying
 router.get('/:id', requireAuth, async (req, res) => {
+    const patientId = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(patientId)) {
+        console.error('Invalid ObjectId:', patientId);
+        return res.status(400).json({ error: 'Invalid patient ID' });
+    }
+
     try {
-        const uploads = await Upload.find({ patient: req.params.id }).exec();
+        const uploads = await Upload.find({ patient: patientId }).exec();
         res.json(uploads);
     } catch (error) {
         console.error('Error fetching uploads:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
 // Endpoint to delete an upload
 router.delete('/:uploadId', requireAuth, async (req, res) => {
