@@ -3,105 +3,134 @@
      and send them via email.
  */
 
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-import {toast} from 'react-hot-toast';
+     import jsPDF from 'jspdf';
+     import html2canvas from 'html2canvas';
+     import { toast } from 'react-hot-toast';
+     import fractureIcon from '../assets/images/fracture.png';  // Assuming this is the correct path
+     
+     export const createPDF = async (selectedUpload, patient, createdByUser, imageLoaded) => {
+         if (!imageLoaded) return null;
+     
+         const { name, email } = createdByUser;
+         const input = document.getElementById('pdf-content');
+     
+         try {
+             // Capture the image using html2canvas
+             const canvas = await html2canvas(input, {
+                 useCORS: true,
+                 scale: 2,
+             });
+     
+             const imgData = canvas.toDataURL('image/png');
+     
+             const pdf = new jsPDF('p', 'mm', 'a4');
+             const imgWidth = 150;  // Adjust image width (keeping margins)
+             const imgHeight = (canvas.height * imgWidth) / canvas.width;  // Calculate proportional height
+     
+             // Adjust position and scaling to prevent clipping
+             pdf.addImage(imgData, 'PNG', 25, 5, imgWidth, imgHeight);
+     
+             // Adding the details to the PDF
+             let yOffset = imgHeight + 20;  // Start below the image
+             const xOffsetLabel = 10;
+             const xOffsetValue = 50;
+             const xOffsetValuePrediction = 51;  // Adjusted xOffset for prediction to align better
+     
+             pdf.setFontSize(18);
+             pdf.setFont('helvetica', 'bold');
+             pdf.text('Prediction Results', xOffsetLabel, yOffset);
+     
+             yOffset += 15;
+     
+             pdf.setFontSize(12);
+             pdf.setFont('helvetica', 'bold');
+             pdf.text(`Patient Name:`, xOffsetLabel, yOffset);
+             pdf.setFont('helvetica', 'normal');
+             pdf.text(` ${patient?.name || selectedUpload.patient?.name || 'N/A'}`, xOffsetValue, yOffset);
+             yOffset += 10;
+     
+             pdf.setFont('helvetica', 'bold');
+             pdf.text(`Patient ID:`, xOffsetLabel, yOffset);
+             pdf.setFont('helvetica', 'normal');
+             pdf.text(` ${patient?.idNumber || selectedUpload.patient?.idNumber || 'N/A'}`, xOffsetValue, yOffset);
+             yOffset += 10;
+     
+             pdf.setFont('helvetica', 'bold');
+             pdf.text(`Gender:`, xOffsetLabel, yOffset);
+             pdf.setFont('helvetica', 'normal');
+             pdf.text(` ${patient?.gender || selectedUpload.patient?.gender || 'N/A'}`, xOffsetValue, yOffset);
+             yOffset += 10;
+     
+             pdf.setFont('helvetica', 'bold');
+             pdf.text(`Date of Birth:`, xOffsetLabel, yOffset);
+             pdf.setFont('helvetica', 'normal');
+             pdf.text(` ${new Date(patient?.dateOfBirth || selectedUpload.patient?.dateOfBirth).toLocaleDateString() || 'N/A'}`, xOffsetValue, yOffset);
+             yOffset += 10;
+     
+             pdf.setFont('helvetica', 'bold');
+             pdf.text(`Associated doctor:`, xOffsetLabel, yOffset);
+             pdf.setFont('helvetica', 'normal');
+             pdf.text(` ${name} (${email})`, xOffsetValue, yOffset);
+             yOffset += 10;
+     
+             pdf.setFont('helvetica', 'bold');
+             pdf.text(`Body Part:`, xOffsetLabel, yOffset);
+             pdf.setFont('helvetica', 'normal');
+             pdf.text(` ${selectedUpload.bodyPart}`, xOffsetValue, yOffset);
+             yOffset += 10;
+     
+             pdf.setFont('helvetica', 'bold');
+             pdf.text(`Description:`, xOffsetLabel, yOffset);
+             pdf.setFont('helvetica', 'normal');
+             const descriptionText = pdf.splitTextToSize(selectedUpload.description || 'N/A', 140);  // Adjust 140 based on the desired width
+             pdf.text(descriptionText, xOffsetValue + 1, yOffset);
+             yOffset += descriptionText.length * 6;  // Adjust line height
+     
+             pdf.setFont('helvetica', 'bold');
+             pdf.text(`Date Uploaded:`, xOffsetLabel, yOffset);
+             pdf.setFont('helvetica', 'normal');
+             pdf.text(` ${selectedUpload.dateUploaded ? new Date(selectedUpload.dateUploaded).toLocaleString() : 'Invalid Date'}`, xOffsetValue, yOffset);
+             yOffset += 10;
+     
+             pdf.setFont('helvetica', 'bold');
+             pdf.text(`Prediction:`, xOffsetLabel, yOffset);
+             pdf.setFont('helvetica', 'normal');
+     
+             const confidenceText = selectedUpload?.prediction?.confidences?.length > 0 
+                 ? selectedUpload.prediction.confidences.map(conf => `${(conf * 100).toFixed(2)}%`).join(', ')
+                 : 'No fracture detected';
+             pdf.text(confidenceText, xOffsetValuePrediction, yOffset);
+     
+       // Add the watermark text and icon at the bottom center
+       const pageHeight = pdf.internal.pageSize.height;
+       const pageWidth = pdf.internal.pageSize.width;
 
-export const createPDF = async (selectedUpload, patient, createdByUser, imageLoaded) => {
-    if (!imageLoaded) return null;
+       const watermarkText = 'FractureCapture';
+       pdf.setFontSize(10);
+       pdf.setFont('helvetica', 'normal');
+       const textWidth = pdf.getTextWidth(watermarkText);
 
-    const { name, email } = createdByUser;
-    const input = document.getElementById('pdf-content');
-    
-    // Capture the image using html2canvas
-    const canvas = await html2canvas(input, {
-        useCORS: true,
-        scale: 2,
-    });
+       // Set the position for the watermark text and icon
+       const iconWidth = 5;
+       const iconHeight = 5;
+       const totalWidth = textWidth + iconWidth + 3; // Text width + icon width + some padding
 
-    const imgData = canvas.toDataURL('image/png');
+       const startX = (pageWidth - totalWidth) / 2;
 
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const imgWidth = 150;  // Adjust image width (keeping margins)
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;  // Calculate proportional height
+       // Adding the watermark icon to the left of the text
+       pdf.addImage(fractureIcon, 'PNG', startX, pageHeight - 7, iconWidth, iconHeight);
 
-    // Adjust position and scaling to prevent clipping
-    pdf.addImage(imgData, 'PNG', 25, 5, imgWidth, imgHeight);
+       // Adding the watermark text
+       pdf.text(watermarkText, startX + iconWidth+1 , pageHeight -3);
 
-    // Adding the details to the PDF
-    let yOffset = imgHeight + 20;  // Start below the image
-    const xOffsetLabel = 10;
-    const xOffsetValue = 50;
-    const xOffsetValuePrediction = 51;  // Adjusted xOffset for prediction to align better
-
-    pdf.setFontSize(18);
-    pdf.setFont('helvetica', 'bold');
-    pdf.text('Prediction Results', xOffsetLabel, yOffset);
-
-    yOffset += 15;
-
-    pdf.setFontSize(12);
-    pdf.setFont('helvetica', 'bold');
-    pdf.text(`Patient Name:`, xOffsetLabel, yOffset);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${patient?.name || selectedUpload.patient?.name || 'N/A'}`, xOffsetValue, yOffset);
-    yOffset += 10;
-
-    pdf.setFont('helvetica', 'bold');
-    pdf.text(`Patient ID:`, xOffsetLabel, yOffset);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${patient?.idNumber || selectedUpload.patient?.idNumber || 'N/A'}`, xOffsetValue, yOffset);
-    yOffset += 10;
-
-    pdf.setFont('helvetica', 'bold');
-    pdf.text(`Gender:`, xOffsetLabel, yOffset);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${patient?.gender || selectedUpload.patient?.gender || 'N/A'}`, xOffsetValue, yOffset);
-    yOffset += 10;
-
-    pdf.setFont('helvetica', 'bold');
-    pdf.text(`Date of Birth:`, xOffsetLabel, yOffset);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${new Date(patient?.dateOfBirth || selectedUpload.patient?.dateOfBirth).toLocaleDateString() || 'N/A'}`, xOffsetValue, yOffset);
-    yOffset += 10;
-
-    pdf.setFont('helvetica', 'bold');
-    pdf.text(`Associated doctor:`, xOffsetLabel, yOffset);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${name} (${email})`, xOffsetValue, yOffset);
-    yOffset += 10;
-
-    pdf.setFont('helvetica', 'bold');
-    pdf.text(`Body Part:`, xOffsetLabel, yOffset);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${selectedUpload.bodyPart}`, xOffsetValue, yOffset);
-    yOffset += 10;
-
-    pdf.setFont('helvetica', 'bold');
-    pdf.text(`Description:`, xOffsetLabel, yOffset);
-    pdf.setFont('helvetica', 'normal');
-    const descriptionText = pdf.splitTextToSize(selectedUpload.description || 'N/A', 140);  // Adjust 140 based on the desired width
-    pdf.text(descriptionText, xOffsetValue+1, yOffset);
-    yOffset += descriptionText.length * 6;  // Adjust line height
-
-    pdf.setFont('helvetica', 'bold');
-    pdf.text(`Date Uploaded:`, xOffsetLabel, yOffset);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text(` ${selectedUpload.dateUploaded ? new Date(selectedUpload.dateUploaded).toLocaleString() : 'Invalid Date'}`, xOffsetValue, yOffset);
-    yOffset += 10;
-
-    pdf.setFont('helvetica', 'bold');
-    pdf.text(`Prediction:`, xOffsetLabel, yOffset);
-    pdf.setFont('helvetica', 'normal');
-
-    const confidenceText = selectedUpload?.prediction?.confidences?.length > 0 
-        ? selectedUpload.prediction.confidences.map(conf => `${(conf * 100).toFixed(2)}%`).join(', ')
-        : 'No fracture detected';
-    pdf.text(confidenceText, xOffsetValuePrediction, yOffset);
-
-    return pdf;
-};
-
+       return pdf;
+         } catch (error) {
+             console.error('Error creating PDF:', error);
+             toast.error('Error generating PDF');
+             return null;
+         }
+     };
+     
 
 export const sendEmail = async (selectedUpload, email, imageLoaded, setIsSending, setShowEmailInput, setEmail, patient, createdByUser) => {
     if (!imageLoaded) return;
