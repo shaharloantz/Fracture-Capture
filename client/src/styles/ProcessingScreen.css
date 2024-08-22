@@ -69,6 +69,16 @@
     100% { background-position: 50px 50px; }
 }
 
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+}
+
 .abort-button {
     margin-top: 20px;
     padding: 10px 20px;
