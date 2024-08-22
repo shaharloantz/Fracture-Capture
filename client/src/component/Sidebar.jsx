@@ -45,10 +45,6 @@ export default function Sidebar() {
                         <img src="/src/assets/images/patients_results-icon.png" alt="Patient Results" className="inline-block w-6 h-6 mr-2" />
                         Patients Results
                     </Link>
-                    <Link to="/sharedresults" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={toggleSidebar}>
-                        <img src="/src/assets/images/sharedusers2.png" alt="Patient Results" className="inline-block w-6 h-6 mr-2" />
-                        Shared Results
-                    </Link>
                     <Link to="/myprofile" className="block px-4 py-2 text-gray-200 hover:bg-gray-700 " onClick={toggleSidebar}>
                         <img src="/src/assets/images/myprofile-icon.png" alt="My Profile" className="inline-block w-6 h-6 mr-2" />
                         My Profile
