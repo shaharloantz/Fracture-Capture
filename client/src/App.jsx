@@ -33,6 +33,7 @@ import TermsOfService from './pages/TermsOfService';
 import MyProfile from './pages/MyProfile';
 import ContactUs from './pages/ContactUs';
 import AdminPanel from './pages/AdminPanel';
+//import SharedResults from './pages/SharedResults';
 
 
 import { Toaster } from 'react-hot-toast';
@@ -82,6 +83,7 @@ const App = () => {
         <Route path="/terms-of-service" element={<TermsOfService />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/contact-us" element={<ContactUs />} />
+        {/* <Route path="/shared-results" element={<SharedResults/>} /> */}
         <Route path="/admin" element={<AdminPanel />} />
         <Route path='*' element={<NotFoundPage />} />
         {/* Testing the loader animation at route -> <Route path='/processing' element={<ProcessingScreen />} />  --> */}

@@ -236,10 +236,33 @@
     margin-top: 50px;
 }
 
-.shared-uploads-container{
+.shared-uploads-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 50px;
+    margin-top: 40px;
+    width: 100%;
+    justify-items: center;
     text-align: center;
-    margin-top: 20px;
 }
+
+.shared-upload-folder {
+    position: relative;
+    width: 150px;
+    border: none;
+    background: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.shared-upload-folder:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
 
 .upload-details input[type="email"] {
     color: black; 
@@ -289,4 +312,24 @@
     overflow: hidden;         /* Hide any overflowing text */
     text-overflow: ellipsis;  /* Add ellipses (...) at the end of the truncated text */
     max-width: 90px;         /* Set a maximum width for the container */
+}
+
+/* Add styles for the shared-uploads-link */
+.shared-uploads-link {
+    text-decoration: none; /* Removes underline from the link */
+    color: inherit; /* Inherits color from the parent, usually black or white */
+    cursor: pointer; /* Ensures the cursor is a pointer, indicating it's clickable */
+}
+
+.shared-uploads-link {
+    display: inline-block; /* Makes the link behave like a button or header */
+    margin-top: 20px; /* Adjusts the space above the link */
+    font-size: 18px; /* Increase the font size for visibility */
+    color: #007bff; /* Link color */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease; /* Smooth transition on hover */
+}
+
+.shared-uploads-link:hover {
+    color: #0056b3; /* Darker color on hover */
 }
