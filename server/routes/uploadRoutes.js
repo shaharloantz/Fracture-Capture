@@ -172,7 +172,8 @@ router.post('/send-email', upload.single('pdf'), async (req, res) => {
         from: process.env.EMAIL,
         to: email,
         subject: 'Prediction Results',
-        text: `Please find attached the upload details for patient: ${patientName}`,
+        html: `Please find attached the upload details for the patient <strong>${patientName}</strong>.
+        <br>Thanks, the FractureCapture team.`,
         attachments: [
             {
                 filename: `upload_details_${patientName}.pdf`,

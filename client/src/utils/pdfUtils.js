@@ -1,9 +1,12 @@
 /*
- *  This module provides utility functions to create PDF documents from HTML content and send them via email.
+ *  This module provides utility functions to create PDF documents from HTML content
+     and send them via email.
  */
+
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import {toast} from 'react-hot-toast';
+
 export const createPDF = async (selectedUpload, patient, createdByUser, imageLoaded) => {
     if (!imageLoaded) return null;
 
@@ -78,7 +81,7 @@ export const createPDF = async (selectedUpload, patient, createdByUser, imageLoa
     pdf.text(`Description:`, xOffsetLabel, yOffset);
     pdf.setFont('helvetica', 'normal');
     const descriptionText = pdf.splitTextToSize(selectedUpload.description || 'N/A', 140);  // Adjust 140 based on the desired width
-    pdf.text(descriptionText, xOffsetValue, yOffset);
+    pdf.text(descriptionText, xOffsetValue+1, yOffset);
     yOffset += descriptionText.length * 6;  // Adjust line height
 
     pdf.setFont('helvetica', 'bold');

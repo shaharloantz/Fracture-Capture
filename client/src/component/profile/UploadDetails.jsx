@@ -37,7 +37,6 @@ import { createPDF, sendEmail } from '../../utils/pdfUtils';
 import { toast } from 'react-hot-toast';
 
 const UploadDetails = ({ selectedUpload, handleBackClick, patient }) => {
-    console.log(selectedUpload);
     const [imageLoaded, setImageLoaded] = useState(false);
     const [createdByUser, setCreatedByUser] = useState({});
     const [email, setEmail] = useState('');
