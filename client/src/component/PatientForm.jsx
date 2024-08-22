@@ -141,7 +141,16 @@ const PatientForm = ({
         }
         return true;
     };
+    const handleDescriptionChange = (e) => {
+        const { value } = e.target;
+        const lineCount = value.split('\n').length;
 
+        if (lineCount > 6) {
+            return;
+        }
+
+        handleInputChange(e);
+    };
     const onSubmit = (e) => {
         e.preventDefault();
         if (validateForm()) {
@@ -188,8 +197,9 @@ const PatientForm = ({
                             <textarea
                                 name="description"
                                 value={uploadData.description || ''}
-                                onChange={handleInputChange}
+                                onChange={handleDescriptionChange}
                                 maxLength={255}
+                                rows={4}
                                 required
                             />
                         </label>
