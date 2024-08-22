@@ -24,6 +24,7 @@ const PatientForm = ({
     patients,
     selectedBodyPart,
     selectedPatient,
+    setSelectedPatient,  
     handleInputChange,
     handleFileChange,
     handleSubmit,
@@ -36,16 +37,25 @@ const PatientForm = ({
         const file = e.target.files[0];
         if (file) {
             const fileType = file.type;
+            const fileSize = file.size;
             const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+            const maxSize = 5 * 1024 * 1024; // 5 MB
 
-            if (validTypes.includes(fileType)) {
-                handleFileChange(e);
-                setSelectedFileName(file.name);
-                setFileError('');
-            } else {
-                setSelectedFileName('');
+            if (!validTypes.includes(fileType)) {
                 setFileError('Please upload a valid image file (PNG, JPG, or JPEG)');
+                setSelectedFileName('');
+                return;
             }
+
+            if (fileSize > maxSize) {
+                setFileError('File size should not exceed 5MB');
+                setSelectedFileName('');
+                return;
+            }
+
+            handleFileChange(e);
+            setSelectedFileName(file.name);
+            setFileError('');
         } else {
             setSelectedFileName('');
             setFileError('');
@@ -106,13 +116,12 @@ const PatientForm = ({
 
     const validateForm = () => {
         if (isAddingToExisting && !selectedBodyPart) {
-            alert('Please select a body part.');
-            console.log('Validation failed: No body part selected');
+            toast.error('Please select a body part.');
             return false;
         }
         if (!isAddingToExisting) {
             if (!newPatient.name || !newPatient.dateOfBirth || !newPatient.gender || !newPatient.idNumber) {
-                alert('Please fill in all the patient details.');
+                toast.error('Please fill in all the patient details.');
                 return false;
             }
             if (!validateDateOfBirth(newPatient.dateOfBirth)) {
@@ -123,11 +132,11 @@ const PatientForm = ({
             }
         }
         if (isAddingToExisting && !uploadData.description) {
-            alert('Please provide a description.');
+            toast.error('Please provide a description.');
             return false;
         }
         if (isAddingToExisting && !uploadData.image) {
-            alert('Please upload an image.');
+            toast.error('Please upload an image.');
             return false;
         }
         return true;
@@ -156,8 +165,16 @@ const PatientForm = ({
                     <>
                         <label>
                             Patient:
-                            <select name="id" value={uploadData.id || selectedPatient} onChange={handleInputChange} required>
-                                <option value="">Select a patient</option>
+                            <select 
+                                name="id" 
+                                value={uploadData.id || selectedPatient || ''} 
+                                onChange={(e) => {
+                                    handleInputChange(e); 
+                                    setSelectedPatient(e.target.value);  // Update the selected patient
+                                }} 
+                                required
+                            >
+                                <option value="" disabled>Select a patient</option>
                                 {patients.map(patient => (
                                     <option key={patient._id} value={patient._id}>
                                         {patient.name} - {patient.idNumber}
@@ -165,11 +182,12 @@ const PatientForm = ({
                                 ))}
                             </select>
                         </label>
+
                         <label>
                             Description:
                             <textarea
                                 name="description"
-                                value={uploadData.description}
+                                value={uploadData.description || ''}
                                 onChange={handleInputChange}
                                 maxLength={255}
                                 required
@@ -177,16 +195,29 @@ const PatientForm = ({
                         </label>
                         <label>
                             Body Part:
-                            <input type="text" name="bodyPart" value={selectedBodyPart} readOnly required />
+                            <input 
+                                type="text" 
+                                name="bodyPart" 
+                                value={selectedBodyPart || ''} 
+                                readOnly 
+                                required 
+                            />
                         </label>
                         <label>
                             Upload Image (PNG, JPG, JPEG):
-                            <input type="file" name="image" onChange={onFileChange} id="file-upload" style={{ display: 'none' }} required />
+                            <input 
+                                type="file" 
+                                name="image" 
+                                onChange={onFileChange} 
+                                id="file-upload" 
+                                style={{ display: 'none' }} 
+                                required 
+                            />
                             <label htmlFor="file-upload" className="upload-image-label">
                                 <img src="src/assets/images/upload-file.png" alt="Upload" className="upload-button-icon" />
                             </label>
                             {selectedFileName && <p className="file-name">File selected: {selectedFileName}</p>}
-                            {fileError && <p className="error-message">{fileError}</p>} 
+                            {fileError && <p className="error-message">{fileError}</p>}
                         </label>
                     </>
                 ) : (
@@ -197,7 +228,7 @@ const PatientForm = ({
                             <input
                                 type="text"
                                 name="name"
-                                value={newPatient.name}
+                                value={newPatient.name || ''}
                                 onChange={handleInputChange}
                                 maxLength={21}
                                 required
@@ -208,17 +239,17 @@ const PatientForm = ({
                             <input
                                 type="date"
                                 name="dateOfBirth"
-                                value={newPatient.dateOfBirth}
+                                value={newPatient.dateOfBirth || ''}
                                 onChange={handleInputChange}
                                 max={new Date().toISOString().split("T")[0]}
                                 required
                             />
                         </label>
-
+    
                         <label>
                             Gender:
-                            <select name="gender" value={newPatient.gender} onChange={handleInputChange} required>
-                                <option value="">Select</option>
+                            <select name="gender" value={newPatient.gender || ''} onChange={handleInputChange} required>
+                                <option value="" disabled>Select</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                             </select>
@@ -228,7 +259,7 @@ const PatientForm = ({
                             <input
                                 type="text"
                                 name="idNumber"
-                                value={newPatient.idNumber}
+                                value={newPatient.idNumber || ''}
                                 onChange={handleInputChange}
                                 maxLength={9}
                                 required
@@ -244,5 +275,6 @@ const PatientForm = ({
         </>
     );
 };
+    
 
 export default PatientForm;
