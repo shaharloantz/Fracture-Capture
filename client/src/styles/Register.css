@@ -27,6 +27,15 @@ html, body {
   color: #3b82f6;
 }
 
+.text-blue-500:hover {
+  background-color: transparent;
+}
+
+.text-blue-500:focus {
+  background-color: transparent;
+  outline: none;
+}
+
 .hover\:underline:hover {
   text-decoration: underline;
 }

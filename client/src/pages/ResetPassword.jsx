@@ -66,7 +66,7 @@ export default function ResetPassword() {
                             required
                         />
                     </div>
-                    <button type="submit" disabled={loading} className="flex items-center justify-center w-full bg-blue-500 p-2 rounded-md hover:bg-blue-600 transition duration-200">
+                    <button type="submit" disabled={loading} className="flex items-center justify-center w-full bg-blue-500 p-2 rounded-md hover:bg-blue-600 text-white transition duration-200">
                         {loading ? 'Resetting...' : 'Reset Password'}
                     </button>
                 </form>
