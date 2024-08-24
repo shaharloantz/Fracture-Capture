@@ -8,7 +8,7 @@ import '../styles/Dashboard.css';
 
 const Dashboard = () => {
   const initialPatientState = { name: '', dateOfBirth: '', gender: '', idNumber: '' };
-  const initialUploadState = { id: '', description: '', bodyPart: '', image: null };
+  const initialUploadState = { id: '', description: '', bodyPart: '', image: [] };
   const [profile, setProfile] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [showBodyParts, setShowBodyParts] = useState(false);
@@ -91,23 +91,33 @@ const Dashboard = () => {
 
   const handleUploadResponse = (response, processingTime) => {
     const { newUpload } = response.data;
-  
+    console.log("newUpload")
+    
+    // Update the upload data with the bodyPart and any other necessary information
     const updatedUploadData = {
       ...newUpload,
       bodyPart: newUpload.bodyPart || selectedBodyPart,
     };
-  
+    console.log(updatedUploadData)
+    // Find the selected patient
     const selectedPatient = patients.find(p => p._id === newUpload.patient);
   
-    navigate('/results', { 
-      state: { 
-        processedImagePath: newUpload.processedImgUrl, 
-        selectedUpload: updatedUploadData, 
-        patient: selectedPatient, 
+    // Handle multiple images
+    const processedImages = Array.isArray(newUpload.processedImgUrls)
+      ? newUpload.processedImgUrls
+      : [newUpload.processedImgUrl]; // Support for single or multiple images
+  
+    // Navigate to the results page, passing the necessary state
+    console.log(processedImages)
+    navigate('/results', {
+      state: {
+        processedImages, // Pass the array of processed image URLs
+        selectedUpload: updatedUploadData,
+        patient: selectedPatient,
         userName: profile.name,
         profileEmail: profile.email,
-        processingTime  
-      } 
+        processingTime,
+      },
     });
   };
   
@@ -130,23 +140,26 @@ const Dashboard = () => {
       const { signal } = controllerRef.current;
   
       try {
+        console.log("Here")
         const formData = new FormData();
         formData.append('id', uploadData.id);
         formData.append('description', uploadData.description);
         formData.append('bodyPart', selectedBodyPart); // Ensure bodyPart is included
-        
+        console.log("Here1")
         // Append all selected files to formData
         uploadData.images.forEach((file) => {
           formData.append('images', file);
         });
-  
+        console.log("Here3")
         const response = await axios.post('/uploads', formData, { withCredentials: true, signal });
         const endTime = Date.now();
         const duration = (endTime - startTime) / 1000;
         setEstimatedTime(duration);
-  
+        console.log("Here4")
         handleUploadResponse(response, duration); 
+        console.log("Here5")
       } catch (error) {
+        console.log("Errorrrr")
         console.error('Error uploading:', error.response ? error.response.data : error.message);
         toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
         setShowProcessing(false);

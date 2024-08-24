@@ -34,15 +34,18 @@ router.post('/', requireAuth, uploadToDisk.array('images'), async (req, res) => 
     const imagePaths = req.files.map(file => file.path);
 
     try {
+       
         const startTime = Date.now(); // Start time
 
         // Process each image individually
         const predictions = await Promise.all(imagePaths.map(async (imagePath) => {
+            console.log(imagePath)
             const { stdout, stderr } = await execPromise(`python predict.py "${imagePath}"`);
             if (stderr) {
+                console.error('stderr:', stderr); 
                 throw new Error('Error running prediction script');
             }
-
+            
             let prediction;
             try {
                 const jsonString = stdout.match(/\{.*\}/);
@@ -51,13 +54,14 @@ router.post('/', requireAuth, uploadToDisk.array('images'), async (req, res) => 
                 } else {
                     throw new Error("No JSON found in stdout");
                 }
+                
             } catch (parseError) {
                 throw new Error('Error parsing prediction output');
             }
-
+           
             const processedImgPath = path.join('uploads', path.basename(prediction.image_path));
             const processedImgId = path.basename(processedImgPath);
-
+            
             return { imagePath, processedImgId, processedImgPath, prediction };
         }));
 
@@ -65,7 +69,7 @@ router.post('/', requireAuth, uploadToDisk.array('images'), async (req, res) => 
         if (!patient) {
             return res.status(404).json({ error: 'Patient not found' });
         }
-
+        
         // Save each upload to the database
         const uploads = await Promise.all(predictions.map(async ({ imagePath, processedImgId, processedImgPath, prediction }) => {
             const newUpload = new Upload({
@@ -84,7 +88,7 @@ router.post('/', requireAuth, uploadToDisk.array('images'), async (req, res) => 
 
             return newUpload.save();
         }));
-
+       
         const endTime = Date.now(); // End time
         const processingTime = (endTime - startTime) / 1000; // Processing time in seconds
 
@@ -92,6 +96,7 @@ router.post('/', requireAuth, uploadToDisk.array('images'), async (req, res) => 
             uploads, 
             processingTime  // Send processing time to frontend
         });
+        
     } catch (error) {
         console.error('Error during upload processing:', error.message);
         res.status(500).json({ error: 'Internal server error', details: error.message });

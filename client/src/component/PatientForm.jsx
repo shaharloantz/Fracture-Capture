@@ -92,6 +92,7 @@ const PatientForm = ({
         e.preventDefault();
         if (validateForm()) {
             if (isAddingToExisting) {
+                console.log("Body part is: ",selectedBodyPart)
                 handleInputChange({ target: { name: 'bodyPart', value: selectedBodyPart } });
             }
             handleSubmit(e);
