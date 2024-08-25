@@ -6,6 +6,7 @@ const patientSchema = new mongoose.Schema({
     gender: { type: String, required: true },
     name: { type: String, required: true },
     dateOfBirth: { type: Date, required: true },
+    uploads: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Upload' }], // Reference to uploads
     createdAt: { type: Date, default: Date.now },
 }, { timestamps: true });
 
