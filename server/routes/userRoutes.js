@@ -102,7 +102,25 @@ router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {
     }
 });
 
+router.delete('/shared-patient/:patientId', requireAuth, async (req, res) => {
+    const { patientId } = req.params;
+    const userId = req.user.id;
 
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        user.sharedPatients = user.sharedPatients.filter(id => id.toString() !== patientId);
+        await user.save();
+
+        res.status(200).json({ message: 'Shared patient removed successfully' });
+    } catch (error) {
+        console.error('Error removing shared patient:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 // Route to get all users (Admin only)
 router.get('/all-users', requireAuth, async (req, res) => {
