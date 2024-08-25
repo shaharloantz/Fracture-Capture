@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import SharedPatient from '../component/profile/SharedPatient';
-import SharedUpload from '../component/profile/SharedUpload';
+import SharedPatient from '../component/patients-shared/SharedPatient';
+import SharedUpload from '../component/patients-shared/SharedUpload';
 import PatientUploads from '../component/patients/PatientUploads';
 import UploadDetails from '../component/patients/UploadDetails';
 import '../styles/SharedUploads.css';
@@ -73,12 +73,9 @@ export default function SharedUploads() {
 
     return (
         <div className="shared-uploads-container">
-            <h1>Shared Uploads</h1>
-            
-            {/* Display shared patients */}
+            <h1>Shared Patients</h1>
             {!selectedPatient && !selectedUpload && (
                 <div className="shared-section">
-                    <h2>Shared Patients</h2>
                     {sharedPatients.length > 0 ? (
                         sharedPatients.map(patient => (
                             <SharedPatient
@@ -94,7 +91,6 @@ export default function SharedUploads() {
                 </div>
             )}
 
-            {/* Display uploads for the selected patient */}
             {selectedPatient && !selectedUpload && (
                 <div className="patient-uploads-section">
                     <PatientUploads
@@ -107,10 +103,9 @@ export default function SharedUploads() {
                 </div>
             )}
 
-            {/* Display shared uploads */}
+            <h1>Shared Uploads</h1>
             {!selectedPatient && !selectedUpload && (
                 <div className="shared-section">
-                    <h2>Shared Uploads</h2>
                     {sharedUploads.length > 0 ? (
                         sharedUploads.map(upload => (
                             <SharedUpload
@@ -127,12 +122,11 @@ export default function SharedUploads() {
                 </div>
             )}
 
-            {/* Display upload details */}
             {selectedUpload && (
                 <UploadDetails
                     selectedUpload={selectedUpload}
                     handleBackClick={handleBackClick}
-                    patient={selectedUpload.patient} // Assuming upload has a patient field populated
+                    patient={selectedUpload.patient} 
                 />
             )}
         </div>

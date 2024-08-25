@@ -17,14 +17,14 @@ const SharedPatient = ({ patient, handlePatientClick, handleDeletePatientClick }
                 alt="Delete" 
                 className="delete-icon" 
                 onClick={(e) => {
-                    e.stopPropagation(); // Prevent triggering handlePatientClick
+                    e.stopPropagation(); 
                     handleDeletePatientClick(patient._id);
                 }}
                 style={{     width: '18px',
                     height: '18px',
-                    pointerEvents: 'auto', /* Enable click on icons */
-                    marginRight: '10px', /* Adds some margin to the right of the icon */
-                    cursor: 'pointer', /* Shows the cursor as a pointer */ }}
+                    pointerEvents: 'auto', 
+                    marginRight: '10px', 
+                    cursor: 'pointer',  }}
             />
         </div>
     </div>
