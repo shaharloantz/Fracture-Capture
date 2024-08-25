@@ -1,6 +1,6 @@
-import React , {useState} from 'react';
-import '../styles/PatientForm.css';
+import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
+import '../styles/PatientForm.css';
 
 const FileUpload = ({
     selectedPatient,
@@ -16,33 +16,6 @@ const FileUpload = ({
     const [selectedFileName, setSelectedFileName] = useState('');
     const [fileError, setFileError] = useState('');
 
-    const validateForm = () => {
-        if (isAddingToExisting && !selectedBodyPart) {
-            toast.error('Please select a body part.');
-            return false;
-        }
-        if (!isAddingToExisting) {
-            if (!newPatient.name || !newPatient.dateOfBirth || !newPatient.gender || !newPatient.idNumber) {
-                toast.error('Please fill in all the patient details.');
-                return false;
-            }
-            if (!validateDateOfBirth(newPatient.dateOfBirth)) {
-                return false;
-            }
-            if (!validateID(newPatient.idNumber)) {
-                return false;
-            }
-        }
-        if (isAddingToExisting && !uploadData.description) {
-            toast.error('Please provide a description.');
-            return false;
-        }
-        if (isAddingToExisting && !uploadData.image) {
-            toast.error('Please upload an image.');
-            return false;
-        }
-        return true;
-    };
     const handleDescriptionChange = (e) => {
         const { value } = e.target;
         const lineCount = value.split('\n').length;
@@ -83,6 +56,19 @@ const FileUpload = ({
         }
     };
 
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        // Manually check if an image is selected
+        if (!uploadData.image) {
+            toast.error('Please select an image to upload.');
+            return;
+        }
+
+        // Proceed with the original submit handler if validation passes
+        handleSubmit(e);
+    };
+
     return (
         <>
             <img
@@ -91,12 +77,12 @@ const FileUpload = ({
                 className="back-button-icon"
                 onClick={handleBackClick}
             />
-            <form onSubmit={handleSubmit} className="patient-form">
+            <form onSubmit={onSubmit} className="patient-form">
                 <label>
                     Patient:
                     <select 
                         name="id" 
-                        value={selectedPatient || ''} // Set default value to the selected patient
+                        value={selectedPatient || ''} 
                         onChange={(e) => {
                             handleInputChange(e);
                             setSelectedPatient(e.target.value);
@@ -141,7 +127,6 @@ const FileUpload = ({
                         onChange={onFileChange}
                         id="file-upload" 
                         style={{ display: 'none' }}
-                        required 
                     />
                     <label htmlFor="file-upload" className="upload-image-label">
                         <img src="src/assets/images/upload-file.png" alt="Upload" className="upload-button-icon" />
