@@ -1,0 +1,59 @@
+.shared-uploads-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: white;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.shared-patient-section, .shared-upload-section {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.shared-patient-uploads, .shared-upload-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 50px;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+}
+
+.shared-patient-folder, .shared-upload-folder {
+    position: relative;
+    width: 150px;
+    border: none;
+    background: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.shared-patient-folder:hover, .shared-upload-folder:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.folder-info, .upload-info {
+    text-align: center;
+    color: white;
+}
+
+.icon-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+}

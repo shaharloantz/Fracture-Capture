@@ -33,7 +33,7 @@ import TermsOfService from './pages/TermsOfService';
 import MyProfile from './pages/MyProfile';
 import ContactUs from './pages/ContactUs';
 import AdminPanel from './pages/AdminPanel';
-//import SharedResults from './pages/SharedResults';
+import SharedUploads from './pages/SharedUploads';
 
 
 import { Toaster } from 'react-hot-toast';
@@ -77,6 +77,7 @@ const App = () => {
         <Route path='/qa' element={<QA />} />
         <Route path='/about' element={<About />} />
         <Route path='/patientsresults' element={<PatientsResults />} />
+        <Route path='/shareduploads' element={<SharedUploads />} />
         <Route path='/myprofile' element={<MyProfile />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path="/results" element={<Results />} />
