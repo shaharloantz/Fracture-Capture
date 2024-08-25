@@ -328,13 +328,15 @@ export default function Profile() {
     return (
         <div className="profile-container">
             <h1>Results Page</h1>
-            <input
-                type="text"
-                placeholder="Search by Name or ID"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                className="search-bar"
-            />
+            {!selectedPatient && !selectedUpload && (
+                <input
+                    type="text"
+                    placeholder="Search by Name or ID"
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    className="search-bar"
+                />
+            )}
             {editingPatient ? (
                 <EditPatientForm
                     editingPatient={editingPatient}
