@@ -254,6 +254,23 @@ router.post('/share/patient/:id', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
+// Route to fetch uploads for a specific patient (shared)
+router.get('/shared/:patientId', requireAuth, async (req, res) => {
+    const { patientId } = req.params;
+
+    try {
+        // Fetch uploads and populate patient and createdByUser fields
+        const uploads = await Upload.find({ patient: patientId })
+            .populate('patient') // Populate patient details
+            .populate('createdByUser'); // Populate user details who created the upload
+
+        res.json(uploads);
+    } catch (error) {
+        console.error('Error fetching uploads for shared patient:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 
 // Example of using $pull operator
 router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {

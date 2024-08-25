@@ -3,9 +3,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import Modal from 'react-modal';
-import PatientList from '../component/profile/PatientList';
-import PatientUploads from '../component/profile/PatientUploads';
-import UploadDetails from '../component/profile/UploadDetails';
+import PatientList from '../component/patients/PatientList';
+import PatientUploads from '../component/patients/PatientUploads';
+import UploadDetails from '../component/patients/UploadDetails';
 import PatientForm from '../component/PatientForm';
 import '../styles/PatientsResults.css';
 

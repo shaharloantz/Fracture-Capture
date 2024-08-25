@@ -3,8 +3,8 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import SharedPatient from '../component/profile/SharedPatient';
 import SharedUpload from '../component/profile/SharedUpload';
-import PatientUploads from '../component/profile/PatientUploads';
-import UploadDetails from '../component/profile/UploadDetails';
+import PatientUploads from '../component/patients/PatientUploads';
+import UploadDetails from '../component/patients/UploadDetails';
 import '../styles/SharedUploads.css';
 
 export default function SharedUploads() {
