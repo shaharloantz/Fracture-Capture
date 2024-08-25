@@ -1,5 +1,5 @@
 .upload-folders {
-    display: flex;
+    display: grid;
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -22,6 +22,12 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+}
+
+@media (min-width: 1200px) {
+    .upload-folders {
+        grid-template-columns: repeat(7, 1fr); /* Limit to 8 columns */
+    }
 }
 
 .upload-folder:hover {
