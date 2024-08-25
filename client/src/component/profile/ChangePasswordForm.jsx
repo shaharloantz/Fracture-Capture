@@ -2,7 +2,6 @@ import React from 'react';
 
 const ChangePasswordForm = ({ passwordData, handlePasswordChange, handlePasswordSubmit, setChangingPassword }) => (
     <form className="password-form" onSubmit={handlePasswordSubmit}>
-        <h2>Change Password</h2>
         <label>
             Current Password:
             <input
@@ -33,8 +32,10 @@ const ChangePasswordForm = ({ passwordData, handlePasswordChange, handlePassword
                 required
             />
         </label>
+        <div style={{textAlign:'center',justifyContent:'space-between'}}>
         <button type="submit">Submit</button>
         <button type="button" onClick={() => setChangingPassword(false)}>Cancel</button>
+        </div>
     </form>
 );
 
