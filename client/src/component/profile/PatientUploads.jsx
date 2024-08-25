@@ -1,4 +1,5 @@
 import React from 'react';
+import '../../styles/PatientUploads.css';
 
 const PatientUploads = ({ patientUploads, handleUploadClick, handleDeleteUploadClick, formatDate, handleBackClick }) => (
     <>

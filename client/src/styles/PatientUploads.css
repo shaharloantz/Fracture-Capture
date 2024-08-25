@@ -1,0 +1,58 @@
+.upload-folders {
+    display: grid;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px; /* Increased padding */
+    color: white;
+}
+
+.upload-folder{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px; /* Increased gap for better spacing */
+    margin-top: 40px;
+    justify-items: right; 
+    position: relative;
+    width: 150px;
+    border: none;
+    background: none;
+    display: flex;  
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+@media (min-width: 1200px) {
+    .upload-folders {
+        grid-template-columns: repeat(7, 1fr); /* Limit to 8 columns */
+    }
+}
+
+.upload-folder:hover {
+    transform: scale(1.05); /* Slightly enlarge folder on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+}
+
+.icon-container::before {
+    content: attr(data-tooltip); /* Tooltip text from data attribute */
+    position: absolute;
+    bottom: 120%; /* Position above the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+}
+
+.icon-container:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
