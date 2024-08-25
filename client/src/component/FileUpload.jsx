@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import '../styles/PatientForm.css';  // Import the same CSS file as PatientForm
+import React , {useState} from 'react';
+import '../styles/PatientForm.css';
 import { toast } from 'react-hot-toast';
 
 const FileUpload = ({
@@ -15,6 +15,44 @@ const FileUpload = ({
 }) => {
     const [selectedFileName, setSelectedFileName] = useState('');
     const [fileError, setFileError] = useState('');
+
+    const validateForm = () => {
+        if (isAddingToExisting && !selectedBodyPart) {
+            toast.error('Please select a body part.');
+            return false;
+        }
+        if (!isAddingToExisting) {
+            if (!newPatient.name || !newPatient.dateOfBirth || !newPatient.gender || !newPatient.idNumber) {
+                toast.error('Please fill in all the patient details.');
+                return false;
+            }
+            if (!validateDateOfBirth(newPatient.dateOfBirth)) {
+                return false;
+            }
+            if (!validateID(newPatient.idNumber)) {
+                return false;
+            }
+        }
+        if (isAddingToExisting && !uploadData.description) {
+            toast.error('Please provide a description.');
+            return false;
+        }
+        if (isAddingToExisting && !uploadData.image) {
+            toast.error('Please upload an image.');
+            return false;
+        }
+        return true;
+    };
+    const handleDescriptionChange = (e) => {
+        const { value } = e.target;
+        const lineCount = value.split('\n').length;
+
+        if (lineCount > 6) {
+            return;
+        }
+
+        handleInputChange(e);
+    };
 
     const onFileChange = (e) => {
         const file = e.target.files[0];
@@ -51,14 +89,14 @@ const FileUpload = ({
                 src="src/assets/images/undo.png"
                 alt="Back"
                 className="back-button-icon"
-                onClick={handleBackClick}  // Change the function to an empty function
+                onClick={handleBackClick}
             />
-            <form onSubmit={handleSubmit} className="patient-form"> {/* Use the same class name */}
+            <form onSubmit={handleSubmit} className="patient-form">
                 <label>
                     Patient:
                     <select 
                         name="id" 
-                        value={uploadData.id} 
+                        value={selectedPatient || ''} // Set default value to the selected patient
                         onChange={(e) => {
                             handleInputChange(e);
                             setSelectedPatient(e.target.value);
@@ -68,7 +106,7 @@ const FileUpload = ({
                         <option value="" disabled>Select a patient</option>
                         {patients.map(patient => (
                             <option key={patient._id} value={patient._id}>
-                                {patient.name}
+                                {patient.name} - {patient.idNumber}
                             </option>
                         ))}
                     </select>
@@ -78,8 +116,8 @@ const FileUpload = ({
                     Description:
                     <textarea
                         name="description"
-                        value={uploadData.description}
-                        onChange={handleInputChange}
+                        value={uploadData.description || ''}
+                        onChange={handleDescriptionChange}
                         maxLength={255}
                         rows={4}
                         required
@@ -90,7 +128,7 @@ const FileUpload = ({
                     <input 
                         type="text" 
                         name="bodyPart" 
-                        value={selectedBodyPart}
+                        value={selectedBodyPart || ''} 
                         readOnly 
                         required 
                     />

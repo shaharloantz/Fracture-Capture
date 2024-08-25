@@ -11,17 +11,17 @@ const Dashboard = () => {
     const initialPatientState = { name: '', dateOfBirth: '', gender: '', idNumber: '' };
     const initialUploadState = { id: '', description: '', bodyPart: '', image: null };
     const [profile, setProfile] = useState(null);
-    const [showForm, setShowForm] = useState(false); // For showing form
+    const [showForm, setShowForm] = useState(false);
     const [showBodyParts, setShowBodyParts] = useState(false);
     const [newPatient, setNewPatient] = useState(initialPatientState);
     const [uploadData, setUploadData] = useState(initialUploadState);
     const [patients, setPatients] = useState([]);
-    const [isAddingToExisting, setIsAddingToExisting] = useState(false); // To determine if adding to existing patient
+    const [isAddingToExisting, setIsAddingToExisting] = useState(false);
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [selectedBodyPart, setSelectedBodyPart] = useState('');
     const [showProcessing, setShowProcessing] = useState(false);
     const [processingComplete, setProcessingComplete] = useState(false);
-    const [estimatedTime, setEstimatedTime] = useState(10); 
+    const [estimatedTime, setEstimatedTime] = useState(10);
     const navigate = useNavigate();
     const controllerRef = useRef(null);
     const [responseData, setResponseData] = useState(null);
@@ -44,8 +44,10 @@ const Dashboard = () => {
 
     const handleItemClick = (item) => {
         setSelectedBodyPart(item.title);
-        setShowForm(true);  // Show form to add the upload after selecting body part
-        setShowBodyParts(false);
+        if (isAddingToExisting || selectedPatient) {
+            setShowForm(true); // Only show file upload form if a patient is selected or being added to
+            setShowBodyParts(false);
+        }
     };
 
     const handleAddPatientClick = () => {
@@ -54,27 +56,18 @@ const Dashboard = () => {
             return;
         }
 
-        setIsAddingToExisting(true);  // Set to true since we're adding to an existing patient
-        setShowForm(false);  // Hide form initially
+        setIsAddingToExisting(true);
+        setUploadData(initialUploadState);
         setShowBodyParts(true);  // Show body parts selection
-    };
-
-    const fetchPatients = () => {
-        axios.get('/user/profile', { withCredentials: true })
-            .then(response => {
-                setPatients(response.data.patients);
-            })
-            .catch(error => {
-                console.error('Error fetching patients:', error.response ? error.response.data : error.message);
-                toast.error('Error fetching patients. Please try again.');
-            });
+        setShowForm(false);  // Ensure the patient form is not shown
     };
 
     const handleCreatePatientClick = () => {
         setNewPatient(initialPatientState);
-        setIsAddingToExisting(false);  // Set to false since we're creating a new patient
-        setShowForm(true);  // Show patient form
+        setIsAddingToExisting(false);
+        setShowForm(true);  // Show patient form for creating a new patient
         setShowBodyParts(false);
+        setSelectedPatient(null);  // Ensure no patient is selected
     };
 
     const handleInputChange = (e) => {
@@ -115,10 +108,10 @@ const Dashboard = () => {
         });
 
         if (processingComplete) {
-            navigate('/results', { 
+            navigate('/results', {
                 state: {
                     ...responseData,
-                } 
+                }
             });
         }
     };
@@ -135,7 +128,7 @@ const Dashboard = () => {
         const startTime = Date.now();
 
         if (isAddingToExisting) {
-            setShowProcessing(true); 
+            setShowProcessing(true);
             controllerRef.current = new AbortController();
             const { signal } = controllerRef.current;
 
@@ -157,7 +150,7 @@ const Dashboard = () => {
                 const duration = (endTime - startTime) / 1000;
                 setEstimatedTime(duration);
 
-                handleUploadResponse(response, duration); 
+                handleUploadResponse(response, duration);
             } catch (error) {
                 console.error('Error uploading:', error.response ? error.response.data : error.message);
                 toast.error(error.response?.data?.error || 'Error uploading. Please try again.');
@@ -171,11 +164,10 @@ const Dashboard = () => {
                 toast.success('Patient created successfully!');
                 setPatients([...patients, createdPatient]);
                 setNewPatient(initialPatientState);
-                setSelectedPatient(createdPatient._id);
-                setIsAddingToExisting(true);
+                setSelectedPatient(createdPatient._id); // Set the newly created patient as selected
+                setIsAddingToExisting(true);  // Transition to adding uploads
                 setShowForm(false);
-                setShowBodyParts(true);
-                fetchPatients(); 
+                setShowBodyParts(true); // Move to body parts selection
             } catch (error) {
                 console.error('Error creating patient:', error.response ? error.response.data : error.message);
                 toast.error(error.response?.data?.error || 'Error creating patient. Please try again.');
@@ -186,20 +178,20 @@ const Dashboard = () => {
     const handleProcessingComplete = () => {
         setProcessingComplete(true);
         if (responseData) {
-            navigate('/results', { 
+            navigate('/results', {
                 state: {
                     ...responseData,
-                } 
+                }
             });
         }
     };
 
     if (showProcessing) {
-        return <ProcessingScreen 
-                  processingTime={estimatedTime} 
-                  onAbort={handleAbort} 
-                  onComplete={handleProcessingComplete} 
-               />;
+        return <ProcessingScreen
+            processingTime={estimatedTime}
+            onAbort={handleAbort}
+            onComplete={handleProcessingComplete}
+        />;
     }
 
     if (!profile) {
@@ -235,11 +227,11 @@ const Dashboard = () => {
                 </div>
             ) : showBodyParts ? (
                 <>
-                    <img 
-                        src="./src/assets/images/undo.png" 
-                        alt="Back" 
-                        className="back-button-icon" 
-                        onClick={handleBackClick} 
+                    <img
+                        src="./src/assets/images/undo.png"
+                        alt="Back"
+                        className="back-button-icon"
+                        onClick={handleBackClick}
                     />
                     <div className="items-grid">
                         {items.map((item) => (
@@ -254,11 +246,11 @@ const Dashboard = () => {
                         ))}
                     </div>
                 </>
-            ) : isAddingToExisting ? (
-                <FileUpload 
+            ) : (isAddingToExisting) ? (
+                <FileUpload
                     uploadData={uploadData}
                     patients={patients}
-                    selectedPatient={selectedPatient}
+                    selectedPatient={selectedPatient} // Ensure the dropdown selects the new patient
                     setSelectedPatient={setSelectedPatient}
                     selectedBodyPart={selectedBodyPart}
                     handleInputChange={handleInputChange}
@@ -267,7 +259,7 @@ const Dashboard = () => {
                     handleBackClick={handleBackClick}
                 />
             ) : (
-                <PatientForm 
+                <PatientForm
                     newPatient={newPatient}
                     handleInputChange={handleInputChange}
                     handleSubmit={handleSubmit}
