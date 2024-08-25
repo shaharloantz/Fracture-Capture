@@ -1,29 +1,15 @@
-/**
- * This component is the main profile and results management page for the application.
- * It handles the following functionalities:
- * - Fetching and displaying the logged-in user's profile, including their patients and uploads.
- * - Allowing the user to view, edit, and delete patient information and associated uploads.
- * - Enabling sharing of patient uploads with other doctors.
- * - Handling the selection of a patient or upload, and navigating between different views like 
- *   patient details, upload details, and shared uploads.
- * - Displaying modal dialogs for sharing patient uploads.
- * - Providing UI for editing patient information and handling form submissions.
- * - Utilizing various sub-components like `PatientList`, `PatientUploads`, `UploadDetails`, 
- *   `EditPatientForm`, and `SharedPatientUploads` to manage different parts of the profile 
- *   and results page.
- */
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import {toast} from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import Modal from 'react-modal';
 import PatientList from '../component/profile/PatientList';
 import PatientUploads from '../component/profile/PatientUploads';
 import UploadDetails from '../component/profile/UploadDetails';
-import EditPatientForm from '../component/profile/EditPatientForm';
+import PatientForm from '../component/PatientForm'; 
 import SharedPatientUploads from '../component/profile/sharedPatientUploads';
 import '../styles/PatientsResults.css';
+
 Modal.setAppElement('#root');
 
 export default function Profile() {
@@ -68,7 +54,6 @@ export default function Profile() {
         axios.get(`/uploads/${id}`, { withCredentials: true })
             .then(response => {
                 setPatientUploads(response.data);
-                // Ensure that you have patient data in the profile
                 const patient = profile.patients.find(p => p._id === id);
                 if (patient) {
                     setSelectedPatient(patient);
@@ -81,15 +66,13 @@ export default function Profile() {
                 console.error('Error fetching patient uploads:', error.response ? error.response.data : error.message);
             });
     };
-    
+
     const fetchSharedPatientDetails = async (upload) => {
         try {
             if (upload.patient && typeof upload.patient === 'object') {
-                // If patient data is already populated
                 setSelectedUpload(upload);
                 setSelectedPatient(upload.patient);
             } else if (upload.patient && typeof upload.patient === 'string') {
-                // If patient data is not populated and only the ID is available
                 const response = await axios.get(`/patients/${upload.patient}`, { withCredentials: true });
                 const patient = response.data;
                 setSelectedUpload(upload);
@@ -101,8 +84,6 @@ export default function Profile() {
             console.error('Error fetching patient details:', error.response ? error.response.data : error.message);
         }
     };
-    
-    
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -170,13 +151,13 @@ export default function Profile() {
             { duration: 3000 }
         );
     };
-    
+
     const confirmDeleteUpload = (uploadId, toastId) => {
         axios.delete(`/uploads/${uploadId}`, { withCredentials: true })
             .then(response => {
                 setPatientUploads(uploads => uploads.filter(upload => upload._id !== uploadId));
                 setSharedUploads(uploads => uploads.filter(upload => upload._id !== uploadId));
-                toast.dismiss(toastId); // Dismiss the confirmation toast
+                toast.dismiss(toastId);
                 toast.success('Upload deleted successfully.');
             })
             .catch(error => {
@@ -184,7 +165,6 @@ export default function Profile() {
                 toast.error('Failed to delete upload.');
             });
     };
-    
 
     const handleDeletePatientClick = (id, e) => {
         e.stopPropagation();
@@ -227,7 +207,7 @@ export default function Profile() {
             { duration: 3000 }
         );
     };
-    
+
     const confirmDeletePatient = (id, toastId) => {
         axios.delete(`/patients/${id}`, { withCredentials: true })
             .then(response => {
@@ -239,7 +219,7 @@ export default function Profile() {
                     setSelectedPatient(null);
                     setPatientUploads([]);
                 }
-                toast.dismiss(toastId); // Dismiss the confirmation toast
+                toast.dismiss(toastId);
                 toast.success('Patient deleted successfully.');
             })
             .catch(error => {
@@ -247,7 +227,6 @@ export default function Profile() {
                 toast.error('Failed to delete patient.');
             });
     };
-    
 
     const handleEditPatientClick = (patient, e) => {
         e.stopPropagation();
@@ -270,7 +249,7 @@ export default function Profile() {
                     )
                 }));
                 if (selectedPatient && selectedPatient._id === editingPatient._id) {
-                    setSelectedPatient(editingPatient); // Update selected patient details
+                    setSelectedPatient(editingPatient);
                 }
                 setEditingPatient(null);
             })
@@ -290,7 +269,7 @@ export default function Profile() {
                 email
             }, { withCredentials: true });
             setMessage(response.data.message);
-            setIsModalOpen(false); // Close modal after successful share
+            setIsModalOpen(false);
         } catch (error) {
             console.error('Error sharing patient uploads:', error);
             setMessage('Error sharing patient uploads');
@@ -300,16 +279,14 @@ export default function Profile() {
     const handleSelectSharePatient = (id) => {
         setSelectedSharePatient(id);
         setMessage('');
-        setEmail(''); // Reset email input
-        setIsModalOpen(true); // Open modal
+        setEmail('');
+        setIsModalOpen(true);
     };
 
     const handleRemoveSharedUpload = async (uploadId) => {
         try {
             const response = await axios.delete(`/user/shared-upload/${uploadId}`, { withCredentials: true });
             setMessage(response.data.message);
-
-            // Update shared uploads in the state
             setSharedUploads(sharedUploads.filter(upload => upload._id !== uploadId));
         } catch (error) {
             console.error('Error removing shared upload:', error);
@@ -338,18 +315,19 @@ export default function Profile() {
                 />
             )}
             {editingPatient ? (
-                <EditPatientForm
-                    editingPatient={editingPatient}
-                    handleEditPatientChange={handleEditPatientChange}
-                    handleEditPatientSubmit={handleEditPatientSubmit}
-                    setEditingPatient={setEditingPatient}
+                <PatientForm
+                    newPatient={editingPatient} // Pass the patient to be edited
+                    handleInputChange={handleEditPatientChange}
+                    handleSubmit={handleEditPatientSubmit}
+                    handleBackClick={() => setEditingPatient(null)}
+                    isEditing={true} // Set the editing mode
                 />
             ) : selectedUpload ? (
                 <UploadDetails 
                     selectedUpload={selectedUpload} 
                     handleBackClick={handleBackClick} 
-                    patient={selectedPatient} // Pass the selected patient details
-                    userName={profile.name} // Pass the user name who created the upload
+                    patient={selectedPatient}
+                    userName={profile.name}
                     profileEmail={profile.email}
                 />            
             ) : selectedPatient ? (
