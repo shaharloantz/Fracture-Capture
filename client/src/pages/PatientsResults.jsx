@@ -6,7 +6,7 @@ import Modal from 'react-modal';
 import PatientList from '../component/profile/PatientList';
 import PatientUploads from '../component/profile/PatientUploads';
 import UploadDetails from '../component/profile/UploadDetails';
-import PatientForm from '../component/PatientForm';  // Import PatientForm instead of EditPatientForm
+import PatientForm from '../component/PatientForm'; 
 import SharedPatientUploads from '../component/profile/sharedPatientUploads';
 import '../styles/PatientsResults.css';
 
