@@ -5,6 +5,9 @@
     justify-content: center;
     padding: 40px 20px; /* Increased padding */
     color: white;
+    width: 100%;
+    max-width: 1200px; /* Ensures the container doesn't stretch too wide */
+    margin: 0 auto; /* Centers the container on the page */
 }
 
 .patient-history, .patient-uploads, .upload-details {
@@ -13,17 +16,18 @@
     text-align: center;
 }
 
-
-
 .patient-folders{
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 50px; /* Increased gap for better spacing */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 50px;
     margin-top: 40px;
-    justify-items: center; 
+    justify-items: center;
+    justify-content: center; /* Centers the grid content horizontally */
+    align-items: center; /* Centers the grid content vertically */
+    width: 100%;
 }
 
-.patient-folder, .upload-folder {
+.patient-folder {
     position: relative;
     width: 150px;
     border: none;
