@@ -12,12 +12,17 @@
     max-width: 800px;
     text-align: center;
 }
-.patient-folders, .upload-folders {
+
+
+
+.patient-folders{
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 50px; /* Increased gap for better spacing */
     margin-top: 40px;
+    justify-items: center; 
 }
+
 .patient-folder, .upload-folder {
     position: relative;
     width: 150px;
@@ -30,7 +35,7 @@
     cursor: pointer;
 }
 
-.patient-folder:hover, .upload-folder:hover {
+.patient-folder:hover {
     transform: scale(1.05); /* Slightly enlarge folder on hover */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
 }
@@ -232,9 +237,6 @@
     background-color: #c82333;
 }
 
-.upload-folders{
-    margin-top: 50px;
-}
 
 .shared-uploads-container {
     display: grid;
