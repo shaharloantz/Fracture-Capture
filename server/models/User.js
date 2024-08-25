@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     resetToken: { type: String, required: false }, 
     numberOfPatients: { type: Number, default: 0 },
     sharedUploads: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Upload' }],
+    sharedPatients: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Patient' }],  // Add this line
     isAdmin: { type: Boolean, default: false } 
 }, { timestamps: true });
 

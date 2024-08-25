@@ -224,40 +224,58 @@ router.post('/share', requireAuth, async (req, res) => {
     }
 });
 
-
+// Backend Route for Sharing a Patient
 router.post('/share/patient/:id', requireAuth, async (req, res) => {
     const { id } = req.params;
     const { email } = req.body;
 
-
     try {
-        const uploads = await Upload.find({ patient: id }).exec();
-
-        if (!uploads.length) {
-            console.log('No uploads found for this patient');
-            return res.status(404).json({ error: 'No uploads found for this patient' });
+        const patient = await Patient.findById(id).populate('uploads'); // Populating uploads
+        if (!patient) {
+            return res.status(404).json({ error: 'Patient not found' });
         }
-
 
         const recipientDoctor = await User.findOne({ email });
         if (!recipientDoctor) {
-            console.log('Recipient doctor not found');
             return res.status(404).json({ error: 'Recipient doctor not found' });
         }
 
-        recipientDoctor.sharedUploads = recipientDoctor.sharedUploads || [];
-        uploads.forEach(upload => {
-            if (!recipientDoctor.sharedUploads.includes(upload._id)) {
-                recipientDoctor.sharedUploads.push(upload._id);
-            }
-        });
+        // Check if patient is already shared
+        recipientDoctor.sharedPatients = recipientDoctor.sharedPatients || [];
+        if (!recipientDoctor.sharedPatients.some(sharedPatient => sharedPatient.toString() === patient._id.toString())) {
+            recipientDoctor.sharedPatients.push(patient._id);
+        }
+
         await recipientDoctor.save();
 
-        res.status(200).json({ message: 'Patient uploads shared successfully' });
+        res.status(200).json({ message: 'Patient shared successfully', sharedPatient: patient });
     } catch (error) {
-        console.error('Error sharing patient uploads:', error.message);
+        console.error('Error sharing patient:', error.message);
         res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
+
+// Example of using $pull operator
+router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {
+    const { uploadId } = req.params;
+    const userId = req.user.id;
+
+    try {
+        const result = await User.updateOne(
+            { _id: userId },
+            { $pull: { sharedUploads: uploadId } }
+        );
+
+        if (result.nModified === 0) {
+            return res.status(404).json({ error: 'Upload not found or already removed.' });
+        }
+
+        res.status(200).json({ message: 'Shared upload removed successfully' });
+    } catch (error) {
+        console.error('Error removing shared upload:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 
 module.exports = router;

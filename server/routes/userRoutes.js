@@ -57,22 +57,28 @@ router.post('/change-password', requireAuth, async (req, res) => {
 
 router.get('/shared-uploads', requireAuth, async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).populate({
-            path: 'sharedUploads',
-            populate: {
-                path: 'patient', // Populate the patient field within sharedUploads
-                model: 'Patient'
-            }
-        });
+        const user = await User.findById(req.user.id)
+            .populate({
+                path: 'sharedUploads',
+                populate: { path: 'patient', model: 'Patient' }
+            })
+            .populate('sharedPatients'); // Correctly populating sharedPatients
+
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        res.json(user.sharedUploads);
+
+        const sharedPatients = user.sharedPatients;
+        const sharedUploads = user.sharedUploads;
+
+        res.json({ sharedPatients, sharedUploads });
     } catch (error) {
         console.error('Error fetching shared uploads:', error.message);
         res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
+
+
 
 
 // Route to remove a shared upload for a specific user
