@@ -1,30 +1,9 @@
-/**
- * This file defines the `Dashboard` component, which serves as the main interface for managing patient data and 
- * uploading medical images for fracture detection. The component includes functionality for creating new patients, 
- * selecting existing patients, and uploading images for processing. The component's state and logic are structured 
- * as follows:
- *
- * - `initialPatientState` and `initialUploadState` define the initial states for new patients and image uploads.
- * - The component uses several state variables to manage the user's profile, form visibility, patient data, 
- *   and upload progress.
- * - `useEffect` is used to fetch the user's profile data when the component mounts.
- * - Various functions handle user interactions, such as selecting body parts, creating patients, uploading images, 
- *   and handling form input.
- * - The `handleSubmit` function manages the submission of new patient data and image uploads, handling both new 
- *   patients and existing patients.
- * - Conditional rendering is used to display different views based on the user's actions, such as showing the form 
- *   for a new patient, selecting a body part, or displaying the processing screen.
- * - After a successful upload, the user is redirected to the results page, where they can view the processed images 
- *   and predictions.
- *
- * The component is designed to provide a user-friendly interface for managing patient records and uploading medical 
- * images for analysis, with smooth transitions between different states and clear feedback for the user.
- */
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { toast, Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import PatientForm from '../component/PatientForm';
+import FileUpload from '../component/FileUpload';
 import ProcessingScreen from '../component/ProcessingScreen';
 import '../styles/Dashboard.css';
 
@@ -32,12 +11,12 @@ const Dashboard = () => {
     const initialPatientState = { name: '', dateOfBirth: '', gender: '', idNumber: '' };
     const initialUploadState = { id: '', description: '', bodyPart: '', image: null };
     const [profile, setProfile] = useState(null);
-    const [showForm, setShowForm] = useState(false);
+    const [showForm, setShowForm] = useState(false); // For showing form
     const [showBodyParts, setShowBodyParts] = useState(false);
     const [newPatient, setNewPatient] = useState(initialPatientState);
     const [uploadData, setUploadData] = useState(initialUploadState);
     const [patients, setPatients] = useState([]);
-    const [isAddingToExisting, setIsAddingToExisting] = useState(false);
+    const [isAddingToExisting, setIsAddingToExisting] = useState(false); // To determine if adding to existing patient
     const [selectedPatient, setSelectedPatient] = useState(null);
     const [selectedBodyPart, setSelectedBodyPart] = useState('');
     const [showProcessing, setShowProcessing] = useState(false);
@@ -65,13 +44,8 @@ const Dashboard = () => {
 
     const handleItemClick = (item) => {
         setSelectedBodyPart(item.title);
-        if (isAddingToExisting && selectedPatient) {
-            setShowForm(true);
-            setShowBodyParts(false);
-        } else {
-            setShowForm(true);
-            setShowBodyParts(false);
-        }
+        setShowForm(true);  // Show form to add the upload after selecting body part
+        setShowBodyParts(false);
     };
 
     const handleAddPatientClick = () => {
@@ -80,10 +54,9 @@ const Dashboard = () => {
             return;
         }
 
-        setIsAddingToExisting(true);
-        fetchPatients();
-        setUploadData(initialUploadState);
-        setShowBodyParts(true);
+        setIsAddingToExisting(true);  // Set to true since we're adding to an existing patient
+        setShowForm(false);  // Hide form initially
+        setShowBodyParts(true);  // Show body parts selection
     };
 
     const fetchPatients = () => {
@@ -99,8 +72,8 @@ const Dashboard = () => {
 
     const handleCreatePatientClick = () => {
         setNewPatient(initialPatientState);
-        setIsAddingToExisting(false);
-        setShowForm(true);
+        setIsAddingToExisting(false);  // Set to false since we're creating a new patient
+        setShowForm(true);  // Show patient form
         setShowBodyParts(false);
     };
 
@@ -281,17 +254,22 @@ const Dashboard = () => {
                         ))}
                     </div>
                 </>
-            ) : (
-                <PatientForm 
-                    isAddingToExisting={isAddingToExisting}
+            ) : isAddingToExisting ? (
+                <FileUpload 
                     uploadData={uploadData}
-                    newPatient={newPatient}
                     patients={patients}
-                    selectedBodyPart={selectedBodyPart}  
                     selectedPatient={selectedPatient}
-                    setSelectedPatient={setSelectedPatient}  
+                    setSelectedPatient={setSelectedPatient}
+                    selectedBodyPart={selectedBodyPart}
                     handleInputChange={handleInputChange}
                     handleFileChange={handleFileChange}
+                    handleSubmit={handleSubmit}
+                    handleBackClick={handleBackClick}
+                />
+            ) : (
+                <PatientForm 
+                    newPatient={newPatient}
+                    handleInputChange={handleInputChange}
                     handleSubmit={handleSubmit}
                     handleBackClick={handleBackClick}
                 />
