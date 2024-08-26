@@ -87,6 +87,11 @@
     text-align: center;
     color: white;
 }
+.icon-container .upload-info{
+    font-size: 14px;
+    margin-left: 40px;
+    margin-top: 10px;
+}
 
 .icon-container {
     position: absolute;
@@ -114,31 +119,29 @@
 }
 
 .edit-icon, .delete-icon ,.share-icon, .delete-icon-patient {
-    width: 18px;
-    height: 18px;
-
-    pointer-events: auto; /* Enable click on icons */
+    width: 16px;
+    height: 16px;
+    pointer-events: auto; 
 }
 
 .edit-icon {
     position: absolute;
-    top: 20px;
-    right: 30px;
+    top: 27px;
+    right:27px;
 }
 
 .share-icon{
-    top: 65px;
+    top: 70px;
     position: absolute;
-    bottom: 95px;
     margin-left: 60px;
-    left: 40px;
+    left: 45px;
 }
 
 .delete-icon {
     position: absolute;
-    top: 65px;
+    top: 70px;
     bottom: 95px;
-    left: 30px;
+    left: 27px;
 }
 
 .patient-form, .password-form {
@@ -191,11 +194,10 @@
 .back-button-icon{
     width: 40px;
     height: 40px;
-    pointer-events: auto; /* Enable click on icons */
+    pointer-events: auto; 
     margin-bottom: 30px;
  }
 
- /* Modal styles */
 .Modal {
     position: fixed;
     top: 50%;  
@@ -219,7 +221,6 @@
     z-index: 999;
 }
 
-/* Form styles inside the modal */
 .Modal form {
     display: flex;
     flex-direction: column;
@@ -252,7 +253,6 @@
     background-color: #0056b3;
 }
 
-/* Close button styles */
 .Modal .close-button {
     padding: 10px 20px;
     background-color: #dc3545;
@@ -336,17 +336,17 @@
 }
 
 .patient-name {
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
     display: block;
-    margin-left: 32px;
-    margin-bottom: 40px;
-    font-size: 14px;
+    margin-left: 28px;
+    margin-bottom: 45px;
+    font-size: 12px;
     white-space: nowrap;      /* Prevent the text from wrapping to the next line */
     overflow: hidden;         /* Hide any overflowing text */
     text-overflow: ellipsis;  /* Add ellipses (...) at the end of the truncated text */
-    max-width: 90px;         /* Set a maximum width for the container */
+    max-width: 75px;         /* Set a maximum width for the container */
 }
 
-/* Add styles for the shared-uploads-link */
 .shared-uploads-link {
     text-decoration: none; /* Removes underline from the link */
     color: inherit; /* Inherits color from the parent, usually black or white */
