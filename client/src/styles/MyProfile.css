@@ -6,11 +6,13 @@
     padding: 20px;
     color: white;
 }
+
 .user-details {
     text-align: center;
     font-size: large;
     margin-bottom: 20px;
 }
+
 .user-details button {
     padding: 10px;
     margin-top: 50px;
@@ -20,6 +22,7 @@
     color: white;
     cursor: pointer;
 }
+
 .user-details button:hover {
     background-color: #003399;
 }
@@ -32,9 +35,11 @@
     margin: 20px 0;
     width: 300px;
 }
+
 .password-form h2 {
     text-align: center;
 }
+
  .password-form label {
     display: block;
     margin-bottom: 10px;
@@ -60,12 +65,15 @@
     color: white;
     cursor: pointer;
 }
+
  .password-form button[type="button"] {
     background-color: #ff5555;
 }
+
  .password-form button:hover {
     background-color: #003399;
 }
+
  .password-form button[type="button"]:hover {
     background-color: #cc4444;
 }
