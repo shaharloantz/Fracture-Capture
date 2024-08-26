@@ -1,11 +1,11 @@
 /* General container styling */
 .container {
-    background-color: rgba(255, 255, 255, 0.1); /* Slight transparency for a floating effect */
-    border-radius: 15px; /* Rounded corners */
-    padding: 30px; /* Consistent padding inside containers */
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15); /* Floating shadow effect */
-    margin-bottom: 30px; /* Space between containers */
-    backdrop-filter: blur(10px); /* Optional: Blur effect for a more floating appearance */
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 30px; 
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
 }
 
 /* About header styling */
@@ -25,7 +25,7 @@
     font-size: 1.2em;
     max-width: 600px;
     margin: 0 auto;
-    color:#ffffff
+    color:#ffffff;
 }
 
 /* Mission and Vision Section */
@@ -34,8 +34,8 @@
     text-align: center;
     color: #ffffff;
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15); /* Floating shadow effect */
+    border-radius: 15px; 
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .mission-vision h2 {
@@ -56,10 +56,10 @@
     padding: 40px;
     text-align: center;
     color: white;
-    height:180px;
+    height: auto; 
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15); /* Floating shadow effect */
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .technology h2 {
@@ -76,6 +76,7 @@
     display: flex;
     justify-content: space-around;
     margin-top: 30px;
+    flex-wrap: wrap;
 }
 
 /* Supporting Professionals Section */
@@ -84,8 +85,8 @@
     text-align: center;
     color: #ffffff;
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15); /* Floating shadow effect */
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .supporting-professionals h2 {
@@ -102,6 +103,7 @@
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 
 /* Meet the Team Section */
@@ -110,8 +112,8 @@
     text-align: center;
     color: white;
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15); /* Floating shadow effect */
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .meet-the-team h2 {
@@ -124,15 +126,15 @@
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
-    gap: 20px; /* Added gap between team members */
-    flex-wrap: wrap; /* Ensure wrapping on smaller screens */
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 .the-team img {
     width: 150px;
     height: auto;
-    border-radius: 50%; /* Maintain circular images */
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); /* Slight shadow to enhance floating effect */
+    border-radius: 50%;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Call to Action Section */
@@ -145,8 +147,8 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15); /* Floating shadow effect */
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .call-to-action h2 {
@@ -173,4 +175,72 @@
 
 .cta-button:hover {
     background-color: #ffaa00;
+}
+
+/* Responsive styling */
+@media screen and (max-width: 768px) {
+    .about-header h1 {
+        font-size: 2em;
+    }
+
+    .about-header p,
+    .mission-vision p,
+    .technology p,
+    .supporting-professionals p,
+    .call-to-action p {
+        font-size: 1em;
+    }
+
+    .mission-vision h2,
+    .technology h2,
+    .supporting-professionals h2,
+    .call-to-action h2 {
+        font-size: 1.8em;
+    }
+
+    .technology-highlights,
+    .professionals-highlights,
+    .the-team {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .the-team img {
+        width: 120px;
+    }
+
+    .cta-button {
+        padding: 10px 15px;
+        font-size: 1.1em;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .about-header h1 {
+        font-size: 1.8em;
+    }
+
+    .about-header p,
+    .mission-vision p,
+    .technology p,
+    .supporting-professionals p,
+    .call-to-action p {
+        font-size: 0.9em;
+    }
+
+    .mission-vision h2,
+    .technology h2,
+    .supporting-professionals h2,
+    .call-to-action h2 {
+        font-size: 1.5em;
+    }
+
+    .the-team img {
+        width: 100px;
+    }
+
+    .cta-button {
+        padding: 8px 12px;
+        font-size: 1em;
+    }
 }
