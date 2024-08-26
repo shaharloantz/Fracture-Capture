@@ -105,8 +105,7 @@
 
 /* Search bar styling */
 .search-bar {
-    width: 100%;
-    max-width: 100%; /* Ensure the search bar takes the full width */
+    width: 100%; /* Make search bar take full width of the container */
     padding: 10px 15px;
     margin-bottom: 20px;
     border-radius: 4px;
@@ -368,6 +367,10 @@
 
 /* Responsive design for screens 1024px and above (desktops) */
 @media screen and (min-width: 1024px) {
+    .profile-container h1 {
+        font-size: 40px;
+        margin-bottom: 15px;
+    }
     .search-bar {
         padding: 12px 18px;
     }
