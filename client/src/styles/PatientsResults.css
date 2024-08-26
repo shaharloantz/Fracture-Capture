@@ -248,6 +248,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+
 .Modal form button:hover {
     background-color: #0056b3;
 }
@@ -265,7 +266,6 @@
 .Modal .close-button:hover {
     background-color: #c82333;
 }
-
 
 .shared-uploads-container {
     display: grid;
@@ -293,7 +293,6 @@
     transform: scale(1.05);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
-
 
 .upload-details input[type="email"] {
     color: black; 

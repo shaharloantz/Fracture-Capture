@@ -10,7 +10,7 @@ const PrivacyPolicy = () => (
         <div className="divider"></div>
         <div className="content-wrapper">
           <div className="content-item">
-          <p>Fractures-Captures ("we", "our", "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our Service.</p>
+          <p>Fracture-Capture ("we", "our", "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our Service.</p>
           </div>
         </div>
       </div>

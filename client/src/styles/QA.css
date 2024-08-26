@@ -47,7 +47,6 @@ body {
   margin-right: 10px;
 }
 
-
 .qa-search-bar {
   width: 100%;
   padding: 10px;
@@ -58,7 +57,6 @@ body {
   color: white;
   font-size: 1em;
 }
-
 
 .qa-content {
   width: 100%; 
@@ -169,7 +167,6 @@ body {
 .git-button:hover {
   background-color: #ffaa00;
 }
-
 
 /* Responsive Design */
 @media (max-width: 768px) {
