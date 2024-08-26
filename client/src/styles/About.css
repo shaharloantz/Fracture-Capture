@@ -1,32 +1,47 @@
+/* General container styling */
+.container {
+    background-color: rgba(255, 255, 255, 0.1); /* Slight transparency for a floating effect */
+    border-radius: 15px; /* Rounded corners */
+    padding: 30px; /* Consistent padding inside containers */
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15); /* Floating shadow effect */
+    margin-bottom: 30px; /* Space between containers */
+    backdrop-filter: blur(10px); /* Optional: Blur effect for a more floating appearance */
+}
+
+/* About header styling */
 .about-header {
-    background-image: url('/path-to-your-banner-image.jpg');
-    background-size: cover;
-    color: white;
     text-align: center;
-    padding: 50px;
+    padding: 40px;
+    margin-bottom: 30px;
 }
 
 .about-header h1 {
     font-size: 2.5em;
     margin-bottom: 10px;
+    color: #ff8c00;
 }
 
 .about-header p {
     font-size: 1.2em;
     max-width: 600px;
     margin: 0 auto;
+    color:#ffffff
 }
 
+/* Mission and Vision Section */
 .mission-vision {
     padding: 40px;
-    background-color: #f9f9f9;
     text-align: center;
-    opacity: 95%;
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15); /* Floating shadow effect */
 }
 
 .mission-vision h2 {
     font-size: 2em;
     margin-bottom: 20px;
+    color: #ff8c00;
 }
 
 .mission-vision p {
@@ -36,18 +51,24 @@
     line-height: 1.6;
 }
 
+/* Technology Section */
 .technology {
-    padding: 60px;
+    padding: 40px;
     text-align: center;
-      color: white;
-    
+    color: white;
+    height:180px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15); /* Floating shadow effect */
 }
-.technology h2{
+
+.technology h2 {
     font-size: 2em;
+    color: #ff8c00;
     margin-bottom: 20px;
 }
 
-.technology p{
+.technology p {
     font-size: 1.1em;
 }
 
@@ -57,37 +78,19 @@
     margin-top: 30px;
 }
 
-.tech-item {
-    max-width: 300px;
-    text-align: center;
-}
-
-.tech-item img {
-    width: 150px; 
-    height: auto; 
-    border-radius: 100%; 
-}
-
-.tech-item h3 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
-
-.tech-item p {
-    font-size: 1em;
-    color: #ffffff;
-}
-
+/* Supporting Professionals Section */
 .supporting-professionals {
     padding: 40px;
-    background-color: #ffffff;
     text-align: center;
-    opacity: 95%;
-
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15); /* Floating shadow effect */
 }
 
-.supporting-professionals h2{
-        font-size: 2em;
+.supporting-professionals h2 {
+    font-size: 2em;
+    color: #ff8c00;
     margin-bottom: 20px;
 }
 
@@ -101,13 +104,19 @@
     margin-top: 20px;
 }
 
-.meet-the-team{
+/* Meet the Team Section */
+.meet-the-team {
     padding: 40px;
     text-align: center;
     color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15); /* Floating shadow effect */
 }
+
 .meet-the-team h2 {
     font-size: 2em;
+    color: #ff8c00;
     margin-bottom: 20px;
 }
 
@@ -115,55 +124,40 @@
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
-    color: white;
+    gap: 20px; /* Added gap between team members */
+    flex-wrap: wrap; /* Ensure wrapping on smaller screens */
 }
 
-.meet-the-team .dana img,
-.meet-the-team .zigel img,
-.meet-the-team .jonathan img,
-.meet-the-team .shachar img,
-.meet-the-team .tal img,
-.meet-the-team .or img {
-    width: 150px; 
-    height: auto; 
-    border-radius: 50%;
+.the-team img {
+    width: 150px;
+    height: auto;
+    border-radius: 50%; /* Maintain circular images */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); /* Slight shadow to enhance floating effect */
 }
 
-
-.highlight-item {
-    max-width: 300px;
-    text-align: left;
-}
-
-.highlight-item h3 {
-    font-size: 1.3em;
-    margin-bottom: 10px;
-}
-
-.highlight-item p {
-    font-size: 1em;
-    color: #666;
-}
-
+/* Call to Action Section */
 .call-to-action {
-    padding: 50px;
-    background-color: #032e84;
+    padding: 40px;
     color: white;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15); /* Floating shadow effect */
 }
 
 .call-to-action h2 {
     font-size: 2em;
     margin-bottom: 20px;
+    color: #ff8c00;
 }
 
 .call-to-action p {
     font-size: 1.2em;
-    margin-bottom: 40px; 
+    margin-bottom: 40px;
 }
 
 .cta-button {
@@ -173,7 +167,7 @@
     border-radius: 5px;
     text-decoration: none;
     font-size: 1.2em;
-    margin-top: 20px; 
+    margin-top: 20px;
     display: inline-block;
 }
 
