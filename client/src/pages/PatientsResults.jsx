@@ -256,48 +256,49 @@ export default function Profile() {
     return (
         <div className="profile-container">
             <h1>Results Page</h1>
-            {!selectedPatient && !selectedUpload && (
-                <input
-                    type="text"
-                    placeholder="Search by Name or ID"
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                    className="search-bar"
-                />
-            )}
-            {editingPatient ? (
-                <PatientForm
-                    newPatient={editingPatient}
-                    handleInputChange={handleEditPatientChange}
-                    handleSubmit={handleEditPatientSubmit}
-                    handleBackClick={() => setEditingPatient(null)}
-                    isEditing={true}
-                />
-            ) : selectedUpload ? (
-                <UploadDetails
-                    selectedUpload={selectedUpload}
-                    handleBackClick={handleBackClick}
-                    patient={selectedPatient}
-                />
-            ) : selectedPatient ? (
-                <PatientUploads
-                    patientUploads={patientUploads}
-                    handleUploadClick={handleUploadClick}
-                    handleDeleteUploadClick={handleDeleteUploadClick}
-                    formatDate={formatDate}
-                    handleBackClick={handleBackClick}
-                />
-            ) : (
-                <PatientList
-                patients={filteredPatients}
-                fetchPatientUploads={fetchPatientUploads}
-                handleEditPatientClick={handleEditPatientClick}
-                handleDeletePatientClick={handleDeletePatientClick}
-                handleSelectSharePatient={handleSelectSharePatient}
-                />
-                
-            )}
-                        <Modal
+            <div className="search-folders-container">
+                {!selectedPatient && !selectedUpload && (
+                    <input
+                        type="text"
+                        placeholder="Search by Name or ID"
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                        className="search-bar"
+                    />
+                )}
+                {editingPatient ? (
+                    <PatientForm
+                        newPatient={editingPatient}
+                        handleInputChange={handleEditPatientChange}
+                        handleSubmit={handleEditPatientSubmit}
+                        handleBackClick={() => setEditingPatient(null)}
+                        isEditing={true}
+                    />
+                ) : selectedUpload ? (
+                    <UploadDetails
+                        selectedUpload={selectedUpload}
+                        handleBackClick={handleBackClick}
+                        patient={selectedPatient}
+                    />
+                ) : selectedPatient ? (
+                    <PatientUploads
+                        patientUploads={patientUploads}
+                        handleUploadClick={handleUploadClick}
+                        handleDeleteUploadClick={handleDeleteUploadClick}
+                        formatDate={formatDate}
+                        handleBackClick={handleBackClick}
+                    />
+                ) : (
+                    <PatientList
+                        patients={filteredPatients}
+                        fetchPatientUploads={fetchPatientUploads}
+                        handleEditPatientClick={handleEditPatientClick}
+                        handleDeletePatientClick={handleDeletePatientClick}
+                        handleSelectSharePatient={handleSelectSharePatient}
+                    />
+                )}
+            </div>
+            <Modal
                 isOpen={isModalOpen}
                 onRequestClose={closeModal}
                 contentLabel="Share Patient Uploads"
@@ -322,5 +323,5 @@ export default function Profile() {
                 {message && <p>{message}</p>}
             </Modal>
         </div>
-    );
+    );    
 }
