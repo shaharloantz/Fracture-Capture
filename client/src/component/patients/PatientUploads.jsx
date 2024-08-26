@@ -14,11 +14,11 @@ const PatientUploads = ({ patientUploads, handleUploadClick, handleDeleteUploadC
             {patientUploads.length > 0 ? patientUploads.map(upload => (
                 <div key={upload._id} className="upload-folder">
                     <img src="/src/assets/images/folderNEW.png" alt="Upload Folder" className="folder-icon" onClick={() => handleUploadClick(upload)} />
-                    <div className="upload-info">
-                        <p><strong>Date Uploaded:</strong> {formatDate(upload.dateUploaded)}</p>
-                        <p><strong>Body Part:</strong> {upload.bodyPart}</p>
-                    </div>
                     <div className="icon-container">
+                    <div className="upload-info">
+                        <p><strong>{formatDate(upload.dateUploaded)}</strong> </p>
+                        <p><strong> {upload.bodyPart}</strong></p>
+                    </div>
                         <img 
                             src="src/assets/images/bin.png" 
                             alt="Delete" 

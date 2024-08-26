@@ -21,6 +21,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { createPDF, sendEmail } from '../utils/pdfUtils';  
 import downloadIcon from '../assets/images/download-file-icon.png'; 
 import sendEmailIcon from '../assets/images/send-email-icon.png'; 
@@ -37,9 +38,16 @@ const Results = () => {
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [createdByUser, setCreatedByUser] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchCreatedByUser(selectedUpload.createdByUser);
+    try{
+      fetchCreatedByUser(selectedUpload.createdByUser);
+    }
+    catch(error){
+      navigate('/pagenotfound');
+    }
+
     if (!patient && selectedUpload?.id) {
       axios.get(`/patients/${selectedUpload.id}`)
         .then(response => {
