@@ -68,7 +68,7 @@ const About = () => {
 
                         <div className='jonathan'>
                         <a href="https://www.linkedin.com/in/jonathan-cwengel-77953626b/" target="_blank" rel="noopener noreferrer">
-                        <img src="/src\assets\images\handsome.jpg"/>
+                        <img src="/src\assets\images\Jonathan.jpg"/>
                         </a>
                         <h3>Jonathan Cwengel</h3>
                         <p></p>
@@ -84,7 +84,7 @@ const About = () => {
 
                         <div className='or'>
                         <a href="https://www.linkedin.com/in/or-shimon-51811826a/" target="_blank" rel="noopener noreferrer">
-                        <img src="/src\assets\images\myN.jpg"/>
+                        <img src="/src\assets\images\OrShimon.jpg"/>
                         </a>
                         <h3>Or Shimon</h3>
                         <p></p>
