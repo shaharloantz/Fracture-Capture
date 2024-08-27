@@ -71,7 +71,7 @@ const TermsOfService = () => (
         <div className="content-wrapper">
           <div className="content-item">
             <h3>4.1 Ownership</h3>
-            <p>All content and materials available on the Service, including but not limited to software, text, graphics, and logos, are the property of Fractures-Captures or its licensors and are protected by intellectual property laws.</p>
+            <p>All content and materials available on the Service, including but not limited to software, text, graphics, and logos, are the property of FractureCapture or its licensors and are protected by intellectual property laws.</p>
           </div>
           <div className="content-item">
             <h3>4.2 License</h3>
@@ -95,7 +95,7 @@ const TermsOfService = () => (
         <div className="divider"></div>
         <div className="content-wrapper">
           <div className="content-item">
-            <p>To the maximum extent permitted by law, Fractures-Captures shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses, resulting from (i) your use or inability to use the Service; (ii) any unauthorized access to or use of our servers and/or any personal information stored therein.</p>
+            <p>To the maximum extent permitted by law, FractureCapture shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses, resulting from (i) your use or inability to use the Service; (ii) any unauthorized access to or use of our servers and/or any personal information stored therein.</p>
           </div>
         </div>
     </div>
