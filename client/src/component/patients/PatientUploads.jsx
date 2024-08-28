@@ -17,7 +17,7 @@ const PatientUploads = ({ patientUploads, handleUploadClick, handleDeleteUploadC
                         <img src="/src/assets/images/folderNEW.png" alt="Upload Folder" className="folder-icon" onClick={() => handleUploadClick(upload)} />
                         <div className="icon-container">
                             <div className="upload-info">
-                                <p><strong>{formatDate(upload.dateUploaded)}</strong></p>
+                                <p><strong>{new Date(upload.dateUploaded).toLocaleString().split(",")[0]}</strong></p>
                                 <p><strong>{upload.bodyPart}</strong></p>
                             </div>
                             <img 
