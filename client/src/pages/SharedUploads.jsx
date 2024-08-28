@@ -13,6 +13,7 @@ export default function SharedUploads() {
     const [selectedPatientUploads, setSelectedPatientUploads] = useState([]);
     const [selectedUpload, setSelectedUpload] = useState(null);
     const [selectedPatient, setSelectedPatient] = useState(null);
+    const [selectedPatientDetails, setSelectedPatientDetails] = useState(null); 
 
     useEffect(() => {
         axios.get('/user/shared-uploads', { withCredentials: true })
@@ -24,13 +25,20 @@ export default function SharedUploads() {
     }, []);
 
     const handlePatientClick = (patientId) => {
-        // Fetch all uploads for the selected patient
-        axios.get(`/uploads/${patientId}`, { withCredentials: true })
-            .then(response => {
-                setSelectedPatientUploads(response.data);
-                setSelectedPatient(patientId);
+        // Fetch patient details first
+        axios.get(`/patients/${patientId}`, { withCredentials: true })
+            .then(patientResponse => {
+                setSelectedPatientDetails(patientResponse.data); // Store the complete patient details
+
+                // Then fetch all uploads for the selected patient
+                axios.get(`/uploads/${patientId}`, { withCredentials: true })
+                    .then(uploadResponse => {
+                        setSelectedPatientUploads(uploadResponse.data);
+                        setSelectedPatient(patientId);
+                    })
+                    .catch(error => console.error('Error fetching patient uploads:', error.response ? error.response.data : error.message));
             })
-            .catch(error => console.error('Error fetching patient uploads:', error.response ? error.response.data : error.message));
+            .catch(error => console.error('Error fetching patient details:', error.response ? error.response.data : error.message));
     };
 
     const handleUploadClick = (upload) => {
@@ -68,6 +76,7 @@ export default function SharedUploads() {
         } else if (selectedPatient) {
             setSelectedPatientUploads([]);
             setSelectedPatient(null);
+            setSelectedPatientDetails(null); 
         }
     };
 
@@ -126,7 +135,7 @@ export default function SharedUploads() {
                 <UploadDetails
                     selectedUpload={selectedUpload}
                     handleBackClick={handleBackClick}
-                    patient={selectedUpload.patient} 
+                    patient={selectedPatientDetails} 
                 />
             )}
         </div>
