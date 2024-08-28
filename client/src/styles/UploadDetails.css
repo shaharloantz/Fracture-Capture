@@ -72,9 +72,9 @@
 
 .back-button-container {
     display: flex;
-    justify-content: center; /* Center the content horizontally */
-    align-items: center; /* Center the content vertically */
-    margin-bottom: 20px; /* Add space below the container if needed */
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .back-button-icon {
