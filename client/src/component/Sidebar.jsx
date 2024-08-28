@@ -7,9 +7,11 @@ export default function Sidebar() {
     const [isAdmin, setIsAdmin] = useState(false);
 
     const toggleSidebar = () => setIsOpen(!isOpen);
-    const scrollingTop = () => {scroll.scrollToTop()
-        toggleSidebar()
+    const scrollingTop = () => {
+        scroll.scrollToTop();
+        toggleSidebar();
     };
+
     useEffect(() => {
         axios.get('/user/profile', { withCredentials: true })
             .then(response => {
@@ -33,34 +35,34 @@ export default function Sidebar() {
             </button>
             <div className={`fixed inset-y-0 left-0 bg-gray-800 text-white transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-40 w-64`}>
                 <div className="py-4 mt-16">
-                    <Link to="/about" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={scrollingTop}>
-                        <img src="/src/assets/images/info-icon.png" alt="About" className="inline-block w-6 h-6 mr-2" />
-                        About
+                    <Link to="/about" className="sidebar-link" onClick={scrollingTop}>
+                        <img src="/src/assets/images/info-icon.png" alt="About" className="sidebar-icon" />
+                        <span>About</span>
                     </Link>
-                    <Link to="/dashboard" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={toggleSidebar}>
-                        <img src="/src/assets/images/dashboard-icon.png" alt="Dashboard" className="inline-block w-6 h-6 mr-2" />
-                        Dashboard
+                    <Link to="/dashboard" className="sidebar-link" onClick={toggleSidebar}>
+                        <img src="/src/assets/images/dashboard-icon.png" alt="Dashboard" className="sidebar-icon" />
+                        <span>Dashboard</span>
                     </Link>
-                    <Link to="/patientsresults" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={toggleSidebar}>
-                        <img src="/src/assets/images/patients_results-icon.png" alt="Patient Results" className="inline-block w-6 h-6 mr-2" />
-                        Patients Results
+                    <Link to="/patientsresults" className="sidebar-link" onClick={toggleSidebar}>
+                        <img src="/src/assets/images/patients_results-icon.png" alt="Patient Results" className="sidebar-icon" />
+                        <span>Patients Results</span>
                     </Link>
-                    <Link to="/shareduploads" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={toggleSidebar}>
-                        <img src="/src/assets/images/folders.png" alt="Shared Uploads" className="inline-block w-6 h-6 mr-2" />
-                        Shared Uploads
+                    <Link to="/shareduploads" className="sidebar-link" onClick={toggleSidebar}>
+                        <img src="/src/assets/images/folders.png" alt="Shared Uploads" className="sidebar-icon" />
+                        <span>Shared Uploads</span>
                     </Link>
-                    <Link to="/myprofile" className="block px-4 py-2 text-gray-200 hover:bg-gray-700 " onClick={toggleSidebar}>
-                        <img src="/src/assets/images/myprofile-icon.png" alt="My Profile" className="inline-block w-6 h-6 mr-2" />
-                        My Profile
+                    <Link to="/myprofile" className="sidebar-link" onClick={toggleSidebar}>
+                        <img src="/src/assets/images/myprofile-icon.png" alt="My Profile" className="sidebar-icon" />
+                        <span>My Profile</span>
                     </Link>
-                    <Link to="/qa" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={scrollingTop}>
-                        <img src="/src/assets/images/qa-icon.png" alt="Q&A" className="inline-block w-6 h-6 mr-2" />
-                        Q&A
+                    <Link to="/qa" className="sidebar-link" onClick={scrollingTop}>
+                        <img src="/src/assets/images/qa-icon.png" alt="Q&A" className="sidebar-icon" />
+                        <span>Q&A</span>
                     </Link>
                     {isAdmin && (
-                        <Link to="/admin" className="block px-4 py-2 text-gray-200 hover:bg-gray-700" onClick={toggleSidebar}>
-                            <img src="/src/assets/images/admin-icon.png" alt="Admin Panel" className="inline-block w-6 h-6 mr-2" />
-                            Admin Panel
+                        <Link to="/admin" className="sidebar-link" onClick={toggleSidebar}>
+                            <img src="/src/assets/images/admin-icon.png" alt="Admin Panel" className="sidebar-icon" />
+                            <span>Admin Panel</span>
                         </Link>
                     )}
                 </div>

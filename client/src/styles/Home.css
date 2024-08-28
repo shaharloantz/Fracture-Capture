@@ -1,13 +1,24 @@
 .home-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 75vh; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh; 
+  text-align: center; 
+  width: 100%;
 }
-  
+
 .main-content {
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%; 
+}
+
+.app-name {
+  font-size: 60px;
+  margin-top: 50px;
 }
 
 .play-button {
@@ -17,19 +28,85 @@
   cursor: pointer;
   padding: 10px;
   transition: transform 0.3s ease;
-  display: inline-block;
 }
 
 .play-button:hover {
-  background-color: transparent;
-  border: none;
-  outline: none;
   transform: scale(1.1);
 }
 
 .play-button img.start-icon {
   width: 70px;
   height: 70px;
-  display: block; 
 }
 
+img.fracture-icon {
+  width: 250px;
+  height: auto;
+  margin-top: 20px;
+  margin-bottom: 90px;
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 1024px) {
+  .app-name {
+    font-size: 60px;
+    margin-top: 80px;
+  }
+
+  img.fracture-icon {
+    width: 300px;
+  }
+
+  .play-button img.start-icon {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .app-name {
+    font-size: 60px;
+  }
+
+  img.fracture-icon {
+    width: 250px;
+  }
+
+  .play-button img.start-icon {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+@media (max-width: 767px) {
+  .app-name {
+    font-size: 60px;
+  }
+
+  img.fracture-icon {
+    width: 200px;
+  }
+
+  .play-button img.start-icon {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* Extra small screens (very small mobile devices) */
+@media (max-width: 480px) {
+  .app-name {
+    font-size: 40px;
+  }
+
+  img.fracture-icon {
+    width: 250px;
+  }
+
+  .play-button img.start-icon {
+    width: 80px;
+    height: 80px;
+  }
+}

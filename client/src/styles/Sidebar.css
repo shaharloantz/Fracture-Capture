@@ -32,15 +32,21 @@
   padding: 1rem;
   text-decoration: none;
   color: white;
-  transition: background 0.3s ease-in-out;
+  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.sidebar a img {
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.sidebar a span {
+  text-align: left;
+  flex-grow: 1;
 }
 
 .sidebar a:hover {
-  background-color: #444;
-}
-
-.sidebar-icon {
-  margin-right: 0.5rem;
+  background-color: #555;
 }
 
 .sidebar .translate-x-0 {
@@ -49,4 +55,10 @@
 
 .sidebar .-translate-x-full {
   transform: translateX(-100%);
+}
+
+.sidebar-icon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  flex-shrink: 0;
 }
