@@ -32,6 +32,7 @@
 import React, { useState, useEffect } from 'react';
 import downloadIcon from '../../assets/images/download-file-icon.png';
 import sendEmailIcon from '../../assets/images/send-email-icon.png';
+import shareIcon from '../../assets/images/share-folder-icon.png';
 import axios from 'axios';
 import { createPDF, sendEmail } from '../../utils/pdfUtils';
 import { toast } from 'react-hot-toast';
@@ -42,6 +43,7 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient }) => {
     const [email, setEmail] = useState('');
     const [shareEmail, setShareEmail] = useState('');
     const [message, setMessage] = useState('');
+    const [showShareInput, setShowShareInput] = useState(false);
     const [showEmailInput, setShowEmailInput] = useState(false);
     const [isSending, setIsSending] = useState(false);
 
@@ -138,6 +140,12 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient }) => {
                         style={{ cursor: 'pointer', width: '60px', marginRight: '20px' }}
                     />
                     <img 
+                        src={shareIcon}
+                        alt="Share to another Dr." 
+                        onClick={() => setShowShareInput(!showShareInput)}
+                        style={{ cursor: 'pointer', width: '60px' }}
+                    />
+                    <img 
                         src={sendEmailIcon}
                         alt="Send as Email" 
                         onClick={() => setShowEmailInput(!showEmailInput)}
@@ -167,20 +175,23 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient }) => {
                         </button>
                     </form>
                 )}
-                <form onSubmit={handleShareSubmit} style={{ marginTop: '20px' }}>
-                    <label>
-                        <p>Share with another doctor:</p>
-                        <input
-                            type="email"
-                            value={shareEmail}
-                            placeholder="Enter doctor's email"
-                            onChange={handleShareEmailChange}
-                            required
-                            style={{ padding: '10px 20px', width: '40%' }}
-                        />
-                    </label>
-                    <button type="submit" style={{ padding: '10px 20px', cursor: 'pointer' }}>Share</button>
-                </form>
+
+                {showShareInput && (
+                    <form onSubmit={handleShareSubmit} style={{ marginTop: '20px' }}>
+                        <label>
+                            <p>Share with another doctor:</p>
+                            <input
+                                type="email"
+                                value={shareEmail}
+                                placeholder="Enter doctor's email"
+                                onChange={handleShareEmailChange}
+                                required
+                                style={{ padding: '10px 20px', width: '40%' }}
+                            />
+                        </label>
+                        <button type="submit" style={{ padding: '10px 20px', cursor: 'pointer' }}>Share</button>
+                    </form>
+                )}
                 {message && <p>{message}</p>}
             </div>
         </>
