@@ -1,10 +1,19 @@
+.upload-folders-container {
+    overflow-x: auto; /* Allows horizontal scrolling */
+    overflow-y: hidden; /* Prevents vertical scrolling */
+    white-space: nowrap; /* Prevents line breaks inside the container */
+    padding: 40px 20px; /* Padding around the container */
+    max-width: 100%; /* Ensures the container fits within the viewport */
+}
+
 .upload-folders {
     display: grid;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px; /* Increased padding */
+    grid-template-columns: repeat(4, minmax(150px, 1fr)); /* Ensures 4 folders per row */
+    gap: 20px; /* Space between folders */
+    padding: 20px; /* Padding inside the grid */
     color: white;
+    width: max-content; /* Ensure grid width expands to fit content */
+    min-width: 600px; /* Ensure the grid takes up enough space */
 }
 
 .upload-folder{
@@ -12,6 +21,7 @@
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 10px; /* Increased gap for better spacing */
     margin-top: 40px;
+    margin-right: 20px;
     justify-items: right; 
     position: relative;
     width: 150px;
@@ -26,7 +36,7 @@
 
 @media (min-width: 1200px) {
     .upload-folders {
-        grid-template-columns: repeat(7, 1fr); /* Limit to 8 columns */
+        grid-template-columns: repeat(4, 1fr); /* Limit to 8 columns */
     }
 }
 
