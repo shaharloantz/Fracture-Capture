@@ -1,53 +1,65 @@
 .sidebar-toggle {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
-  
-  .sidebar-toggle img {
-    margin-right: 0.5rem;
-  }
-  
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 250px;
-    background-color: #333;
-    color: white;
-    transition: transform 0.3s ease-in-out;
-    display: flex;
-    flex-direction: column;
-    padding-top: 2rem;
-  }
-  
-  .sidebar a {
-    display: flex;
-    align-items: center;
-    padding: 1rem;
-    text-decoration: none;
-    color: white;
-    transition: background 0.3s ease-in-out;
-  }
-  
-  .sidebar a:hover {
-    background-color: #444;
-  }
-  
-  .sidebar-icon {
-    margin-right: 0.5rem;
-  }
-  
-  .sidebar .translate-x-0 {
-    transform: translateX(0);
-  }
-  
-  .sidebar .-translate-x-full {
-    transform: translateX(-100%);
-  }
-  
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-toggle img {
+  margin-right: 0.5rem;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px;
+  background-color: #333;
+  color: white;
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  padding-top: 2rem;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  text-decoration: none;
+  color: white; /* Ensure the default text color is white */
+  transition: background 0.3s ease-in-out, color 0.3s ease-in-out; /* Smooth transition */
+}
+
+.sidebar a img {
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.sidebar a span {
+  text-align: left;
+  flex-grow: 1;
+}
+
+.sidebar a:hover {
+  background-color: #555; /* Background color on hover */
+  color: #ffcc00 !important; /* Explicitly set text color and use !important to override other styles */
+}
+
+.sidebar .translate-x-0 {
+  transform: translateX(0);
+}
+
+.sidebar .-translate-x-full {
+  transform: translateX(-100%);
+}
+
+.sidebar-icon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  flex-shrink: 0;
+}
