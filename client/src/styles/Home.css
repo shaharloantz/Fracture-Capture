@@ -16,8 +16,8 @@
   width: 100%; 
 }
 
-.app-name{
-  font-size: 50px;
+.app-name {
+  font-size: 60px;
   margin-top: 50px;
 }
 
@@ -47,4 +47,66 @@ img.fracture-icon {
   display: block; 
   margin-left: auto;
   margin-right: auto;
+}
+
+@media (min-width: 1024px) {
+  .app-name {
+    font-size: 60px;
+    margin-top: 80px;
+  }
+
+  img.fracture-icon {
+    width: 300px;
+  }
+
+  .play-button img.start-icon {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .app-name {
+    font-size: 60px;
+  }
+
+  img.fracture-icon {
+    width: 250px;
+  }
+
+  .play-button img.start-icon {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+@media (max-width: 767px) {
+  .app-name {
+    font-size: 60px;
+  }
+
+  img.fracture-icon {
+    width: 200px;
+  }
+
+  .play-button img.start-icon {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* Extra small screens (very small mobile devices) */
+@media (max-width: 480px) {
+  .app-name {
+    font-size: 40px;
+  }
+
+  img.fracture-icon {
+    width: 250px;
+  }
+
+  .play-button img.start-icon {
+    width: 80px;
+    height: 80px;
+  }
 }
