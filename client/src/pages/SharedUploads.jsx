@@ -13,7 +13,7 @@ export default function SharedUploads() {
     const [selectedPatientUploads, setSelectedPatientUploads] = useState([]);
     const [selectedUpload, setSelectedUpload] = useState(null);
     const [selectedPatient, setSelectedPatient] = useState(null);
-    const [selectedPatientDetails, setSelectedPatientDetails] = useState(null); 
+    const [selectedPatientDetails, setSelectedPatientDetails] = useState(null); // New state for patient details
 
     useEffect(() => {
         axios.get('/user/shared-uploads', { withCredentials: true })
@@ -76,13 +76,19 @@ export default function SharedUploads() {
         } else if (selectedPatient) {
             setSelectedPatientUploads([]);
             setSelectedPatient(null);
-            setSelectedPatientDetails(null); 
+            setSelectedPatientDetails(null); // Reset patient details
         }
     };
 
     return (
         <div className="shared-uploads-container">
             <h1>Shared Patients</h1>
+            <img 
+                src="/src/assets/images/undo.png" 
+                alt="Back" 
+                className="back-button-icon" 
+                onClick={handleBackClick} 
+            />
             {!selectedPatient && !selectedUpload && (
                 <div className="shared-section">
                     {sharedPatients.length > 0 ? (
@@ -112,30 +118,32 @@ export default function SharedUploads() {
                 </div>
             )}
 
-            <h1>Shared Uploads</h1>
             {!selectedPatient && !selectedUpload && (
-                <div className="shared-section">
-                    {sharedUploads.length > 0 ? (
-                        sharedUploads.map(upload => (
-                            <SharedUpload
-                                key={upload._id}
-                                upload={upload}
-                                handleUploadClick={handleUploadClick}
-                                handleDeleteUploadClick={handleDeleteUploadClick}
-                                formatDate={(dateString) => new Date(dateString).toLocaleString()}
-                            />
-                        ))
-                    ) : (
-                        <p>No shared uploads found.</p>
-                    )}
-                </div>
+                <>
+                    <h1>Shared Uploads</h1>
+                    <div className="shared-section">
+                        {sharedUploads.length > 0 ? (
+                            sharedUploads.map(upload => (
+                                <SharedUpload
+                                    key={upload._id}
+                                    upload={upload}
+                                    handleUploadClick={handleUploadClick}
+                                    handleDeleteUploadClick={handleDeleteUploadClick}
+                                    formatDate={(dateString) => new Date(dateString).toLocaleString()}
+                                />
+                            ))
+                        ) : (
+                            <p>No shared uploads found.</p>
+                        )}
+                    </div>
+                </>
             )}
 
             {selectedUpload && (
                 <UploadDetails
                     selectedUpload={selectedUpload}
                     handleBackClick={handleBackClick}
-                    patient={selectedPatientDetails} 
+                    patient={selectedPatientDetails} // Pass full patient details
                 />
             )}
         </div>

@@ -256,6 +256,12 @@ export default function Profile() {
     return (
         <div className="profile-container">
             <h1>Results Page</h1>
+                      <img 
+                src="/src/assets/images/undo.png" 
+                alt="Back" 
+                className="back-button-icon" 
+                onClick={handleBackClick} 
+            />
             <div className="search-folders-container">
                 {!selectedPatient && !selectedUpload && (
                     <input
