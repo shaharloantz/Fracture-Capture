@@ -86,10 +86,10 @@ export default function Register() {
     return (
         <div className="flex items-center justify-center min-h-screen">
             <div className="flex flex-col items-center">
-                <img src="src/assets/images/user.png" alt="Above" className="mb-4 w-32 h-32 mt-[-10rem]" />
-                <form onSubmit={registerUser} className="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md mt-[-0rem]">
+                <img src="src/assets/images/user.png" alt="Above" className="mb-4 w-32 h-32 mt-[-7.2rem]" />
+                <form onSubmit={registerUser} className="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md space-y-6">
                     <h2 className="text-2xl font-bold mb-6 text-white text-center">Register</h2>
-                    <div className="mb-4">
+                    <div >
                         <label htmlFor="name" className="block text-gray-300">Name</label>
                         <input 
                             type="text" 

@@ -40,7 +40,7 @@ export default function Login({ setIsAuthenticated }) {
     return (
         <div className="flex items-center justify-center min-h-screen">
             <div className="flex flex-col items-center">
-                <img src="src/assets/images/user.png" alt="Above" className="mb-4 w-32 h-32 mt-[-15rem]" /> {/* Adjust the path and size as needed */}
+                <img src="src/assets/images/user.png" alt="Above" className="mb-4 w-32 h-32 mt-[-10rem]" /> {/* Adjust the path and size as needed */}
                 <form onSubmit={loginUser} className="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md space-y-6">
                     <h2 className="text-2xl font-bold mb-6 text-white text-center">Login</h2>
                     <div>
