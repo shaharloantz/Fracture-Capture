@@ -33,7 +33,7 @@ export default function Sidebar() {
                 <img src="/src/assets/images/navbar-icon.png" alt="Menu" className="h-7 w-7 mr-1" />
                 <span>Menu</span>
             </button>
-            <div className={`fixed inset-y-0 left-0 bg-gray-800 text-white transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-40 w-64`}>
+                        <div className={`fixed inset-y-0 left-0 bg-gray-800 text-white transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-40 w-64`}>
                 <div className="py-4 mt-16">
                     <Link to="/about" className="sidebar-link" onClick={scrollingTop}>
                         <img src="/src/assets/images/info-icon.png" alt="About" className="sidebar-icon" />
