@@ -62,7 +62,7 @@ const About = () => {
                         <a href="https://www.linkedin.com/in/shahar-loantz/" target="_blank" rel="noopener noreferrer">
                             <img src="/src\assets\images\shahar.jpg"/>    
                         </a>
-                            <h3>Shachar Loacker</h3>
+                            <h3>Shachar Loantz</h3>
                             <p></p>
                         </div>
 
@@ -78,7 +78,7 @@ const About = () => {
                         <a href="https://www.linkedin.com/in/tal-lovton-499268257/" target="_blank" rel="noopener noreferrer">
                         <img src="/src\assets\images\tal.jpg"/>
                         </a>
-                        <h3>Tal Loveton</h3>
+                        <h3>Tal Lovton</h3>
                         <p></p>
                         </div>
 
