@@ -8,7 +8,7 @@ const PatientUploads = ({ patientUploads, handleUploadClick, handleDeleteUploadC
             alt="Back to Patients" 
             className="back-button-icon" 
             onClick={handleBackClick} 
-            style={{ margin: '0 auto', marginBottom: '20px' }}
+            style={{ margin: '0 auto', marginTop: '15px' }}
         />
         <div className="upload-folders-container">
             <div className="upload-folders">
