@@ -103,6 +103,7 @@
 
 /* Search bar styling */
 .search-bar {
+    margin-top: 20px;
     width: 100%; /* Make search bar take full width of the container */
     padding: 10px 15px;
     margin-bottom: 20px;
@@ -188,12 +189,12 @@
     background-color: #cc4444;
 }
 
-.back-button-icon{
+.back-button-icon {
     width: 40px;
     height: 40px;
-    pointer-events: auto; 
-    margin-bottom: 30px;
- }
+    cursor: pointer;
+    margin-bottom: 20px;
+}
 
 .Modal {
     position: fixed;

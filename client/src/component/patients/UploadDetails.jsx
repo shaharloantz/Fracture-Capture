@@ -73,14 +73,6 @@ const UploadDetails = ({ selectedUpload, handleBackClick, patient }) => {
 
     return (
         <>
-            <div className="back-button-container">
-                <img 
-                    src="/src/assets/images/undo.png" 
-                    alt="Back to Patients" 
-                    className="back-button-icon" 
-                    onClick={handleBackClick} 
-                />
-            </div>
             <div className="upload-details">
                 <div id="pdf-content">
                     <p><strong>Patient Name:</strong> <span>{selectedUpload.patientName || 'N/A'}</span></p>

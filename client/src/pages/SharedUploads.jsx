@@ -83,6 +83,12 @@ export default function SharedUploads() {
     return (
         <div className="shared-uploads-container">
             <h1>Shared Patients</h1>
+            <img 
+                src="/src/assets/images/undo.png" 
+                alt="Back" 
+                className="back-button-icon" 
+                onClick={handleBackClick} 
+            />
             {!selectedPatient && !selectedUpload && (
                 <div className="shared-section">
                     {sharedPatients.length > 0 ? (
@@ -112,7 +118,6 @@ export default function SharedUploads() {
                 </div>
             )}
 
-            {/* Conditionally render shared uploads section */}
             {!selectedPatient && !selectedUpload && (
                 <>
                     <h1>Shared Uploads</h1>
