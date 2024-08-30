@@ -158,7 +158,7 @@ const AdminPanel = () => {
                                                     />
                                                 </>
                                             )}
-                                            {user.isAdmin && (<>-</>)}
+                                            {user.isAdmin && (<p>-</p>)}
                                         </div>
                                     </td>
 
