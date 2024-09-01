@@ -1,4 +1,5 @@
 /**
+ * Results Page
  * This React component is responsible for displaying the results of a medical image processing task.
  * It allows the user to view the processed image, download the results as a PDF, and send the results via email.
  * 

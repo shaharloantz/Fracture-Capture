@@ -1,3 +1,57 @@
+/**
+ * Dashboard Page
+ * 
+ * This component serves as the central interface for managing patient data and uploading medical images for fracture detection. 
+ * It provides functionality for creating new patients, selecting existing patients, and uploading images for processing. 
+ * The user workflow is structured to guide the user through selecting or creating a patient, choosing a body part, and uploading an image 
+ * for analysis, followed by displaying the processing screen and results.
+ * 
+ * Key Functionalities:
+ * 
+ * 1. **Patient Management**:
+ *    - Allows users to create a new patient profile or select an existing patient to add new image uploads.
+ *    - Validates patient information, such as name, date of birth, gender, and ID number, ensuring all required fields are filled correctly.
+ *    - Displays patient information in a form when creating or editing patient profiles.
+ * 
+ * 2. **Body Part Selection**:
+ *    - Provides a selection interface for users to choose the body part that is relevant to the image they want to upload.
+ *    - Displays different icons representing various body parts (e.g., Elbow, Arm, Hand, Foot).
+ *    - Transitions to the file upload process after a body part is selected.
+ * 
+ * 3. **File Upload and Image Processing**:
+ *    - Manages the file upload process for adding images to patient profiles.
+ *    - Validates image file types and sizes before submission.
+ *    - Initiates the image processing workflow upon submission, displaying a processing screen with a progress bar and estimated time.
+ *    - Handles the abort functionality to cancel ongoing processing if needed.
+ * 
+ * 4. **Data Fetching and Navigation**:
+ *    - Fetches user profile data and patients list upon component mount to display existing patients and manage uploads.
+ *    - Uses React Router's `useNavigate` to redirect users as needed, such as navigating to results pages after processing is complete.
+ *    - Maintains session and authentication states through server requests, ensuring secure access to patient data.
+ * 
+ * 5. **Dynamic State Management**:
+ *    - Uses various state variables to manage the visibility of forms, body parts selection, processing screens, and patient/upload data.
+ *    - Manages the state transitions based on user actions, such as toggling between patient creation and upload modes.
+ *    - Updates patient and upload states dynamically as new data is created or modified.
+ * 
+ * Hooks Used:
+ * - `useState`: Manages local state for patient data, uploads, form visibility, processing states, etc.
+ * - `useEffect`: Fetches the initial profile and patient data from the server when the component mounts.
+ * - `useRef`: Maintains a reference to the AbortController for handling upload and processing cancellations.
+ * - `useNavigate`: Redirects users to different pages based on actions and state, ensuring smooth transitions within the application.
+ * 
+ * Component Structure:
+ * - Initial view presents options to create a new patient or add to an existing patient.
+ * - Upon selecting an action, the user is guided through forms and selections relevant to their choice (patient creation, body part selection, file upload).
+ * - Shows a processing screen when an upload is being processed and navigates to the results page upon completion.
+ * 
+ * External Dependencies:
+ * - `axios`: Used for making HTTP requests to fetch and manipulate patient data and handle file uploads.
+ * - `react-hot-toast`: Provides user notifications for success, error, and informational feedback.
+ * - `react-router-dom`: Facilitates navigation and state management within the application.
+ *
+ */
+
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { toast, Toaster } from 'react-hot-toast';

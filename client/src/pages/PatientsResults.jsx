@@ -1,3 +1,50 @@
+/**
+ * Patients Results Page
+ * 
+ * This component serves as the main profile and results management page for the application. It allows the user 
+ * to view, edit, and manage patient information and their associated uploads. Additionally, it provides 
+ * functionality to share patient data with other doctors via email.
+ * 
+ * Key Functionalities:
+ * 
+ * 1. **View and Search Patients**:
+ *    - Displays a list of all patients associated with the logged-in user.
+ *    - Allows the user to search for patients by name or ID using a search bar.
+ * 
+ * 2. **Manage Patient Data**:
+ *    - Enables users to view detailed information about a selected patient, including all uploads associated with that patient.
+ *    - Users can edit patient details or delete a patient, which will also remove all associated uploads.
+ * 
+ * 3. **Manage Patient Uploads**:
+ *    - Users can view individual uploads for a patient and see details about each upload.
+ *    - Allows users to delete specific uploads from the patient's profile.
+ * 
+ * 4. **Share Patient Uploads**:
+ *    - Users can share patient data and uploads with other doctors via email. The component includes a modal form 
+ *      for entering the email address of the doctor to share the data with.
+ *    - Prevents users from sharing data with themselves to avoid redundant actions.
+ * 
+ * 5. **Navigation and State Management**:
+ *    - Uses React Router's `useNavigate` to redirect users if they are not authenticated or if errors occur during data fetching.
+ *    - Manages various states for the profile, search query, selected patient, patient uploads, editing patient, etc.
+ * 
+ * Hooks Used:
+ * - `useState`: Manages local state for profile data, search query, selected patient, uploads, editing states, email inputs, etc.
+ * - `useEffect`: Fetches the initial profile data from the server when the component mounts.
+ * - `useNavigate`: Redirects users to the login page if fetching profile data fails due to authentication errors.
+ * 
+ * Component Structure:
+ * - Initially displays a list of patients and allows users to search through them.
+ * - On selecting a patient, displays all uploads associated with that patient.
+ * - On selecting an upload, displays detailed information about the upload.
+ * - Includes options to edit or delete patients and uploads, and to share data with other doctors.
+ * 
+ * External Dependencies:
+ * - `axios`: Used for making HTTP requests to fetch and manipulate patient data.
+ * - `react-hot-toast`: Provides notifications for success and error feedback to the user.
+ * - `react-router-dom`: Facilitates navigation and redirects within the application.
+ * - `react-modal`: Provides a modal for sharing patient data with other doctors.
+ */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';

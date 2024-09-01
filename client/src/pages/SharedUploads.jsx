@@ -1,3 +1,42 @@
+/**
+ * SharedUploads Page
+ * 
+ * This component is responsible for managing and displaying shared patient data and uploads that have been 
+ * shared with the current user. It allows the user to view, manage, and interact with patients and their 
+ * respective uploads that have been shared by other users.
+ * 
+ * Key Functionalities:
+ * 
+ * 1. **Display Shared Patients and Uploads**:
+ *    - The component initially displays a list of patients and uploads that have been shared with the user.
+ *    - Users can click on a patient to view all uploads associated with that patient.
+ *    - Users can click on an upload to view detailed information about that upload.
+ * 
+ * 2. **Fetch Data from Server**:
+ *    - The component uses `axios` to make HTTP requests to fetch shared patients and uploads data from the server 
+ *      when it mounts.
+ *    - It dynamically fetches patient details and uploads for a selected patient when the user clicks on a patient.
+ * 
+ * 3. **Handle Interactions**:
+ *    - Users can remove shared patients or uploads. When an item is removed, it is also deleted from the server.
+ *    - Provides a back button to navigate between different views (shared patients list, patient uploads, and upload details).
+ * 
+ * 4. **Error Handling and Feedback**:
+ *    - Uses `react-hot-toast` to display notifications for success and error states, providing feedback on 
+ *      operations like deleting shared uploads or patients.
+ *    - Logs errors to the console for debugging purposes.
+ * 
+ * Hooks Used:
+ * - `useState`: Manages local states such as shared patients, uploads, selected patient uploads, and selected upload.
+ * - `useEffect`: Fetches the initial data for shared patients and uploads when the component mounts.
+ * 
+ * Component Structure:
+ * - Initially shows a list of shared patients and uploads.
+ * - When a patient is selected, displays all uploads related to that patient.
+ * - When an upload is selected, displays detailed information about the upload.
+ * 
+ */
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';

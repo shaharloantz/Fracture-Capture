@@ -1,3 +1,51 @@
+/**
+ * AdminPanel Page
+ * 
+ * This component serves as the administrative interface for managing user accounts and their associated data within the application.
+ * It provides functionalities for viewing all registered users, sorting them by various criteria, editing user details, and deleting users
+ * along with all their associated data. The component is designed to facilitate user management tasks typically required by an admin role.
+ * 
+ * Key Functionalities:
+ * 
+ * 1. **User Management**:
+ *    - Displays a list of all users with relevant details such as name, email, user group (admin or regular), and the number of patients associated with them.
+ *    - Allows for editing and updating user details, specifically name and email.
+ *    - Provides the ability to delete users and all their associated data from the system, with a confirmation step to prevent accidental deletions.
+ * 
+ * 2. **Sorting and Filtering**:
+ *    - Users can be sorted by different attributes including group (admin or regular), name, email, and the number of patients.
+ *    - The sort functionality allows the admin to easily organize and manage the user list based on the selected criteria.
+ * 
+ * 3. **Editing User Details**:
+ *    - Admins can edit a user's name and email directly from the user list.
+ *    - The editing mode is activated by clicking an edit icon next to the user's details.
+ *    - Provides input fields for updating user information and buttons to save changes or cancel editing.
+ * 
+ * 4. **Deleting Users**:
+ *    - Users can be deleted by clicking the delete icon, which triggers a confirmation dialog.
+ *    - The confirmation dialog prevents accidental deletions by requiring explicit confirmation from the admin.
+ *    - Upon confirmation, the user is removed from the list, and the server is notified to delete the user's data.
+ * 
+ * 5. **Dynamic State Management**:
+ *    - Uses state variables to manage the list of users, sorting options, editing states, and the data of the user being edited.
+ *    - The state is updated dynamically based on user interactions and API responses to ensure the interface reflects the latest data.
+ * 
+ * Hooks Used:
+ * - `useState`: Manages the local state for users, sort options, editing states, edited user data, and totals.
+ * - `useEffect`: Fetches the list of all users from the server when the component mounts.
+ * 
+ * Component Structure:
+ * - Displays a table of users with sorting options and action icons for each user.
+ * - Provides a form for editing user details when an edit action is triggered.
+ * - Shows a confirmation dialog for delete actions to ensure data integrity and prevent unintended deletions.
+ * - Displays the total number of users and patients at the bottom of the panel for quick reference.
+ * 
+ * External Dependencies:
+ * - `axios`: Used for making HTTP requests to fetch and manipulate user data from the server.
+ * - `react-hot-toast`: Provides user notifications for actions such as deletions and updates, enhancing the user experience with real-time feedback.
+ * 
+ */
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../styles/AdminPanel.css';
