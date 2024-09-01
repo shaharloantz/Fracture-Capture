@@ -111,7 +111,7 @@ const Results = () => {
       {selectedUpload?.prediction?.confidences && (
         <div className="prediction-details">
           {selectedUpload.prediction.confidences.map((confidence, index) => (
-            <p className='prediction' key={index}> <strong>Prediction: </strong> {(confidence * 100).toFixed(2)}%</p>
+            <p className='prediction' key={index}> <strong>Prediction #{index+1}: </strong> {(confidence * 100).toFixed(2)}%</p>
           ))}
         </div>
       )}
