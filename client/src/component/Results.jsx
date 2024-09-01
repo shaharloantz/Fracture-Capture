@@ -27,7 +27,7 @@ import downloadIcon from '../assets/images/download-file-icon.png';
 import sendEmailIcon from '../assets/images/send-email-icon.png'; 
 import '../styles/Results.css';
 import axios from 'axios';
-import {toast} from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 const Results = () => {
   const location = useLocation();
@@ -41,10 +41,9 @@ const Results = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    try{
+    try {
       fetchCreatedByUser(selectedUpload.createdByUser);
-    }
-    catch(error){
+    } catch (error) {
       navigate('/pagenotfound');
     }
 
@@ -56,7 +55,6 @@ const Results = () => {
         .catch(error => {
           console.error('Error fetching patient details:', error);
         });
-
     }
   }, [patient, selectedUpload]);
 
@@ -67,21 +65,23 @@ const Results = () => {
   const handleImageError = () => {
     console.error('Failed to load the processed image from:', processedImagePath);
   };
+
   const fetchCreatedByUser = async (userId) => {
     try {
-        const response = await axios.get(`/user/${userId}`, { withCredentials: true });
-        setCreatedByUser(response.data);
+      const response = await axios.get(`/user/${userId}`, { withCredentials: true });
+      setCreatedByUser(response.data);
     } catch (error) {
-        console.error('Error fetching created by user:', error.response ? error.response.data : error.message);
+      console.error('Error fetching created by user:', error.response ? error.response.data : error.message);
     }
-};
+  };
+
   const downloadPDF = async () => {
     const pdf = await createPDF(selectedUpload, patientDetails, createdByUser, imageLoaded);
     if (pdf) {
-        const patientName = patientDetails?.name || selectedUpload.patientName || 'unknown';
-        pdf.save(`upload_details_${patientName}.pdf`);
+      const patientName = patientDetails?.name || selectedUpload.patientName || 'unknown';
+      pdf.save(`upload_details_${patientName}.pdf`);
     }
-};
+  };
 
   const handleSendEmail = async () => {
     if (!email) {
@@ -107,20 +107,26 @@ const Results = () => {
           <p>No processed image available.</p>
         )}
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px',marginBottom:'30px', gap:'20vh'}}>
-      <img 
-        src={downloadIcon} 
-        alt="Download as PDF" 
-        onClick={downloadPDF}
-        style={{ cursor: 'pointer', width: '60px', marginRight: '20px' }}
-      />
-      <img 
-        src={sendEmailIcon}
-        alt="Send as Email" 
-        onClick={() => setShowEmailInput(!showEmailInput)}
-        style={{ cursor: 'pointer', width: '60px' }}
-
-      />
+      {selectedUpload?.prediction?.confidences && (
+        <div className="prediction-details">
+          {selectedUpload.prediction.confidences.map((confidence, index) => (
+            <p className='prediction' key={index}> <strong>Prediction: </strong> {(confidence * 100).toFixed(2)}%</p>
+          ))}
+        </div>
+      )}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px', marginBottom:'30px', gap:'20vh'}}>
+        <img 
+          src={downloadIcon} 
+          alt="Download as PDF" 
+          onClick={downloadPDF}
+          style={{ cursor: 'pointer', width: '60px', marginRight: '20px' }}
+        />
+        <img 
+          src={sendEmailIcon}
+          alt="Send as Email" 
+          onClick={() => setShowEmailInput(!showEmailInput)}
+          style={{ cursor: 'pointer', width: '60px' }}
+        />
       </div>
       {showEmailInput && (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
