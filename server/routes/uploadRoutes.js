@@ -8,7 +8,6 @@ const Upload = require('../models/Upload');
 const User = require('../models/User');
 const requireAuth = require('../middleware/authMiddleware');
 const dotenv = require('dotenv').config();
-const mongoose = require('mongoose');
 
 const { exec } = require('child_process');
 const util = require('util');
@@ -16,11 +15,7 @@ const execPromise = util.promisify(exec);
 
 const router = express.Router();
 
-/**
- * Storage Configurations
- */
-
-// Disk storage for file processing
+// Storage for file processing
 const diskStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads/');
@@ -30,18 +25,13 @@ const diskStorage = multer.diskStorage({
     }
 });
 
-// Memory storage for sending emails
+// Storage for sending emails
 const memoryStorage = multer.memoryStorage();
 
 const uploadToDisk = multer({ storage: diskStorage });
 const uploadToMemory = multer({ storage: memoryStorage });
 const upload = multer();
 
-/**
- * Upload and Prediction Routes
- */
-
-// Upload and process image
 router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => {
     const { id, description, bodyPart } = req.body;
     const imagePath = req.file.path;
@@ -111,7 +101,11 @@ router.post('/', requireAuth, uploadToDisk.single('image'), async (req, res) => 
     }
 });
 
-// Fetch uploads for a specific patient
+
+// Endpoint to fetch uploads for a specific patient
+const mongoose = require('mongoose');
+
+// Ensure `id` is a valid ObjectId before querying
 router.get('/:id', requireAuth, async (req, res) => {
     const patientId = req.params.id;
 
@@ -129,7 +123,8 @@ router.get('/:id', requireAuth, async (req, res) => {
     }
 });
 
-// Delete an upload
+
+// Endpoint to delete an upload
 router.delete('/:uploadId', requireAuth, async (req, res) => {
     try {
         const upload = await Upload.findById(req.params.uploadId);
@@ -146,6 +141,7 @@ router.delete('/:uploadId', requireAuth, async (req, res) => {
         const deleteFile = (filePath) => new Promise((resolve, reject) => {
             fs.unlink(filePath, (err) => {
                 if (err && err.code !== 'ENOENT') {
+                    // If error is not "file not found"
                     reject(err);
                 } else {
                     resolve();
@@ -165,11 +161,7 @@ router.delete('/:uploadId', requireAuth, async (req, res) => {
     }
 });
 
-/**
- * Email and Sharing Routes
- */
 
-// Send email with attachment
 router.post('/send-email', upload.single('pdf'), async (req, res) => {
     const { patientName, email } = req.body;
     const pdfBuffer = req.file.buffer;
@@ -199,23 +191,25 @@ router.post('/send-email', upload.single('pdf'), async (req, res) => {
     }
 });
 
-// Share upload details with another doctor
 router.post('/share', requireAuth, async (req, res) => {
     const { uploadId, email } = req.body;
 
     try {
+        // Ensure upload exists
         const upload = await Upload.findById(uploadId).populate('patient createdByUser');
         if (!upload) {
             console.error('Upload not found');
             return res.status(404).json({ error: 'Upload not found' });
         }
 
+        // Ensure recipient doctor exists
         const recipientDoctor = await User.findOne({ email });
         if (!recipientDoctor) {
             console.error('Recipient doctor not found');
             return res.status(404).json({ error: 'Recipient doctor not found' });
         }
 
+        // Add shared upload to recipient's profile with patient details
         recipientDoctor.sharedUploads = recipientDoctor.sharedUploads || [];
         if (!recipientDoctor.sharedUploads.some((sharedUpload) => sharedUpload.toString() === upload._id.toString())) {
             recipientDoctor.sharedUploads.push(upload._id);
@@ -230,13 +224,13 @@ router.post('/share', requireAuth, async (req, res) => {
     }
 });
 
-// Share patient with another doctor
+// Backend Route for Sharing a Patient
 router.post('/share/patient/:id', requireAuth, async (req, res) => {
     const { id } = req.params;
     const { email } = req.body;
 
     try {
-        const patient = await Patient.findById(id).populate('uploads');
+        const patient = await Patient.findById(id).populate('uploads'); // Populating uploads
         if (!patient) {
             return res.status(404).json({ error: 'Patient not found' });
         }
@@ -246,6 +240,7 @@ router.post('/share/patient/:id', requireAuth, async (req, res) => {
             return res.status(404).json({ error: 'Recipient doctor not found' });
         }
 
+        // Check if patient is already shared
         recipientDoctor.sharedPatients = recipientDoctor.sharedPatients || [];
         if (!recipientDoctor.sharedPatients.some(sharedPatient => sharedPatient.toString() === patient._id.toString())) {
             recipientDoctor.sharedPatients.push(patient._id);
@@ -259,15 +254,15 @@ router.post('/share/patient/:id', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
-
-// Fetch uploads for a specific shared patient
+// Route to fetch uploads for a specific patient (shared)
 router.get('/shared/:patientId', requireAuth, async (req, res) => {
     const { patientId } = req.params;
 
     try {
+        // Fetch uploads and populate patient and createdByUser fields
         const uploads = await Upload.find({ patient: patientId })
-            .populate('patient')
-            .populate('createdByUser');
+            .populate('patient') // Populate patient details
+            .populate('createdByUser'); // Populate user details who created the upload
 
         res.json(uploads);
     } catch (error) {
@@ -276,7 +271,8 @@ router.get('/shared/:patientId', requireAuth, async (req, res) => {
     }
 });
 
-// Remove shared upload from a user's profile
+
+// Example of using $pull operator
 router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {
     const { uploadId } = req.params;
     const userId = req.user.id;
@@ -297,5 +293,6 @@ router.delete('/shared-upload/:uploadId', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
 module.exports = router;

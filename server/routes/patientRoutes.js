@@ -8,11 +8,7 @@ const fs = require('fs');
 
 const router = express.Router();
 
-/**
- * Patient Management Routes
- */
-
-// Create a new patient
+// Endpoint to create a new patient
 router.post('/', requireAuth, async (req, res) => {
     const { name, gender, dateOfBirth, idNumber } = req.body;
 
@@ -22,7 +18,7 @@ router.post('/', requireAuth, async (req, res) => {
             idNumber,
             gender,
             name,
-            dateOfBirth,
+            dateOfBirth
         });
         await patient.save();
 
@@ -40,31 +36,27 @@ router.post('/', requireAuth, async (req, res) => {
     }
 });
 
-// Update a patient's details
-router.put('/:id', requireAuth, async (req, res) => {
-    const { name, gender, dateOfBirth, idNumber } = req.body;
+/// Endpoint to delete a patient and all of its uploads
+const deleteFile = (filePath) => {
+    return new Promise((resolve, reject) => {
+        fs.access(filePath, fs.constants.F_OK, (err) => {
+            if (err) {
+                console.warn(`File not found: ${filePath}, skipping deletion.`);
+                return resolve();
+            }
 
-    try {
-        const patient = await Patient.findById(req.params.id);
-        if (!patient) {
-            return res.status(404).json({ error: 'Patient not found' });
-        }
-
-        patient.name = name;
-        patient.gender = gender;
-        patient.dateOfBirth = dateOfBirth;
-        patient.idNumber = idNumber;
-
-        await patient.save();
-
-        res.json(patient);
-    } catch (error) {
-        console.error('Error updating patient:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// Delete a patient and all associated uploads
+            fs.unlink(filePath, (unlinkErr) => {
+                if (unlinkErr) {
+                    console.error(`Error deleting file: ${filePath}`, unlinkErr);
+                    return reject(unlinkErr);
+                }
+                console.log(`Deleted file: ${filePath}`);
+                resolve();
+            });
+        });
+    });
+};
+// Endpoint to delete a patient and all of its uploads
 router.delete('/:id', requireAuth, async (req, res) => {
     try {
         const patient = await Patient.findById(req.params.id);
@@ -78,7 +70,7 @@ router.delete('/:id', requireAuth, async (req, res) => {
         for (const upload of uploads) {
             const filePaths = [
                 path.join(__dirname, '../uploads', upload.imgId),
-                path.join(__dirname, '../uploads', upload.processedImgId),
+                path.join(__dirname, '../uploads', upload.processedImgId)
             ];
 
             for (const filePath of filePaths) {
@@ -114,19 +106,44 @@ router.delete('/:id', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+///
 
-// Get patient by ID
-router.get('/:id', async (req, res) => {
+// Endpoint to update a patient's details
+router.put('/:id', requireAuth, async (req, res) => {
+    const { name, gender, dateOfBirth, idNumber } = req.body;
+
     try {
         const patient = await Patient.findById(req.params.id);
         if (!patient) {
             return res.status(404).json({ error: 'Patient not found' });
         }
+
+        patient.name = name;
+        patient.gender = gender;
+        patient.dateOfBirth = dateOfBirth;
+        patient.idNumber = idNumber;
+
+        await patient.save();
+
         res.json(patient);
     } catch (error) {
-        console.error('Error fetching patient:', error);
+        console.error('Error updating patient:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+// Get patient by ID
+router.get('/:id', async (req, res) => {
+    try {
+      const patient = await Patient.findById(req.params.id);
+      if (!patient) {
+        return res.status(404).json({ error: 'Patient not found' });
+      }
+      res.json(patient);
+    } catch (error) {
+      console.error('Error fetching patient:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 
 module.exports = router;
