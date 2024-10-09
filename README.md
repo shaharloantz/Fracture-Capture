@@ -99,3 +99,17 @@ FractureCapture is designed as a supportive tool for medical professionals and s
 If you encounter any issues or have questions about using Fractures Captures, please open an issue in this repository or refer to our documentation.
 
 Remember to stay updated with the latest version for optimal performance and security.
+
+
+## Screenshots
+![image](https://github.com/user-attachments/assets/1ed53c67-4e5e-4f8d-be57-2dd21f782586)
+![image](https://github.com/user-attachments/assets/6f4c88d0-5f5f-4b1b-9830-f60adad678bb)
+![image](https://github.com/user-attachments/assets/bed1bae6-166a-4dce-99f0-03b558a54b63)
+![image](https://github.com/user-attachments/assets/5f9b394a-64f7-4fdf-94cf-c720b7d57fd7)
+![image](https://github.com/user-attachments/assets/e6e1e2a1-543a-46d9-bb95-413dc505b8d9)
+
+## Demo
+
+https://github.com/user-attachments/assets/f13eb8cc-2c9f-4d1a-9dd8-cba5a87dc499
+
+
